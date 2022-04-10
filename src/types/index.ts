@@ -41,3 +41,16 @@ export interface PropertyPropDetails {
     photos: Array<string>;
     contact: string;
 }
+
+export interface FiltersProp {
+    purpose: string;
+    rentFrequency: string;
+    categoryExternalID: string;
+    minPrice: number;
+    maxPrice: number;
+    areaMax: number;
+    roomsMin: number;
+    bathsMin: number;
+    sort: number;
+    locationExternalIDs: string;
+}
