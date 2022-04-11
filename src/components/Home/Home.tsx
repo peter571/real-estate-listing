@@ -1,7 +1,6 @@
 import Footer from '../Footer/Footer'
 import Nav from '../Nav/Nav'
-import Rentals from '../Rentals/Rentals'
-import Sales from '../Sales/Sales'
+import Properties from '../Properties/Properties'
 import TemplateBanner from '../TemplateBanner/TemplateBanner'
 
 const Home = () => {
@@ -13,18 +12,19 @@ const Home = () => {
                 text1={'RENT A HOME'}
                 text2={'Rental Homes for Everyone'}
                 text3={'EXplore form Apartments, builder floors, villas and more'}
-                btnText={'Explore Renting'} />
-
-            <Rentals />
+                btnText={'Explore Renting'}
+                reverse={true} />
 
             <TemplateBanner
                 imgurl={'https://bayut-production.s3.eu-central-1.amazonaws.com/image/110993385/6a070e8e1bae4f7d8c1429bc303d2008'}
                 text1={'BUY A HOME'}
                 text2={'Find, Buy & Own Your Dream Home'}
                 text3={'EXplore form Apartments, builder floors, villas and more'}
-                btnText={'Explore Buying'} />
+                btnText={'Explore Buying'}
+                reverse={false} />
 
-            <Sales />
+            <Properties />
+
             <Footer />
         </div>
     )

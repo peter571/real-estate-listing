@@ -1,4 +1,5 @@
 import { FiltersProp } from "../types";
+
 export const filterData = [
     {
         items: [

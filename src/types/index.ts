@@ -4,6 +4,7 @@ export interface BannerProp {
     text2: string;
     text3: string;
     btnText: string;
+    reverse: boolean;
 }
 
 export interface PropertyProp {
@@ -46,11 +47,15 @@ export interface FiltersProp {
     purpose: string;
     rentFrequency: string;
     categoryExternalID: string;
-    minPrice: number;
-    maxPrice: number;
-    areaMax: number;
-    roomsMin: number;
-    bathsMin: number;
-    sort: number;
+    minPrice: string;
+    maxPrice: string;
+    areaMax: string;
+    roomsMin: string;
+    bathsMin: string;
+    sort: string;
     locationExternalIDs: string;
+}
+
+export interface FilteredDataProp {
+    filteredData: PropertyProp[];
 }
