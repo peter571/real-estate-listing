@@ -7,6 +7,9 @@ import {
 import PropertyDetails from '../PropertyDetails/PropertyDetails';
 import Search from '../Search/Search';
 import Nav from '../Nav/Nav';
+import Login from '../Auth/Login';
+import Register from '../Auth/Register';
+import UploadProperty from '../UploadProperty/UploadProperty';
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/search' element={<Search />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/upload-property' element={<UploadProperty />} />
+          <Route path='/register' element={<Register />} />
           <Route path='/:id' element={<PropertyDetails price={''} rentFrequency={''} rooms={0} title={''} baths={''} area={0} agency={''} isVerified={false} externalID={0} description={''} type={''} purpose={''} furnishingStatus={false} amenities={''} photos={[]} contact={''} />} />
         </Routes>
       </Router>

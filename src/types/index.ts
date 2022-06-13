@@ -7,6 +7,11 @@ export interface BannerProp {
     reverse: boolean;
 }
 
+export interface BtnProp {
+    buttonText: string;
+    type: "button" | "submit" | "reset" | undefined;
+}
+
 export interface PropertyProp {
     coverPhoto: { id: string; url: string; };
     price: string;

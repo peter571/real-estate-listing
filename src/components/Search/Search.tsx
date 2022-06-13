@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BsFilter } from 'react-icons/bs'
 import Property from '../Property/Property'
 import SearchFilters from '../SearchFilters/SearchFilters'
+
 const Search = () => {
     const [searchFilters, setSearchFilters] = useState(false)
 
