@@ -1,3 +1,4 @@
+import React from 'react';
 import { BtnProp } from "../../types"
 
 export const Button = (props: BtnProp) => {

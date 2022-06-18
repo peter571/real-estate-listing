@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams } from 'react-router-dom'
 import { PropertyPropDetails } from '../../types'
 import Carousel from '../Carousel/Carousel'

@@ -2,24 +2,26 @@ import 'react-dropzone-uploader/dist/styles.css';
 import Dropzone, { defaultClassNames, IDropzoneProps } from 'react-dropzone-uploader';
 import { useNavigate } from 'react-router-dom';
 import Layout from './ImagesLayout';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-// interface ImagesProp {
-  
-// }
+interface ImagesProp {
+  images: any[];
+}
 
 const ImagesInput = () => {
   const getUploadParams: IDropzoneProps['getUploadParams'] = () => ({ url: 'https://httpbin.org/post' })
   const navigate = useNavigate();
-  const [images, setImages] = useState<any>([]);
+  const [images, setImages] = useState();
 
   const handleChangeStatus: IDropzoneProps['onChangeStatus'] = ({ meta, file }, status) => {
     const reader = new FileReader();
-
+    const arr: any[] = [];
     reader.onload = function() {
       const imgUrl = reader.result;
-      setImages(images.push(imgUrl))
-      return imgUrl;
+      arr.push(imgUrl);
+      //setImages(arr)
+      //return imgUrl;
+      //console.log(arr)
     }
 
     reader.readAsDataURL(file)
@@ -40,7 +42,7 @@ const ImagesInput = () => {
       //return f;
     }
       ))
-    console.log(images);
+    //console.log(images);
     allFiles.forEach(f => f.remove())
     navigate('/upload-property/details')
   }

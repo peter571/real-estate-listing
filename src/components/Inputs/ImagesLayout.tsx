@@ -1,3 +1,4 @@
+import React from 'react';
 import { ILayoutProps } from 'react-dropzone-uploader';
 
 const Layout = ({ input, previews, submitButton, dropzoneProps, files, extra: { maxFiles } }: ILayoutProps) => {

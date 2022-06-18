@@ -1,3 +1,4 @@
+import React from 'react';
 import { Form, Formik } from 'formik';
 import { styles } from '../Auth/styles';
 import { Button } from '../CustomComponents';

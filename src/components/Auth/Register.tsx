@@ -1,3 +1,4 @@
+import React from 'react';
 import { Formik, Form } from 'formik';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -76,6 +77,7 @@ const Register = () => {
                             label="Upload Profile Image"
                             name="profileImage"
                             type="file"
+                            
                         />
 
                         <TextInput

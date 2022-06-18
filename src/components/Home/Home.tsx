@@ -1,5 +1,5 @@
+import React from 'react';
 import Footer from '../Footer/Footer'
-import Nav from '../Nav/Nav'
 import Properties from '../Properties/Properties'
 import TemplateBanner from '../TemplateBanner/TemplateBanner'
 

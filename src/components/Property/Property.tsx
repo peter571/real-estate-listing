@@ -1,3 +1,4 @@
+import React from 'react';
 import { PropertyProp } from "../../types"
 import { FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';

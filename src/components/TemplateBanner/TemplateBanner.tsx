@@ -1,3 +1,4 @@
+import React from 'react';
 import { BannerProp } from "../../types"
 
 const TemplateBanner = (prop: BannerProp) => {

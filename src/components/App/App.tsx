@@ -1,3 +1,4 @@
+import React from 'react';
 import Home from '../Home/Home';
 import {
   BrowserRouter as Router,

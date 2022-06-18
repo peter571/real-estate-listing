@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { fetchData } from "../../api"
 import Property from "../Property/Property"
 
