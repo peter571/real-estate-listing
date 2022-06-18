@@ -9,7 +9,6 @@ import TextArea from '../Inputs/TextArea';
 
 interface PropertyValues {
     images: string;
-    verified: boolean;
     rooms: number;
     bathrooms: number;
     price: number;
@@ -17,7 +16,6 @@ interface PropertyValues {
     description: string;
     place: string;
     type: string;
-    availability: boolean;
 }
 
 const UploadProperty = () => {
@@ -30,13 +28,11 @@ const UploadProperty = () => {
         place: '',
         type: '',
         description: '',
-        verified: false,
-        availability: false
     };
 
     const { formWrapper, form, link, text } = styles;
     return (
-        <div className={`${formWrapper} my-2`}>
+        <div className={`${formWrapper} my-5 min-h-screen`}>
             <Formik
                 initialValues={initialValues}
                 
@@ -48,13 +44,7 @@ const UploadProperty = () => {
                 }}
             >
                 <Form className={`${form} w-[45%]`}>
-                    <h1 className={text}>Upload Your Property</h1>
-
-                    <TextInput
-                        label="Property Images"
-                        name="images"
-                        type="text"
-                    />
+                    <h1 className={text}>Upload Your Property Details</h1>
 
                     <TextInput
                         label="Number of rooms"
@@ -105,15 +95,7 @@ const UploadProperty = () => {
                         <option value="buy">Buy</option>
                     </Select>
 
-                    <Checkbox name="verified">
-                        Verified
-                    </Checkbox>
-
-                    <Checkbox name="availability">
-                        Availability
-                    </Checkbox>
-
-                    <Button buttonText='Submit' type="submit" />
+                    <Button buttonText='Save & Submit' type="submit" />
 
                 </Form>
             </Formik>

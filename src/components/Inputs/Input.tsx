@@ -9,6 +9,7 @@ interface TextInputProps {
     placeholder?: string;
     name: string;
     id?: any;
+    handleChange?: (e: React.ChangeEvent<any>) => void;
 }
 
 const TextInput = ({ label, ...props }: TextInputProps) => {

@@ -1,4 +1,5 @@
 import { Formik, Form } from 'formik';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Button } from '../CustomComponents';
@@ -21,11 +22,13 @@ const Register = () => {
         confirmPassword: ''
     };
 
+    const [imgSrc, setImgSrc] = useState('');
+
     const { formWrapper, link, text, form } = styles;
 
     return (
         <div className={formWrapper}>
-            
+
             <Formik
                 initialValues={initialValues}
                 validationSchema={Yup.object({
@@ -46,39 +49,52 @@ const Register = () => {
                         setSubmitting(false);
                     }, 400);
                 }}
+
+            
             >
-                <Form className={form}>
-                <h1 className={text}>Register</h1>
+                {({
+                    values,
+                    errors,
+                    touched,
+                    //handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    /* and other goodies */
+                }) => (
+                    <Form className={form}>
+                        <h1 className={text}>Register</h1>
 
-                    <TextInput
-                        label="Email Address"
-                        name="email"
-                        type="email"
-                        placeholder="example@gmail.com"
-                    />
+                        <TextInput
+                            label="Email Address"
+                            name="email"
+                            type="email"
+                            placeholder="example@gmail.com"
+                        />
 
-                    <TextInput
-                        label="Upload Profile Image"
-                        name="profileImage"
-                        type="file"
-                    />
+                        <TextInput
+                            label="Upload Profile Image"
+                            name="profileImage"
+                            type="file"
+                        />
 
-                    <TextInput
-                        label="Password"
-                        name="password"
-                        type="password"
-                    />
+                        <TextInput
+                            label="Password"
+                            name="password"
+                            type="password"
+                        />
 
-                    <TextInput
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        type="password"
-                    />
+                        <TextInput
+                            label="Confirm Password"
+                            name="confirmPassword"
+                            type="password"
+                        />
 
-                   <Button buttonText='Register' type="submit" />
+                        <Button buttonText='Register' type="submit" />
 
-                   <h1 className={text}>Already have an account? <Link className={link} to="/login">Login</Link></h1>
-                </Form>
+                        <h1 className={text}>Already have an account? <Link className={link} to="/login">Login</Link></h1>
+                    </Form>
+                )}
             </Formik>
         </div>
     );
