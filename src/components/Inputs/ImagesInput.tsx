@@ -1,70 +1,67 @@
-import 'react-dropzone-uploader/dist/styles.css';
-import Dropzone, { defaultClassNames, IDropzoneProps } from 'react-dropzone-uploader';
 import { useNavigate } from 'react-router-dom';
-import Layout from './ImagesLayout';
 import React, { useState } from 'react';
-
-interface ImagesProp {
-  images: any[];
-}
+import { Button } from '../CustomComponents';
+import { useAppDispatch } from '../../store/hooks';
+import { propertyActions } from '../../store';
 
 const ImagesInput = () => {
-  const getUploadParams: IDropzoneProps['getUploadParams'] = () => ({ url: 'https://httpbin.org/post' })
   const navigate = useNavigate();
-  const [images, setImages] = useState();
+  const [images, setImages] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
 
-  const handleChangeStatus: IDropzoneProps['onChangeStatus'] = ({ meta, file }, status) => {
-    const reader = new FileReader();
-    const arr: any[] = [];
-    reader.onload = function() {
-      const imgUrl = reader.result;
-      arr.push(imgUrl);
-      //setImages(arr)
-      //return imgUrl;
-      //console.log(arr)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    var files = e.target.files!;
+    let arr: string[] = [];
+
+    function readAndPreview(file: File) {
+
+      if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+        const reader = new FileReader();
+
+        reader.onload = function () {
+          const imgUrl = this.result;
+          if (typeof imgUrl === 'string') {
+            arr.push(imgUrl);
+          }
+          setImages(arr);
+        }
+        reader.readAsDataURL(file);
+      }
     }
 
-    reader.readAsDataURL(file)
-    //console.log(status, meta)
+    if (files) {
+      [].forEach.call(files, readAndPreview);
+    }
   }
 
-  const handleSubmit: IDropzoneProps['onSubmit'] = (files, allFiles) => {
-    console.log(files.map(f => {
-      const reader = new FileReader();
 
-      reader.onload = function() {
-        const imgUrl = reader.result;
-        //setImages(images.push(imgUrl))
-        return imgUrl;
-      }
-  
-      reader.readAsDataURL(f.file)
-      //return f;
-    }
-      ))
-    //console.log(images);
-    allFiles.forEach(f => f.remove())
-    navigate('/upload-property/details')
+  const handleSubmit = (e: React.FormEvent<EventTarget>) => {
+    e.preventDefault();
+    dispatch(propertyActions.uploadImages(images));
+    navigate('/upload-property/details');
   }
 
   return (
     <div className='flex justify-center items-center align-middle min-h-screen'>
-      <div className='w-[60%]'>
-        <Dropzone
-          getUploadParams={getUploadParams}
-          LayoutComponent={Layout}
-          onSubmit={handleSubmit}
-          onChangeStatus={handleChangeStatus}
-          classNames={{ inputLabelWithFiles: defaultClassNames.inputLabel }}
-          inputContent="Drop/Select Property Images"
-          submitButtonContent="Save Images and Enter details ->"
-          styles={{
-            dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
-            inputLabel: (files, extra) => (extra.reject ? { color: 'red' } : {}),
-            submitButton: { backgroundColor: '#212222' },
-            dropzone: { overflow: 'hidden' }
-          }}
+      <div className='flex flex-col justify-center items-center align-middle w-[60%]'>
+        <h1 className='my-5 font-bold antialiased text-lg'>Upload clear images of your property</h1>
+        <div className='flex flex-wrap flex-row gap-4'>
+          {images?.map((url, index) => {
+            return <img className='' key={index} src={url} />
+          })}
+        </div>
+        <input
+          className='bg-[#212222] text-white my-5'
+          type="file"
+          name="properties"
+          onChange={handleChange}
+          multiple
+          required
         />
+        {images.length > 0 && (
+          <Button onClick={handleSubmit} buttonText={'Save & add details ->'} type="submit" />
+        )}
       </div>
     </div>
   )

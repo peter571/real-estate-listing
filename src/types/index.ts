@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface BannerProp {
     imgurl: string;
     text1: string;
@@ -10,42 +12,11 @@ export interface BannerProp {
 export interface BtnProp {
     buttonText: string;
     type: "button" | "submit" | "reset" | undefined;
-}
-
-export interface PropertyProp {
-    coverPhoto: { id: string; url: string; };
-    price: string;
-    rentFrequency: string;
-    rooms: number;
-    title: string;
-    baths: string;
-    area: number;
-    agency: string;
-    isVerified: boolean;
-    externalID: number;
+    onClick?: (e: React.FormEvent<EventTarget>) => void;
 }
 
 export interface CarouselProp {
     carouselData: Array<string>
-}
-
-export interface PropertyPropDetails {
-    externalID: string | number;
-    price: string;
-    rentFrequency: string;
-    rooms: number;
-    title: string;
-    baths: string;
-    area: number;
-    agency: string;
-    isVerified: boolean;
-    description: string;
-    type: string;
-    purpose: string;
-    furnishingStatus: boolean;
-    amenities: string;
-    photos: Array<string>;
-    contact: string;
 }
 
 export interface FiltersProp {
@@ -62,5 +33,33 @@ export interface FiltersProp {
 }
 
 export interface FilteredDataProp {
-    filteredData: PropertyProp[];
+    filteredData: PropertyValues[];
+}
+
+export interface LoginValues {
+    email: string;
+    password: string;
+}
+
+export interface RegisterValues {
+    email: string;
+    realtorName: string;
+    password: string;
+    profileImage: string | ArrayBuffer | null;
+    confirmPassword: string;
+}
+
+export interface PropertyValues {
+    images: string[] | undefined;
+    rooms: number;
+    bathrooms: number;
+    price: number;
+    sqft: number;
+    description: string;
+    title: string;
+    place: string;
+    type: string;
+    contact: number | string;
+    _id?: string;
+    owner: any;
 }

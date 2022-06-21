@@ -27,7 +27,7 @@ function App() {
             <Route path='/upload-property/details' element={<UploadProperty />} />
           </Route>
           <Route path='/register' element={<Register />} />
-          <Route path='/:id' element={<PropertyDetails price={''} rentFrequency={''} rooms={0} title={''} baths={''} area={0} agency={''} isVerified={false} externalID={0} description={''} type={''} purpose={''} furnishingStatus={false} amenities={''} photos={[]} contact={''} />} />
+          <Route path='/:id' element={<PropertyDetails />} />
         </Routes>
       </Router>
     </div>

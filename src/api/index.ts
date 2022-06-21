@@ -1,40 +1,34 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import { LoginValues, PropertyValues, RegisterValues } from "../types";
 
-export const baseUrl = 'https://bayut.p.rapidapi.com';
+const API = axios.create({
+    baseURL: 'https://k-homes-api.herokuapp.com/'
+})
 
-export const fetchApi = async (url: string) => {
-    const { data } = await axios.get((url), {
-        headers: {
-            'X-RapidAPI-Host': 'bayut.p.rapidapi.com',
-            'X-RapidAPI-Key': `${process.env.REACT_APP_API}`
-        }
-    });
+const responseBody = (response: AxiosResponse) => response;
 
-    return data?.hits.map((element: any) => {
-        const { coverPhoto, externalID, price, rentFrequency, rooms, title, baths, area, agency, isVerified, type, purpose, furnishingStatus, amenities, photoIDs } = element;
-        return {
-            coverPhoto,
-            price,
-            rentFrequency,
-            rooms,
-            title,
-            baths,
-            area,
-            agency,
-            isVerified,
-            externalID,
-            type,
-            purpose,
-            furnishingStatus,
-            amenities,
-            photoIDs
-        }
-    })
+const requests = {
+    get: (url: string) => API.get(url).then(responseBody),
+    getItem: (id: string) => API.get(id).then(responseBody),
+    post: (url: string, body: {}) => API.post(url, body).then(responseBody),
+    put: (url: string, body: {}) => API.put(url, body).then(responseBody),
+    delete: (url: string) => API.delete(url).then(responseBody),
+};
+
+/**properties Api */
+export const properties = {
+    fetchProperties: (): Promise<any> => requests.get('/properties'),
+    fetchProperty: (id: string): Promise<any> => requests.get(`/properties/${id}`),
+    createProperty: (property: PropertyValues): Promise<any> => requests.post('/properties', property),
+    updateProperty: (id: string, newProperty: {}): Promise<any> => requests.put(`/properties/${id}`, newProperty),
+    deleteProperty: (id: string): Promise<any> => requests.delete(`/properties/${id}`)
 }
 
-export async function fetchData() {
-    const propertyForSale = await fetchApi(`${baseUrl}/properties/list?locationExternalIDs=5002&purpose=for-sale&hitsPerPage=6`);
-    const propertyForRent = await fetchApi(`${baseUrl}/properties/list?locationExternalIDs=5002&purpose=for-rent&hitsPerPage=6`);
+/**Users Api */
 
-    return { rents: propertyForRent, sales: propertyForSale }
+export const users = {
+    registerUser: (signupData: RegisterValues): Promise<AxiosResponse<any>> => requests.post('/auth/register', signupData),
+    loginUser: (siginData: LoginValues): Promise<AxiosResponse<any>> => requests.post('/auth/login', siginData),
+    resetUser: (email: {}): Promise<AxiosResponse<any>> => requests.post('/auth', email),
+    resetUserPassword: (newpasswordValues: {}): Promise<AxiosResponse<any>> => requests.post('/auth', newpasswordValues)
 }

@@ -1,18 +1,12 @@
 import React from 'react';
-import { Formik, Form } from 'formik';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as Yup from 'yup';
 import { Button } from '../CustomComponents';
 import TextInput from '../Inputs/Input';
 import { styles } from './styles';
-
-interface RegisterValues {
-    email: string;
-    password: string;
-    profileImage: string;
-    confirmPassword: string;
-}
+import { RegisterValues } from '../../types';
+import { useAppDispatch } from '../../store/hooks';
+import { authActions } from '../../store';
 
 const Register = () => {
 
@@ -23,81 +17,80 @@ const Register = () => {
         confirmPassword: ''
     };
 
-    const [imgSrc, setImgSrc] = useState('');
+    const dispatch = useAppDispatch();
+    const [values, setValues] = useState(initialValues);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValues({ ...values, [e.target.name]: e.target.value });   
+    }
+
+    const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files![0];
+        const reader = new FileReader();
+
+        reader.onload = function () {
+            const imgUrl = reader.result;
+            setValues({ ...values, profileImage: imgUrl });
+        }
+
+        if (file) {
+            reader.readAsDataURL(file)
+        }
+    }
+
+    const handleSubmit = (e: React.FormEvent<EventTarget>) => {
+        e.preventDefault(); 
+        dispatch(authActions.register(values));
+    }
 
     const { formWrapper, link, text, form } = styles;
 
     return (
         <div className={formWrapper}>
+            <form className={form} onSubmit={handleSubmit}>
+                <h1 className={text}>Register</h1>
 
-            <Formik
-                initialValues={initialValues}
-                validationSchema={Yup.object({
-                    email: Yup.string()
-                        .email('Invalid email address')
-                        .required('Required'),
-                    password: Yup.string()
-                        .required('No password provided.')
-                        .min(8, 'Password is too short - should be 8 chars minimum.')
-                        .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
-                    confirmPassword: Yup.string()
-                        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+                <TextInput
+                    label="Email Address"
+                    name="email"
+                    type="email"
+                    placeholder="example@gmail.com"
+                    handleChange={handleChange}
+                />
 
-                })}
-                onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                        console.log(values);
-                        setSubmitting(false);
-                    }, 400);
-                }}
+                <TextInput
+                    label="Realtor Names"
+                    name="realtorName"
+                    type="text"
+                    placeholder=""
+                    handleChange={handleChange}
+                />
 
-            
-            >
-                {({
-                    values,
-                    errors,
-                    touched,
-                    //handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                    /* and other goodies */
-                }) => (
-                    <Form className={form}>
-                        <h1 className={text}>Register</h1>
+                <input
+                    name="profileImage"
+                    type="file"
+                    onChange={handleImageInput}
+                    required
+                />
 
-                        <TextInput
-                            label="Email Address"
-                            name="email"
-                            type="email"
-                            placeholder="example@gmail.com"
-                        />
+                <TextInput
+                    label="Password"
+                    name="password"
+                    type="password"
+                    handleChange={handleChange}
+                />
 
-                        <TextInput
-                            label="Upload Profile Image"
-                            name="profileImage"
-                            type="file"
-                            
-                        />
+                <TextInput
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    type="password"
+                    handleChange={handleChange}
+                />
 
-                        <TextInput
-                            label="Password"
-                            name="password"
-                            type="password"
-                        />
+                <Button buttonText='Register' type="submit" />
 
-                        <TextInput
-                            label="Confirm Password"
-                            name="confirmPassword"
-                            type="password"
-                        />
-
-                        <Button buttonText='Register' type="submit" />
-
-                        <h1 className={text}>Already have an account? <Link className={link} to="/login">Login</Link></h1>
-                    </Form>
-                )}
-            </Formik>
+                <h1 className={text}>Already have an account? <Link className={link} to="/login">Login</Link></h1>
+            </form>
         </div>
     );
 };

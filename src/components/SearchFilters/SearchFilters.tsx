@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { FilteredDataProp, FiltersProp, PropertyProp } from '../../types';
+import { FilteredDataProp, FiltersProp } from '../../types';
 import { filterData, getFilterValues } from '../../Utils'
-
-
-import { data } from '../Properties/Properties'
 import Property from '../Property/Property';
 
 const SearchFilters = () => {
     const [filters, setFilters] = useState(filterData)
-    const [filteredData, setFilteredData] = useState<PropertyProp[]>([])
+    const [filteredData, setFilteredData] = useState<any[]>([])
     const [filterValues, setFilterValues] = useState({
         purpose: '',
         rentFrequency: '',
@@ -23,14 +20,14 @@ const SearchFilters = () => {
         locationExternalIDs: ''
     })
 
-    const searchProperties = (filterValues: FiltersProp) => {
-        const filteredProperties = data.filter((item) => {
-            // eslint-disable-next-line eqeqeq
-            return item.type == filterValues.purpose || parseFloat(item.baths) == parseFloat(filterValues.bathsMin) || item.agency == filterValues.rentFrequency || item.area.toString() == filterValues.areaMax;
-        })
+    // const searchProperties = (filterValues: FiltersProp) => {
+    //     const filteredProperties = [].filter((item) => {
+    //         // eslint-disable-next-line eqeqeq
+    //         return item.type == filterValues.purpose || parseFloat(item.baths) == parseFloat(filterValues.bathsMin) || item.agency == filterValues.rentFrequency || item.area.toString() == filterValues.areaMax;
+    //     })
 
-        setFilteredData(filteredProperties);
-    };
+    //     setFilteredData(filteredProperties);
+    // };
 
     const handleChange = (e: React.ChangeEvent<{ name: string, value: unknown }>) => {
         setFilterValues({ ...filterValues, [e.target.name]: e.target.value })
@@ -38,9 +35,9 @@ const SearchFilters = () => {
     }
     console.log(filteredData)
 
-    useEffect(() => {
-        searchProperties(filterValues)
-    }, [filterValues])
+    // useEffect(() => {
+    //     searchProperties(filterValues)
+    // }, [filterValues])
 
     return (
         <div className='flex flex-wrap justify-between gap-2 py-2'>

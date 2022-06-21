@@ -2,26 +2,19 @@ import React from 'react';
 import { Form, Formik } from 'formik';
 import { styles } from '../Auth/styles';
 import { Button } from '../CustomComponents';
-import TextInput from '../Inputs/Input';
+import TextInput from '../Inputs/TextInput';
 import * as Yup from 'yup';
 import Select from '../Inputs/Select';
-import Checkbox from '../Inputs/Checkbox';
 import TextArea from '../Inputs/TextArea';
-
-interface PropertyValues {
-    images: string;
-    rooms: number;
-    bathrooms: number;
-    price: number;
-    sqft: number;
-    description: string;
-    place: string;
-    type: string;
-}
+import { PropertyValues } from '../../types';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { RootState } from '../../store/reducers';
+import { propertyActions } from '../../store';
 
 const UploadProperty = () => {
-    const initialValues: PropertyValues = {
-        images: '',
+    const initialValues = {
+        contact: '',
+        owner: '',
         rooms: 0,
         bathrooms: 0,
         price: 0,
@@ -29,7 +22,11 @@ const UploadProperty = () => {
         place: '',
         type: '',
         description: '',
+        title: ''
     };
+
+    const dispatch = useAppDispatch();
+    const { images } = useAppSelector((state: RootState) => state.properties);
 
     const { formWrapper, form, link, text } = styles;
     return (
@@ -39,13 +36,20 @@ const UploadProperty = () => {
                 
                 onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
-                        console.log(values);
+                        dispatch(propertyActions.create({ images: images, ...values }))
                         setSubmitting(false);
                     }, 400);
                 }}
             >
                 <Form className={`${form} w-[45%]`}>
                     <h1 className={text}>Upload Your Property Details</h1>
+
+                    <TextInput
+                        label="Title of Property"
+                        name="title"
+                        type="text"
+                        placeholder='e.g Villas'
+                    />
 
                     <TextInput
                         label="Number of rooms"
