@@ -62,4 +62,5 @@ export interface PropertyValues {
     contact: number | string;
     _id?: string;
     owner: any;
+    availability: boolean
 }

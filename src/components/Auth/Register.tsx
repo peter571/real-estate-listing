@@ -1,24 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../CustomComponents';
 import TextInput from '../Inputs/Input';
 import { styles } from './styles';
 import { RegisterValues } from '../../types';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { authActions } from '../../store';
+import { RootState } from '../../store/reducers';
 
 const Register = () => {
 
     const initialValues: RegisterValues = {
         email: '',
+        realtorName: '',
         profileImage: '',
         password: '',
         confirmPassword: ''
     };
 
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const { feedback } = useAppSelector((state: RootState) => state.user);
     const [values, setValues] = useState(initialValues);
+
+    useEffect(() => {
+        if (feedback === 'success') {
+            navigate('/')
+        }
+    }, [feedback]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [e.target.name]: e.target.value });   
@@ -86,6 +96,14 @@ const Register = () => {
                     type="password"
                     handleChange={handleChange}
                 />
+
+                {feedback === 'errors' && (
+                    <p className='text-red-500'>
+                        An error occurred!
+                        <br />
+                        Check email doesn't exist!
+                    </p>
+                )}
 
                 <Button buttonText='Register' type="submit" />
 

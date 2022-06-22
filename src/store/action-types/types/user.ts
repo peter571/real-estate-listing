@@ -26,9 +26,14 @@ interface ChangepasswordAction {
     payload: {}
 }
 
+interface AuthRequestProp { 
+    loading: boolean;
+    feedback: string; 
+}
+
 interface AuthRequest {
     type: userActionTypes.AUTH_REQUEST,
-    payload: boolean
+    payload: AuthRequestProp
 }
 
 export type UserActionType = LoginAction | LogoutAction | AuthRequest | RegisterAction | ResetAction | ChangepasswordAction;

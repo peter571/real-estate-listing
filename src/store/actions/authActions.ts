@@ -7,26 +7,29 @@ import * as api from '../../api'
 export const register = (registerData: RegisterValues) => {
     return async (dispatch: Dispatch<UserActionType>) => {
         try {
-            dispatch<any>(authRequest(true));
+            dispatch<any>(authRequest(true, ''));
             const { data } = await api.users.registerUser(registerData);
-            console.log('Register',data);
+            
+            dispatch<any>(authRequest(false, 'success'));
             dispatch({
                 type: userActionTypes.REGISTER,
                 payload: data
-            })
-            dispatch<any>(authRequest(false));   
+            })    
         } catch (error) {
             console.log(error);
-            dispatch<any>(authRequest(false));
+            dispatch<any>(authRequest(false, 'errors'));
         }
     }
 }
 
-export const authRequest = (value: boolean) => {
+export const authRequest = (value: boolean, message: string) => {
     return (dispatch: Dispatch<UserActionType>) => {
         dispatch({
             type: userActionTypes.AUTH_REQUEST,
-            payload: value
+            payload: {
+                loading: value,
+                feedback: message
+            }
         })
     }
 }
@@ -34,17 +37,17 @@ export const authRequest = (value: boolean) => {
 export const login = (loginData: LoginValues) => {
     return async (dispatch: Dispatch<UserActionType>) => {
         try {
-            dispatch<any>(authRequest(true));
+            dispatch<any>(authRequest(true, ''));
             const { data } = await api.users.loginUser(loginData);
-            console.log('login', data);
+            
+            dispatch<any>(authRequest(false, 'success'));
             dispatch({
                 type: userActionTypes.LOGIN,
                 payload: data
-            })
-            dispatch<any>(authRequest(false));   
+            })   
         } catch (error) {
             console.log(error);
-            dispatch<any>(authRequest(false));
+            dispatch<any>(authRequest(false, 'errors'));
         }
     }
 }

@@ -7,7 +7,8 @@ interface PropertiesProp {
     items: PropertyValues[],
     property: PropertyValues | undefined,
     loading: boolean,
-    images: string[] | undefined
+    images: string[] | undefined,
+    feedback: string
 }
 
 const initProperty = {
@@ -22,14 +23,16 @@ const initProperty = {
     type: '',
     contact: '',
     _id: '',
-    owner: ''
+    owner: '',
+    availability: true,
 }
 
 const initialState: PropertiesProp = {
     items: [] as PropertyValues[],
     property: initProperty,
     loading: false,
-    images: []
+    images: [],
+    feedback: ''
 };
 
 export const propertiesReducer: Reducer<PropertiesProp, Action> = (state = initialState, action) => {
@@ -40,7 +43,7 @@ export const propertiesReducer: Reducer<PropertiesProp, Action> = (state = initi
             
         case propertyAction.FETCH_REQUEST:
             
-            return { ...state, loading: action.payload };
+            return { ...state, loading: action.payload.loading, feedback: action.payload.feedback };
 
         case propertyAction.FETCH_ITEM:
             

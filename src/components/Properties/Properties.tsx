@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { propertyActions } from "../../store";
 import Property from "../Property/Property"
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { RootState } from '../../store/reducers';
+import Loader from "../Loader";
 
 
 const Properties = () => {
@@ -10,15 +11,16 @@ const Properties = () => {
     const dispatch = useAppDispatch();
     const { items, loading } = useAppSelector((state: RootState) => state.properties);
 
-    console.log(items, loading)
     useEffect(() => {
-        dispatch(propertyActions.fetchItems())
-    }, [])
-    
+        if (items.length === 0) {
+            dispatch(propertyActions.fetchItems())
+        }
+    }, []);
+
     return (
         <div>
             {loading ? (
-                <h1>Loading...</h1>
+                <Loader />
             ) : (
                 <div className="flex justify-between gap-6 flex-wrap">
                     {[...items].map((item) => (

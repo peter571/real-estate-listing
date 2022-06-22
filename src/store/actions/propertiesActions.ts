@@ -9,25 +9,28 @@ import { useAppDispatch } from "../hooks";
 export const fetchItems = () => {
     return async (dispatch: Dispatch<PropertiesAction>) => {
         try {
-            dispatch<any>(fetchRequest(true));
+            dispatch<any>(fetchRequest(true, ''));
             const { data } = await properties.fetchProperties();
 
             dispatch({
                 type: propertiesActionTypes.FETCH_ALL,
                 payload: data,
             })
-            dispatch<any>(fetchRequest(false));
+            dispatch<any>(fetchRequest(false, "success"));
         } catch (error) {
-            dispatch<any>(fetchRequest(false));
+            dispatch<any>(fetchRequest(false, "errors"));
         }
     }
 }
 
-export const fetchRequest = (value: boolean) => {
+export const fetchRequest = (value: boolean, message: string) => {
     return (dispatch: Dispatch<PropertiesAction>) => {
         dispatch({
             type: propertiesActionTypes.FETCH_REQUEST,
-            payload: value
+            payload: {
+                loading: value,
+                feedback: message
+            }
         })
     }
 }
@@ -35,34 +38,35 @@ export const fetchRequest = (value: boolean) => {
 export const fetchItem = (id: string) => {
     return async (dispatch: Dispatch<PropertiesAction>) => {
         try {
-            dispatch<any>(fetchRequest(true));
+            dispatch<any>(fetchRequest(true, ''));
             const { data } = await properties.fetchProperty(id);
 
             dispatch({
                 type: propertiesActionTypes.FETCH_ITEM,
                 payload: data,
             })
-            dispatch<any>(fetchRequest(false));
+            dispatch<any>(fetchRequest(false, "success"));
         } catch (error) {
             console.log(error);
-            dispatch<any>(fetchRequest(false));
+            dispatch<any>(fetchRequest(false, "errors"));
         }
     }
 }
 
 export const create = (propertyDetails: PropertyValues) => {
+    
     return async (dispatch: Dispatch<PropertiesAction>) => {
         try {
-            dispatch<any>(fetchRequest(true));
-            //const property = await properties.createProperty(propertyDetails)
+            dispatch<any>(fetchRequest(true, ''));
+            const property = await properties.createProperty(propertyDetails)
             dispatch({
                 type: propertiesActionTypes.CREATE,
-                payload: propertyDetails
+                payload: property
             })
 
-            dispatch<any>(fetchRequest(false));
+            dispatch<any>(fetchRequest(false, "success"));
         } catch (error) {
-            dispatch<any>(fetchRequest(false));
+            dispatch<any>(fetchRequest(false, "errors"));
         }
     }
 }
@@ -101,5 +105,6 @@ export const uploadImages = (images: string[]) => {
             type: propertiesActionTypes.LOADIMAGES,
             payload: images
         })
+        dispatch<any>(fetchRequest(false, ''));
     }
 }

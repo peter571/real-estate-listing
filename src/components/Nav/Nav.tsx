@@ -1,34 +1,38 @@
 import React from 'react';
 import { Link } from "react-router-dom"
 import { authActions } from '../../store';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import defaultImg from '../../images/default.jpg';
+import { RootState } from '../../store/reducers';
 
 const Nav = () => {
 
     const dispatch = useAppDispatch();
+    const { isAuthenticated } = useAppSelector((state: RootState) => state.user);
 
     const logout = () => {
         dispatch(authActions.logout());
     }
-
-    const isAuthenticate: boolean = false;
 
     const { btnlink, logolink, navWrapper, avatarLogout, image } = navStyles;
 
     return (
         <nav className={navWrapper}>
             <Link className={logolink} to="/">
-                K-Homes
+                254 Realtors
             </Link>
             <div>
-                {isAuthenticate ? (
+                {isAuthenticated ? (
                     <div className={avatarLogout}>
+                        <Link className={btnlink} to='/upload-property/images' >
+                            Upload Property
+                        </Link>
                         <span className={btnlink} onClick={logout}>
                             Logout
                         </span>
                         <img
                             className={image}
-                            src="/docs/images/people/profile-picture-5.jpg"
+                            src={defaultImg}
                             alt="avatar"
                         />
                     </div>

@@ -23,6 +23,8 @@ const Home = () => {
                 btnText={'Explore Buying'}
                 reverse={false} />
 
+            <h1 className='font-bold my-5'>Explore Properties</h1>
+
             <Properties />
 
             <Footer />

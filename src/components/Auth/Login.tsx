@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Button } from '../CustomComponents';
 import TextInput from '../Inputs/TextInput';
 import { styles } from './styles';
 import { LoginValues } from '../../types'
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { authActions } from '../../store';
+import { RootState } from '../../store/reducers';
 
 const Login = () => {
 
@@ -17,6 +18,14 @@ const Login = () => {
     };
 
     const dispatch = useAppDispatch();
+    const { feedback } = useAppSelector((state: RootState) => state.user);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (feedback === 'success') {
+            navigate('/')
+        }
+    }, [feedback]);
 
     const { formWrapper, form, text, link } = styles;
     return (
@@ -31,13 +40,13 @@ const Login = () => {
                     password: Yup.string()
                         .required('No password provided.'),
                         // .min(8, 'Password is too short - should be 8 chars minimum.')
-                        // .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
+                    
                 })}
                 onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
-                        console.log(values)
                         dispatch(authActions.login(values));
                         setSubmitting(false);
+                        
                     }, 400);
                 }}
             >
@@ -58,6 +67,13 @@ const Login = () => {
                         type="password"
                     />
 
+                    {feedback === 'errors' && (
+                        <h1 className='text-red-500'>
+                            An error occurred!
+                            <br /> Check credentials and try again!
+                        </h1>
+                    )}
+                    
                     <Button buttonText='Login' type="submit" />
                     <h1 className={text}>Don't have an account? <Link className={link} to="/register">Register</Link></h1>
                 </Form>

@@ -9,47 +9,52 @@ import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { RootState } from '../../store/reducers';
 import { propertyActions } from '../../store';
+import Loader from '../Loader';
 
 const PropertyDetails = () => {
     const dispatch = useAppDispatch();
 
-    const { property } = useAppSelector((state: RootState) => state.properties); 
+    const { property, loading } = useAppSelector((state: RootState) => state.properties);
     const { id } = useParams();
-    
+
     useEffect(() => {
         dispatch(propertyActions.fetchItem(id!));
     }, [])
 
     const { images, bathrooms, rooms, description, price, type, title, sqft, contact } = property!;
 
-    return (
-        <div className='lg:mx-32 mt-8'>
-            <Link to="/">
-                <button className='text-black font-bold flex items-center'>
-                    <MdKeyboardBackspace /> back
-                </button>
-            </Link>
-            <div className='flex justify-center gap-2 items-center flex-col'>
-                <div className=''>
-                    <Carousel carouselData={images!} />
-                </div>
-                <div className=''>
-                    <p className='font-semibold'>{title}</p>
-                    <p className='text-sm'>{type}</p>
-                    <div className="flex justify-between items-center my-1">
-                        <div className="flex justify-between items-center gap-2">
-                            {(<GoVerified className="text-[#2b5f2b]" />)}
-                            <p>AED {price}/monthly</p>
+    const Property = () => {
+
+        return (
+            <div className='lg:mx-4 mt-8'>
+                <div className='flex justify-center gap-3 items-center flex-row'>
+                    <div className=''>
+                        <Carousel carouselData={images!} />
+                    </div>
+                    <div className='self-start'>
+                        <p className='capitalize font-semibold'>{title}</p>
+                        <p className='text-sm capitalize'>{`Type: ${type}`}</p>
+                        <div className="flex justify-between items-center my-1">
+                            <div className="flex justify-between items-center gap-2 capitalize">
+                                <GoVerified className="text-[#2b5f2b]" />
+                                <p>{type === 'rent' ? `${price}USD/monthly` : `${price}USD`}</p>
+                            </div>
                         </div>
+                        <p className='font-bold'>{contact}</p>
+                        <div className="flex justify-start items-center gap-2 text-sky-500">
+                            {rooms} <FaBed /> | {bathrooms} <FaBath /> | {sqft.toFixed(2)} sqft <BsGridFill />
+                        </div>
+                        <p className="capitalize">{description}</p>
                     </div>
-                    <p className='font-bold'>{contact}</p>
-                    <div className="flex justify-start items-center gap-2 text-sky-500">
-                        {rooms} <FaBed /> | {bathrooms} <FaBath /> | {sqft.toFixed(2)} sqft <BsGridFill />
-                    </div>
-                    <p className="">{description}</p>
                 </div>
             </div>
-        </div>
+        )
+    }
+
+    return (
+        <div className='flex justify-center items-center min-h-screen'>
+            {loading ? <Loader /> : <Property />}
+        </div> 
     )
 }
 

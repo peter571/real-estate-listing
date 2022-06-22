@@ -33,7 +33,10 @@ interface FetchItem {
 
 interface FetchRequest {
     type: propertiesActionTypes.FETCH_REQUEST,
-    payload: boolean
+    payload: {
+        loading: boolean;
+        feedback: string;
+    }
 }
 
 export type PropertiesAction = FetchAction | FetchRequest | CreateAction | UpdateAction | DelateAction | LoadImagesAction | FetchItem;
