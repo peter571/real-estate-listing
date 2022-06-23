@@ -25,6 +25,7 @@ const initProperty = {
     _id: '',
     owner: '',
     availability: true,
+    category: ''
 }
 
 const initialState: PropertiesProp = {

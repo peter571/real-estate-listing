@@ -10,7 +10,19 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { RootState } from '../../store/reducers';
 import { propertyActions } from '../../store';
 import { TiTick } from 'react-icons/ti';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+const categories = [
+    { name: 'Apartment', value: '4' },
+    { name: 'Townhouses', value: '16' },
+    { name: 'Villas', value: '3' },
+    { name: 'Penthouses', value: '18' },
+    { name: 'Hotel Apartments', value: '21' },
+    { name: 'Villa Compound', value: '19' },
+    { name: 'Residential Plot', value: '14' },
+    { name: 'Residential Floor', value: '12' },
+    { name: 'Residential Building', value: '17' },
+];
 
 const UploadProperty = () => {
     const initialValues = {
@@ -22,7 +34,9 @@ const UploadProperty = () => {
         place: '',
         type: '',
         description: '',
-        title: ''
+        title: '',
+        category: '',
+        availability: true,
     };
 
     const navigate = useNavigate();
@@ -51,7 +65,6 @@ const UploadProperty = () => {
                         dispatch(propertyActions.create({
                             images: images,
                             owner: _id,
-                            availability: true,
                             ...values
                         }));
                         setSubmitting(false);
@@ -115,8 +128,17 @@ const UploadProperty = () => {
                         type="select"
                     >
                         <option value="">Select a property type</option>
-                        <option value="rent">Rent</option>
-                        <option value="buy">Buy</option>
+                        <option value="for-rent">Rent</option>
+                        <option value="for-sale">Buy</option>
+                    </Select>
+
+                    <Select
+                        label="Property Category"
+                        name="category"
+                        type="select"
+                    >
+                        <option value="">Select property Category</option>
+                        {categories.map((item) => <option value={item.value}>{item.name}</option>)}
                     </Select>
 
                     <TextInput
@@ -149,7 +171,6 @@ const UploadProperty = () => {
 
                 </Form>
             </Formik>
-
         </div>
     )
 }

@@ -1,19 +1,32 @@
 import React from 'react';
+import { FiExternalLink } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { BannerProp } from "../../types"
 
 const TemplateBanner = (prop: BannerProp) => {
+
+    const { container, textWrapper, btnLink } = bannerStyles;
+
     return (
-        <div className={`flex ${prop.reverse ? 'flex-row-reverse' : ''} justify-center items-center h-96`}>
-            <div className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-200 h-auto w-96">
-                <img src={prop.imgurl} alt="banner" />
-            </div>
-            <div className="flex flex-col gap-2 pl-3">
-                <h1 className="text-sm text-gray-700">{prop.text1}</h1>
-                <p className="text-black text-2xl font-bold w-[50%]">{prop.text2}</p>
-                <p className="text-lg text-gray-900 font-semibold  w-[80%]">{prop.text3}</p>
+        <div className={container}>
+            <div className={textWrapper}>
+                <h1 className="text-sm text-[#ceda81]">{prop.text1}</h1>
+                <p className="text-[#ceda81] font-bold">{prop.text2}</p>
+                <p className="text-[#ceda81] text-5xl font-semibold">{prop.text3}</p>
+                <p className="text-lg text-[#ceda81] font-semibold">{prop.text4}</p>
+                <Link className={btnLink} to="/properties">
+                    Explore Properties
+                    <FiExternalLink />
+                </Link>
             </div>
         </div>
     )
+}
+
+const bannerStyles = {
+    container: 'flex items-center object-cover bg-hero-pattern h-screen',
+    textWrapper: 'backdrop-blur-sm bg-black/30 flex flex-col gap-4 p-5 w-[90%] sm:w-[80%] md:w-[70%]',
+    btnLink: 'flex items-center gap-2 flex-nowrap transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 rounded-sm bg-white self-start text-sm text-black px-2 py-1'
 }
 
 export default TemplateBanner

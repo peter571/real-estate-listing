@@ -28,7 +28,7 @@ const Property = (prop: PropertyValues) => {
                 <div className="flex justify-start items-center gap-4 text-sky-500">
                     {rooms} <FaBed /> | {bathrooms} <FaBath /> | {sqft.toFixed(2)} sqft <BsGridFill />
                 </div>
-                <p className="truncate w-80">{title}</p>
+                <p className="truncate w-96">{title}</p>
             </div>
         </div>
     )

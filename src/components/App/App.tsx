@@ -17,6 +17,8 @@ import { authActions } from '../../store';
 import { authVerify } from '../Auth/AuthVerify';
 import ProtectedRoute from '../ProtectedRoute';
 import { RootState } from '../../store/reducers';
+import SearchIcon from '../SearchIcon';
+import Properties from '../Properties/Properties';
 
 function App() {
 
@@ -38,8 +40,10 @@ function App() {
   return (
     <div className="bg-[#F9FCFB] px-10 py-4 min-h-screen">
       <Nav />
+      <SearchIcon />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/properties' element={<Properties />} />
         <Route path='/search' element={<Search />} />
         <Route path='/login' element={<Login />} />
         <Route path='/upload-property'

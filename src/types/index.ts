@@ -5,7 +5,7 @@ export interface BannerProp {
     text1: string;
     text2: string;
     text3: string;
-    btnText: string;
+    text4: string;
     reverse: boolean;
 }
 
@@ -20,16 +20,13 @@ export interface CarouselProp {
 }
 
 export interface FiltersProp {
-    purpose: string;
-    rentFrequency: string;
-    categoryExternalID: string;
+    category: string;
     minPrice: string;
     maxPrice: string;
     areaMax: string;
     roomsMin: string;
     bathsMin: string;
-    sort: string;
-    locationExternalIDs: string;
+    type: string;
 }
 
 export interface FilteredDataProp {
@@ -62,5 +59,6 @@ export interface PropertyValues {
     contact: number | string;
     _id?: string;
     owner: any;
-    availability: boolean
+    availability: boolean;
+    category: string;
 }
