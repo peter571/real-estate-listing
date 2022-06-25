@@ -37,7 +37,7 @@ const PropertyDetails = () => {
                         <div className="flex justify-between items-center my-1">
                             <div className="flex justify-between items-center gap-2 capitalize">
                                 <GoVerified className="text-[#2b5f2b]" />
-                                <p>{type === 'rent' ? `${price.toLocaleString()} USD/monthly` : `${price.toLocaleString()} USD`}</p>
+                                <p>{type === 'for-rent' ? `${price.toLocaleString()} USD/monthly` : `${price.toLocaleString()} USD`}</p>
                             </div>
                         </div>
                         <p className='font-bold'>{contact}</p>

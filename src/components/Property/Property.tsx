@@ -18,7 +18,7 @@ const Property = (prop: PropertyValues) => {
                 <div className="flex justify-between items-center my-1">
                     <div className="flex justify-between items-center gap-2">
                         <GoVerified className="text-[#2b5f2b]" />
-                        <p>{type === 'buy' ? `${price.toLocaleString()} USD` : `${price.toLocaleString()} USD/Monthly`}</p>
+                        <p>{type === 'for-sale' ? `${price.toLocaleString()} USD` : `${price.toLocaleString()} USD/Monthly`}</p>
                     </div>
                     <div className="cursor-pointer">
                         <img className="rounded-full h-8 w-8" src={images![0]} alt="" />

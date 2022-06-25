@@ -25,7 +25,7 @@ const Carousel = ({ carouselData }: CarouselProp) => {
 
     return (
         <div>
-            <div className="max-w-lg h-auto flex overflow-hidden relative">
+            <div className="h-auto flex overflow-hidden relative">
                 <AiOutlineLeft
                     onClick={prevSlide}
                     className="absolute left-0 text-3xl inset-y-1/2 text-white cursor-pointer"
