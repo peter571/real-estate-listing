@@ -27,7 +27,7 @@ const PropertyDetails = () => {
 
         return (
             <div className='lg:mx-4 mt-8'>
-                <div className='flex justify-center gap-3 items-center flex-row'>
+                <div className='flex justify-center gap-3 items-center flex-col sm:flex-row'>
                     <div className=''>
                         <Carousel carouselData={images!} />
                     </div>
@@ -37,7 +37,7 @@ const PropertyDetails = () => {
                         <div className="flex justify-between items-center my-1">
                             <div className="flex justify-between items-center gap-2 capitalize">
                                 <GoVerified className="text-[#2b5f2b]" />
-                                <p>{type === 'rent' ? `${price}USD/monthly` : `${price}USD`}</p>
+                                <p>{type === 'rent' ? `${price.toLocaleString()} USD/monthly` : `${price.toLocaleString()} USD`}</p>
                             </div>
                         </div>
                         <p className='font-bold'>{contact}</p>

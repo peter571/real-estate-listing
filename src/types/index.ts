@@ -42,7 +42,7 @@ export interface RegisterValues {
     email: string;
     realtorName: string;
     password: string;
-    profileImage: string | ArrayBuffer | null;
+    profileImg: string | ArrayBuffer | null;
     confirmPassword: string;
 }
 

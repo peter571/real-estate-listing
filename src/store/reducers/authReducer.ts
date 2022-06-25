@@ -5,6 +5,7 @@ import { Reducer } from 'redux';
 interface UserProp {
     email: string;
     realtorName: string;
+    profileImg: string;
 }
 
 export interface AuthProp {
@@ -18,7 +19,8 @@ export interface AuthProp {
 const initialState: AuthProp = {
     user: {
         email: '',
-        realtorName: ''
+        realtorName: '',
+        profileImg: ''
     },
     token: '',
     loading: false,

@@ -22,7 +22,7 @@ const Properties = () => {
             {loading ? (
                 <Loader />
             ) : (
-                <div className="flex justify-between gap-6 flex-wrap">
+                <div className="flex gap-8 flex-wrap">
                     {[...items].map((item) => (
                         <Property key={item._id} {...item} />
                     ))}

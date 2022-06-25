@@ -38,9 +38,10 @@ function App() {
   }, [location])
 
   return (
-    <div className="bg-[#F9FCFB] px-10 py-4 min-h-screen">
+    <div className="bg-[#F9FCFB] px-4 sm:px-10 py-4 min-h-screen">
       <Nav />
       <SearchIcon />
+      <div className='mt-4'>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/properties' element={<Properties />} />
@@ -59,6 +60,7 @@ function App() {
         <Route path='/:id' element={<PropertyDetails />} />
         <Route path="*" element={<p>There's nothing here: 404!</p>} />
       </Routes>
+      </div>
     </div>
   );
 }

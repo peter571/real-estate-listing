@@ -9,16 +9,16 @@ const Property = (prop: PropertyValues) => {
     const { price, _id, rooms, bathrooms, title, place, sqft, images, type } = prop;
     return (
         <div className="flex flex-col">
-            <div className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-200 cursor-pointer">
-                <Link to={`/${_id}`}>
-                    <img src={images![0]} className="h-60 w-96 object-cover" alt="propert-img" />
+            <div className="aspect-w-3 aspect-h-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-200 cursor-pointer">
+                <Link className='' to={`/${_id}`}>
+                    <img src={images![0]} className="object-cover" alt="property-img" />
                 </Link>
             </div>
             <div className="mt-1">
                 <div className="flex justify-between items-center my-1">
                     <div className="flex justify-between items-center gap-2">
                         <GoVerified className="text-[#2b5f2b]" />
-                        <p>{type === 'buy' ? `${price} USD` : `${price} USD/Monthly`}</p>
+                        <p>{type === 'buy' ? `${price.toLocaleString()} USD` : `${price.toLocaleString()} USD/Monthly`}</p>
                     </div>
                     <div className="cursor-pointer">
                         <img className="rounded-full h-8 w-8" src={images![0]} alt="" />
@@ -28,7 +28,7 @@ const Property = (prop: PropertyValues) => {
                 <div className="flex justify-start items-center gap-4 text-sky-500">
                     {rooms} <FaBed /> | {bathrooms} <FaBath /> | {sqft.toFixed(2)} sqft <BsGridFill />
                 </div>
-                <p className="truncate w-96">{title}</p>
+                <p className="truncate">{title}</p>
             </div>
         </div>
     )

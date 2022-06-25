@@ -2,8 +2,25 @@ import axios, { AxiosResponse } from "axios";
 import { LoginValues, PropertyValues, RegisterValues } from "../types";
 
 const API = axios.create({
-    baseURL: 'https://k-homes-api.herokuapp.com/'
+    baseURL: 'http://localhost:8080/'
 })
+
+API.interceptors.request.use((req) => {
+    const user = localStorage.getItem('realtor');
+    let token: string | null;
+
+    if (typeof user === 'string') {
+        let acc_token = JSON.parse(user);
+        token = acc_token.token;
+    } else {
+        token = null;
+    }
+
+    req.headers!.Authorization = `Bearer ${token}`
+
+    return req;
+})
+
 
 const responseBody = (response: AxiosResponse) => response;
 
@@ -16,6 +33,7 @@ const requests = {
 };
 
 /**properties Api */
+
 export const properties = {
     fetchProperties: (): Promise<any> => requests.get('/properties'),
     fetchProperty: (id: string): Promise<any> => requests.get(`/properties/${id}`),

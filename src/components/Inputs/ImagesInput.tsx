@@ -35,7 +35,6 @@ const ImagesInput = () => {
     }
   }
 
-
   const handleSubmit = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
     dispatch(propertyActions.uploadImages(images));
@@ -44,7 +43,7 @@ const ImagesInput = () => {
 
   return (
     <div className='flex justify-center items-center align-middle min-h-screen'>
-      <div className='flex flex-col justify-center items-center align-middle w-[60%]'>
+      <div className='flex flex-col justify-center items-center align-middle w-[100%] sm:w-[80%] md:w-[60%]'>
         <h1 className='my-5 font-bold antialiased text-lg'>Upload clear images of your property</h1>
         <div className='flex flex-wrap flex-row gap-4'>
           {images?.map((url, index) => {
@@ -52,7 +51,7 @@ const ImagesInput = () => {
           })}
         </div>
         <input
-          className='bg-[#212222] text-white my-5'
+          className='bg-[#212222] text-white my-5 cursor-pointer'
           type="file"
           name="properties"
           onChange={handleChange}

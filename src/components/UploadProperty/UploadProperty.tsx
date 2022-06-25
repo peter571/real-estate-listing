@@ -73,7 +73,7 @@ const UploadProperty = () => {
                 }}
 
             >
-                <Form className={`${form} w-[45%]`}>
+                <Form className={`${form}`}>
                     <h1 className={text}>Upload Your Property Details</h1>
 
                     <TextInput
@@ -138,7 +138,7 @@ const UploadProperty = () => {
                         type="select"
                     >
                         <option value="">Select property Category</option>
-                        {categories.map((item) => <option value={item.value}>{item.name}</option>)}
+                        {categories.map((item) => <option key={item.value} value={item.value}>{item.name}</option>)}
                     </Select>
 
                     <TextInput

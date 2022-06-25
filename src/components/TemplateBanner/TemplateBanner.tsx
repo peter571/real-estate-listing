@@ -25,7 +25,7 @@ const TemplateBanner = (prop: BannerProp) => {
 
 const bannerStyles = {
     container: 'flex items-center object-cover bg-hero-pattern h-screen',
-    textWrapper: 'backdrop-blur-sm bg-black/30 flex flex-col gap-4 p-5 w-[90%] sm:w-[80%] md:w-[70%]',
+    textWrapper: 'backdrop-blur-sm bg-black/30 flex flex-col gap-4 p-5 w-[100%] sm:w-[80%] md:w-[70%]',
     btnLink: 'flex items-center gap-2 flex-nowrap transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 rounded-sm bg-white self-start text-sm text-black px-2 py-1'
 }
 

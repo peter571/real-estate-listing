@@ -14,7 +14,7 @@ const Register = () => {
     const initialValues: RegisterValues = {
         email: '',
         realtorName: '',
-        profileImage: '',
+        profileImg: '',
         password: '',
         confirmPassword: ''
     };
@@ -40,7 +40,7 @@ const Register = () => {
 
         reader.onload = function () {
             const imgUrl = reader.result;
-            setValues({ ...values, profileImage: imgUrl });
+            setValues({ ...values, profileImg: imgUrl });
         }
 
         if (file) {
@@ -77,7 +77,7 @@ const Register = () => {
                 />
 
                 <input
-                    name="profileImage"
+                    name="profileImg"
                     type="file"
                     onChange={handleImageInput}
                     required
