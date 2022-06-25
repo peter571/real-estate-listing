@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from "react-router-dom"
+import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import { authActions } from '../../store';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import defaultImg from '../../images/default.jpg';
@@ -7,12 +7,19 @@ import { RootState } from '../../store/reducers';
 
 const Nav = () => {
 
+    const [userProfilePic, setUserProfilePic] = useState(defaultImg);
     const dispatch = useAppDispatch();
     const { isAuthenticated } = useAppSelector((state: RootState) => state.user);
 
     const logout = () => {
         dispatch(authActions.logout());
     }
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            setUserProfilePic(JSON.parse(localStorage.getItem('realtor')!).user.profileImg);
+        }
+    }, [isAuthenticated]);
 
     const navStyles = {
         btnlink: 'border cursor-pointer rounded-sm border-[#212222] py-1 px-2 sm:px-3 hover:bg-[#212222] hover:text-white',
@@ -45,7 +52,7 @@ const Nav = () => {
                         </span>
                         <img
                             className={image}
-                            src={defaultImg}
+                            src={userProfilePic}
                             alt="avatar"
                         />
                     </div>
