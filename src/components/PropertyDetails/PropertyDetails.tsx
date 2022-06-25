@@ -27,11 +27,11 @@ const PropertyDetails = () => {
 
         return (
             <div className='lg:mx-4 mt-8'>
-                <div className='flex justify-center gap-3 items-center flex-col sm:flex-row'>
-                    <div className=''>
+                <div className='flex justify-center gap-3 items-center flex-col md:flex-row'>
+                    <div className='md:basis-1/2'>
                         <Carousel carouselData={images!} />
                     </div>
-                    <div className='self-start'>
+                    <div className='self-start md:basis-1/2'>
                         <p className='capitalize font-semibold'>{title}</p>
                         <p className='text-sm capitalize'>{`Type: ${type}`}</p>
                         <div className="flex justify-between items-center my-1">
