@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { LoginValues, PropertyValues, RegisterValues } from "../types";
 
 const API = axios.create({
-    baseURL: 'http://localhost:8080/'
+    baseURL: 'https://k-homes-api.herokuapp.com/'
 })
 
 API.interceptors.request.use((req) => {
