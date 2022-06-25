@@ -26,7 +26,7 @@ const PropertyDetails = () => {
     const Property = () => {
 
         return (
-            <div className='lg:mx-8 mx-2 mt-8'>
+            <div className='lg:mx-8 mx-4 mt-8'>
                 <div className='flex justify-center gap-3 items-center flex-col'>
                     <div>
                         <Carousel carouselData={images!} />
@@ -40,7 +40,7 @@ const PropertyDetails = () => {
                                 <p>{type === 'for-rent' ? `${price.toLocaleString()} USD/monthly` : `${price.toLocaleString()} USD`}</p>
                             </div>
                         </div>
-                        <p className='font-bold'>{contact}</p>
+                        <p className='font-bold'>{`Tel: ${contact}`}</p>
                         <div className="flex justify-start items-center gap-2 text-sky-500">
                             {rooms} <FaBed /> | {bathrooms} <FaBath /> | {sqft.toFixed(2)} sqft <BsGridFill />
                         </div>
