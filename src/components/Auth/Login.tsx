@@ -39,7 +39,6 @@ const Login = () => {
                         .required('Required'),
                     password: Yup.string()
                         .required('No password provided.'),
-                        // .min(8, 'Password is too short - should be 8 chars minimum.')
                     
                 })}
                 onSubmit={(values, { setSubmitting }) => {

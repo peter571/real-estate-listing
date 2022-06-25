@@ -58,9 +58,20 @@ const UploadProperty = () => {
         <div className={`${formWrapper} my-5 min-h-screen`}>
             <Formik
                 initialValues={initialValues}
+                validationSchema={Yup.object({
+                    email: Yup.string().email('Invalid email address').required('Required'),
+                    rooms: Yup.number().min(1).required(),
+                    bathrooms: Yup.number().min(1).required(),
+                    price: Yup.number().min(1).required(),
+                    sqft: Yup.number().min(1).required(),
+                    type: Yup.string().required(),
+                    description: Yup.string().required(),
+                    title: Yup.string().required(),
+                    category: Yup.string().required(),
+                })}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     setTimeout(() => {
-                       
+
                         if (images?.length === 0) return alert('Images not loaded!')
                         dispatch(propertyActions.create({
                             images: images,

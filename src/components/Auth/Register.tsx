@@ -23,6 +23,7 @@ const Register = () => {
     const dispatch = useAppDispatch();
     const { feedback } = useAppSelector((state: RootState) => state.user);
     const [values, setValues] = useState(initialValues);
+    const [checkPassword, setCheckPassword] = useState(false);
 
     useEffect(() => {
         if (feedback === 'success') {
@@ -31,7 +32,7 @@ const Register = () => {
     }, [feedback]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({ ...values, [e.target.name]: e.target.value });   
+        setValues({ ...values, [e.target.name]: e.target.value });
     }
 
     const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,13 +45,18 @@ const Register = () => {
         }
 
         if (file) {
-            reader.readAsDataURL(file)
+            reader.readAsDataURL(file);
         }
     }
 
     const handleSubmit = (e: React.FormEvent<EventTarget>) => {
-        e.preventDefault(); 
-        dispatch(authActions.register(values));
+        e.preventDefault();
+        if (values.password === values.confirmPassword) {
+            setCheckPassword(false);
+            dispatch(authActions.register(values));
+        } else {
+            setCheckPassword(true);
+        }
     }
 
     const { formWrapper, link, text, form } = styles;
@@ -96,6 +102,10 @@ const Register = () => {
                     type="password"
                     handleChange={handleChange}
                 />
+
+                {checkPassword && (
+                    <p className='text-red-500'>Passwords do not match!</p>
+                )}
 
                 {feedback === 'errors' && (
                     <p className='text-red-500'>
