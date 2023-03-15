@@ -10,10 +10,10 @@ import ForgotPassword from "./components/Auth/ForgotPassword";
 function App() {
   const location = useLocation()
   return (
-    <div className="h-screen px-10">
-      <div className="h-[20%]">
+    <div className="px-3 sm:px-10 bg-bodycolor min-h-screen">
+      <div className="">
         <NavigationBar />
-        {location.pathname === '/' && <SearchBar />}
+        {/* {location.pathname === '/' && <SearchBar />} */}
       </div>
       <Routes>
         <Route path="/" element={<Home />} />

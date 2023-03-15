@@ -61,8 +61,8 @@ export default function Register({
         </Alert>
         )}
           <div className="w-full">
-            <Button className="w-full bg-[#f3f3f3]">
-              <FcGoogle className="mr-2" size={22} />
+            <Button className="w-full ring-btn">
+              <FcGoogle className="mr-2 ring-btn" size={22} />
               <span>Sign Up with Google</span>
             </Button>
           </div>
@@ -100,7 +100,7 @@ export default function Register({
               <span className="text-red-500">{errors.repeatPassword}</span>
             ) : null}
           </div>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button className="full-btn" type="submit" disabled={isSubmitting}>
             Register
           </Button>
           <p

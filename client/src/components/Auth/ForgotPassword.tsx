@@ -28,7 +28,7 @@ export default function ForgotPassword() {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, errors, touched }) => (
-          <Form className="flex flex-col gap-4 w-full sm:w-[285px]">
+          <Form className="flex flex-col gap-4 w-full sm:w-[285px] mt-10">
             <div className="flex flex-col">
               <Field
                 className="rounded-md"
@@ -41,7 +41,7 @@ export default function ForgotPassword() {
               ) : null}
             </div>
 
-            <Button type="submit" disabled={isSubmitting}>
+            <Button className="full-btn" type="submit" disabled={isSubmitting}>
               Submit
             </Button>
             <p

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Button, Alert } from "flowbite-react";
 import { FcGoogle } from "react-icons/fc";
@@ -25,17 +25,23 @@ export default function Login({
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
-    setErrMsg('')
+    setErrMsg("");
     const res = await checkIfUserExists(values.email);
     if (res.length > 0) {
-      await login(values.email, values.password).catch();
+      await login(values.email, values.password).catch((err) => {
+        const errorCode = err.code;
+        const errorMessage = err.message;
+        if (errorCode === "auth/wrong-password") {
+          setErrMsg("Invalid password");
+        } else {
+          console.error(errorMessage);
+        }
+      });
     } else if (res.length === 0) {
       setErrMsg("This user does not exists! Create Account");
     }
     setSubmitting(false);
   };
-
-  console.log(currentUser)
 
   return (
     <Formik
@@ -53,7 +59,7 @@ export default function Login({
             </Alert>
           )}
           <div className="w-full">
-            <Button className="w-full bg-[#f3f3f3]">
+            <Button className="w-full ring-btn">
               <FcGoogle className="mr-2" size={22} />
               <span>Login with Google</span>
             </Button>
@@ -83,7 +89,7 @@ export default function Login({
             ) : null}
           </div>
 
-          <Button type="submit" disabled={isSubmitting}>
+          <Button className="full-btn" type="submit" disabled={isSubmitting}>
             Log In
           </Button>
           <p

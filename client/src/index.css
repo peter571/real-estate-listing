@@ -2,10 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .map-container {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
+@layer base {
+  body {
+    font-family: "Quicksand", sans-serif;
   }
+}
+
+.ring-btn {
+  @apply bg-white border-reddish text-reddish hover:bg-reddish hover:text-white !important;
+}
+
+.full-btn {
+  @apply bg-reddish text-white !important;
+}
+
+.text-input {
+  @apply focus:ring-0 focus:shadow-none focus:outline-0 focus:border-reddish !important;
 }

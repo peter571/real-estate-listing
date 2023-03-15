@@ -4,9 +4,9 @@ import Register from "./Register";
 
 export default function Auth() {
   const [show, setShowLogin] = useState(true);
- 
+
   return (
-    <div className="flex justify-center align-items-center">
+    <div className="flex justify-center align-middle items-center h-screen">
       {show ? (
         <Login setShowLogin={setShowLogin} />
       ) : (
