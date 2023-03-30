@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function NavigationBar() {
   const navigate = useNavigate();
-  
+
   return (
     <Navbar className="my-auto bg-bodycolor" fluid={true} rounded={true}>
       <Navbar.Brand role="button" onClick={() => navigate("/")}>
@@ -25,9 +25,18 @@ export default function NavigationBar() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link href="/about">About</Navbar.Link>
-        <Navbar.Link href="/real-estate-agents">Real Estate Agents</Navbar.Link>
-        <Navbar.Link href="/blog">Blog</Navbar.Link>
+        <Navbar.Link role="button" onClick={() => navigate("/about")}>
+          About
+        </Navbar.Link>
+        <Navbar.Link
+          role="button"
+          onClick={() => navigate("/real-estate-agents")}
+        >
+          Real Estate Agents
+        </Navbar.Link>
+        <Navbar.Link role="button" onClick={() => navigate("/blog")}>
+          Blog
+        </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );

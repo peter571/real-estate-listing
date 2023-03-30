@@ -41,6 +41,7 @@ export default function AuthContextProvider({
   }
 
   function logout() {
+    console.log("Logged out!")
     return auth.signOut();
   }
 
