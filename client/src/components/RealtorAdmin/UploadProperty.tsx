@@ -13,6 +13,7 @@ const categoriesList = filterData[filterData.length - 1].items;
 export interface FormValues {
   location: string;
   address: string;
+  title: string;
   bedrooms: number | undefined;
   bathrooms: number | undefined;
   type: string;
@@ -26,6 +27,7 @@ export interface FormValues {
 
 const initialValues: FormValues = {
   location: "",
+  title: "",
   address: "",
   bedrooms: undefined,
   bathrooms: undefined,
@@ -94,6 +96,13 @@ export default function UploadProperty() {
             touched={touched}
             type={"text"}
           />
+          <Input
+            placeholder={"Property title"}
+            name={"title"}
+            errors={errors}
+            touched={touched}
+            type={"text"}
+          />
           <textarea
             className="rounded-sm my-4 w-full"
             ref={descriptionRef}
@@ -154,13 +163,14 @@ export default function UploadProperty() {
               {imagePreviews.length > 0 &&
                 imagePreviews.map((preview, index) => (
                   <div className="my-1" key={index}>
-                    <img src={preview} alt={`preview-${index}`} width="100" />
-                    <button
-                      type="button"
+                    <img src={preview} alt={`preview-${index}`} className="w-32 h-24" />
+                    <span
+                    className="font-medium hover:text-blue-600 hover:underline"
+                      role="button"
                       onClick={() => handleImageRemove(index)}
                     >
                       Remove
-                    </button>
+                    </span>
                   </div>
                 ))}
             </div>
@@ -205,6 +215,12 @@ export default function UploadProperty() {
 const validationSchema = Yup.object().shape({
   location: Yup.string().required("Location is required"),
   address: Yup.string().required("Address is required"),
+  title: Yup.string()
+    .required("Title is required")
+    .min(4)
+    .required("Title should be minimum length of 4")
+    .max(80)
+    .required("Title should not exceed length of 80"),
   bedrooms: Yup.number()
     .required("Bedrooms is required")
     .min(1)

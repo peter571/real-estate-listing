@@ -7,7 +7,7 @@ import { useRealtorAdminContext } from "./RealtorAdminContext";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function AdminSidebar() {
-  const { handleTabClick } = useRealtorAdminContext();
+  const { handleTabClick, selectedTab } = useRealtorAdminContext();
   const { logout } = useAuth();
 
   return (
@@ -17,6 +17,7 @@ export default function AdminSidebar() {
           <Sidebar.ItemGroup>
             <Sidebar.Item
               role="button"
+              className={selectedTab === "properties" && "bg-gray-300"}
               onClick={() => handleTabClick("properties")}
               icon={BsHouseFill}
             >
@@ -24,6 +25,7 @@ export default function AdminSidebar() {
             </Sidebar.Item>
             <Sidebar.Item
               role="button"
+              className={selectedTab === "uploadproperty" && "bg-gray-300"}
               onClick={() => handleTabClick("uploadproperty")}
               icon={BsUpload}
             >
@@ -32,6 +34,7 @@ export default function AdminSidebar() {
 
             <Sidebar.Item
               role="button"
+              className={selectedTab === "pausedproperties" && "bg-gray-300"}
               onClick={() => handleTabClick("pausedproperties")}
               icon={BsHouse}
             >
@@ -39,6 +42,7 @@ export default function AdminSidebar() {
             </Sidebar.Item>
             <Sidebar.Item
               role="button"
+              className={selectedTab === "settings" && "bg-gray-300"}
               onClick={() => handleTabClick("settings")}
               icon={FiSettings}
             >
