@@ -18,7 +18,7 @@ export default function Register({
 }: {
   setShowLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const {signup, checkIfUserExists, currentUser } = useAuth()
+  const {signup, checkIfUserExists, currentUser, googleSignUp } = useAuth()
   const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState('')
 
@@ -61,7 +61,7 @@ export default function Register({
         </Alert>
         )}
           <div className="w-full">
-            <Button className="w-full ring-btn">
+            <Button onClick={() => googleSignUp()} className="w-full ring-btn">
               <FcGoogle className="mr-2 ring-btn" size={22} />
               <span>Sign Up with Google</span>
             </Button>

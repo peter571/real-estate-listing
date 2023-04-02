@@ -19,3 +19,7 @@
 .text-input {
   @apply focus:ring-0 focus:shadow-none focus:outline-0 focus:border-reddish !important;
 }
+
+.navbar {
+  @apply bg-transparent !important;
+}

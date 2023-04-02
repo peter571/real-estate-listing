@@ -5,17 +5,20 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   fetchSignInMethodsForEmail,
+  signInWithPopup,
+  GoogleAuthProvider,
   User,
   UserCredential,
 } from "firebase/auth";
 
 interface AuthProps {
-  currentUser: UserCredential | User | null;
+  currentUser: UserCredential | User | null | any;
   login: (email: string, password: string) => Promise<UserCredential>;
   signup: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
-  checkIfUserExists: (email: string) => Promise<string[]>
+  checkIfUserExists: (email: string) => Promise<string[]>;
+  googleSignUp: () => void;
 }
 
 const AuthContext = createContext({} as AuthProps);
@@ -36,12 +39,34 @@ export default function AuthContextProvider({
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
+  function googleSignUp() {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  }
+
   function login(email: string, password: string) {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
   function logout() {
-    console.log("Logged out!")
+    console.log("Logged out!");
     return auth.signOut();
   }
 
@@ -49,8 +74,8 @@ export default function AuthContextProvider({
     return sendPasswordResetEmail(auth, email);
   }
 
-  function checkIfUserExists(email: string){
-    return fetchSignInMethodsForEmail(auth, email)
+  function checkIfUserExists(email: string) {
+    return fetchSignInMethodsForEmail(auth, email);
   }
 
   useEffect(() => {
@@ -67,7 +92,8 @@ export default function AuthContextProvider({
     signup,
     logout,
     resetPassword,
-    checkIfUserExists
+    checkIfUserExists,
+    googleSignUp,
   };
   return (
     <AuthContext.Provider value={value}>

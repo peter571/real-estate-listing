@@ -1,12 +1,19 @@
 import React from "react";
 import pic from "../../assets/images/house_1.jpg";
+import { useNavigate } from "react-router-dom";
 
 export default function Trending() {
+  const navigate = useNavigate();
+
   return (
     <section className="rounded-md py-20">
       <div className="flex flex-row justify-between py-5">
-        <h1 className="text-3xl font-semibold">Trending</h1>
-        <span role="button" className="text-blue-500 text-xl font-semibold">
+        <h1 className="text-lg sm:text-3xl font-semibold">Trending</h1>
+        <span
+          onClick={() => navigate("/all-properties")}
+          role="button"
+          className="text-blue-500 text-lg sm:text-xl font-semibold"
+        >
           See all
         </span>
       </div>

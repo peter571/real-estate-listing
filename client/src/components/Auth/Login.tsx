@@ -18,7 +18,7 @@ export default function Login({
   setShowLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const navigate = useNavigate();
-  const { login, checkIfUserExists, currentUser } = useAuth();
+  const { login, checkIfUserExists, currentUser, googleSignUp } = useAuth();
   const [errMsg, setErrMsg] = useState("");
 
   const handleSubmit = async (
@@ -43,6 +43,8 @@ export default function Login({
     setSubmitting(false);
   };
 
+  console.log(currentUser)
+
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -59,7 +61,7 @@ export default function Login({
             </Alert>
           )}
           <div className="w-full">
-            <Button className="w-full ring-btn">
+            <Button onClick={() => googleSignUp()} className="w-full ring-btn">
               <FcGoogle className="mr-2" size={22} />
               <span>Login with Google</span>
             </Button>

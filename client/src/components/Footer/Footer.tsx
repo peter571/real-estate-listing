@@ -6,8 +6,8 @@ import { AiOutlineCopyright } from "react-icons/ai";
 export default function Footer() {
   return (
     <footer className="h-96 flex flex-col justify-center items-center gap-2">
-      <h1 className="text-[#31353B] font-bold text-5xl">Get Our Newsletter</h1>
-      <p className="text-[#31353B] font-bold text-xl">
+      <h1 className="text-[#31353B] font-bold text-3xl sm:text-5xl text-center">Get Our Newsletter</h1>
+      <p className="text-[#31353B] font-bold text-lg sm:text-xl text-center">
         To join the real estate community in 254
       </p>
       <div className="flex flex-row gap-4">

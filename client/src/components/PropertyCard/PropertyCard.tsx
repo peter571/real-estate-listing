@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "flowbite-react";
+import { Card, Tooltip } from "flowbite-react";
 import sample from "../../assets/images/home_1.jpg";
 import { FaBed, FaBath, FaHeart, FaRuler } from "react-icons/fa";
 
@@ -29,7 +29,9 @@ export default function PropertyCard() {
           role="button"
           className="absolute top-4 right-4 rounded-md bg-white p-1"
         >
-          <FaHeart color="red" />
+          <Tooltip content="Add to favorites.">
+            <FaHeart color="red" />
+          </Tooltip>
         </span>
         <span className="absolute top-4 left-4 rounded-md text-sm font-semibold bg-[#F85A47] p-1 text-white">
           For sale

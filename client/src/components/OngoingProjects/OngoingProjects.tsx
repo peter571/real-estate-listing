@@ -10,13 +10,13 @@ export default function OngoingProjects() {
   return (
     <section className="py-20">
       <div className="flex flex-row items-center justify-between">
-        <span className="text-3xl font-semibold">Ongoing projects</span>
-        <p className="flex flex-row justify-between text-xl font-semibold text-blue-500">
+        <span className="text-lg sm:text-3xl font-semibold">Ongoing projects</span>
+        <p className="flex flex-row justify-between text-lg sm:text-xl font-semibold text-blue-500">
           <span>
-            <HiOutlineArrowSmLeft size={35} />
+            <HiOutlineArrowSmLeft size={25} />
           </span>
           <span>
-            <HiOutlineArrowSmRight size={35} />
+            <HiOutlineArrowSmRight size={25} />
           </span>
         </p>
       </div>

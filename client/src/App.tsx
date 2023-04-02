@@ -11,14 +11,17 @@ import RealtorProperties from "./components/RealtorProperties/RealtorProperties"
 import About from "./pages/About";
 import Blog from "./pages/Blog";
 import RealtorAdmin from "./components/RealtorAdmin/RealtorAdmin";
+import Favorites from "./pages/Favorites";
+import Properties from "./pages/Properties";
 
 function App() {
   const location = useLocation();
+
   return (
-    <div className="px-3 sm:px-10 bg-bodycolor min-h-screen">
+    <div className="px-3 sm:px-10 bg-bodycolor min-h-screen scroll-smooth">
       <div className="">
         <NavigationBar />
-        {/* {location.pathname === '/' && <SearchBar />} */}
+        {location.pathname === "/all-properties" && <SearchBar />}
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -27,10 +30,12 @@ function App() {
         <Route path="/real-estate-agents" element={<RealtorsAgents />} />
         <Route path="/real-estate-agents/:id" element={<RealtorProperties />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<Blog />} />
         <Route path="/password/recover/:id" element={<ResetPassword />} />
         <Route path="/password-reset" element={<ForgotPassword />} />
         <Route path="/realtor-admin" element={<RealtorAdmin />} />
-        
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/all-properties" element={<Properties />} />
       </Routes>
     </div>
   );

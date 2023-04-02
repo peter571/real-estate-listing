@@ -17,7 +17,7 @@ export default function BlogPost() {
     <div className="max-w-sm h-[448px] border">
       {/* <img src={pic} className="h-56 object-cover cursor-pointer" alt="" /> */}
       <div
-        className="h-56 w-full flex justify-center items-center"
+        className="h-56 w-full flex justify-center items-center cursor-pointer"
         style={{ backgroundColor: getRandomColor() }}
       >
         <p
@@ -34,11 +34,11 @@ export default function BlogPost() {
         </p>
       </div>
       <div className="p-5">
-        <div className="flex justify-between align-middle text-center">
+        <div className="flex justify-between items-center text-center">
           <h4>
             <small>Feb 7.</small> <small>6 min</small>
           </h4>
-          <Tooltip content="Share content">
+          <Tooltip content="Share story">
             <FaShare className="cursor-pointer" />
           </Tooltip>
         </div>
