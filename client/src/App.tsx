@@ -19,7 +19,7 @@ function App() {
 
   return (
     <div className="px-3 sm:px-10 bg-bodycolor min-h-screen scroll-smooth">
-      <div className="">
+      <div className="w-full">
         <NavigationBar />
         {location.pathname === "/all-properties" && <SearchBar />}
       </div>

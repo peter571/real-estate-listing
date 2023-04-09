@@ -14,19 +14,28 @@ export default function NavigationBar() {
     <Navbar className="my-auto navbar" fluid={true} rounded={true}>
       <Navbar.Brand role="button" onClick={() => navigate("/")}>
         <img src={logo} className="mr-3 h-6 sm:h-9" alt="254 Realtors" />
-        <span className="hidden sm:block self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+        <span className="hidden lg:block self-center whitespace-nowrap text-xl font-semibold dark:text-white">
           254 Realtors
         </span>
       </Navbar.Brand>
-      <div className="flex items-center gap-6 md:order-2">
-        <span role="button" onClick={() => navigate("/favorites")}>
-          <Tooltip content="Favorites">
-            <FaHeart color="gray" size={26} />
-          </Tooltip>
-        </span>
+      <div className="flex items-center md:gap-6 md:order-2">
         {currentUser && (
-          <>
-            <RegisterRealtor />
+          <span
+            className="hidden md:block"
+            role="button"
+            onClick={() => navigate("/favorites")}
+          >
+            <Tooltip content="Favorites">
+              <FaHeart color="gray" size={26} />
+            </Tooltip>
+          </span>
+        )}
+
+        {currentUser && (
+          <div className="hidden md:flex gap-4">
+            <div className="hidden md:block">
+              <RegisterRealtor />
+            </div>
             <Dropdown
               inline={true}
               label={
@@ -48,13 +57,13 @@ export default function NavigationBar() {
                 Sign out
               </Dropdown.Item>
             </Dropdown>
-          </>
+          </div>
         )}
         {currentUser === null && (
           <span
             onClick={() => navigate("/auth")}
             role="button"
-            className="py-2 px-3 rounded-md ring-btn border"
+            className="py-2 px-3 rounded-md ring-btn border hidden md:block"
           >
             Sign In
           </span>
@@ -69,14 +78,55 @@ export default function NavigationBar() {
           role="button"
           onClick={() => navigate("/real-estate-agents")}
         >
-          Real Estate Agents
+          Realtors
         </Navbar.Link>
         <Navbar.Link role="button" onClick={() => navigate("/blog")}>
           Blog
         </Navbar.Link>
-        <Navbar.Link role="button" onClick={() => logout()}>
-          Sign out
+        <Navbar.Link className="block md:hidden">
+          {currentUser && (
+            <span role="button" onClick={() => navigate("/favorites")}>
+              <Tooltip content="Favorites">Favorites</Tooltip>
+            </span>
+          )}
         </Navbar.Link>
+        {currentUser && (
+          <Navbar.Link className="block md:hidden">
+            <RegisterRealtor />
+          </Navbar.Link>
+        )}
+        {currentUser && (
+          <Navbar.Link
+            role="button"
+            className="block md:hidden"
+            onClick={() => logout()}
+          >
+            Sign out
+          </Navbar.Link>
+        )}
+        {currentUser && (
+          <Navbar.Link className="flex md:hidden">
+            <Avatar
+              className="cursor-pointer block"
+              img={currentUser.photoURL}
+              rounded={true}
+              bordered={false}
+              status="online"
+              statusPosition="top-right"
+            />
+          </Navbar.Link>
+        )}
+        {currentUser === null && (
+          <Navbar.Link className="flex md:hidden">
+            <span
+              onClick={() => navigate("/auth")}
+              role="button"
+              className="py-2 px-3 rounded-md ring-btn border"
+            >
+              Sign In
+            </span>
+          </Navbar.Link>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );
