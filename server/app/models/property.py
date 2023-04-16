@@ -1,26 +1,64 @@
+from datetime import datetime
 from app.extensions import db
-from app.models import realtor
+from app.models.property_image import Property_image
+import pickle
 
 # Property model
 
 
 class Property(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.ForeignKey(realtor.realtor_id),
+    owner_id = db.Column(db.Integer, db.ForeignKey('realtor.id'),
                          index=True, unique=False)
     location = db.Column(db.String, index=True, unique=False)
     title = db.Column(db.String, index=False, unique=False)
-    description = db.Column(db.String, index=False, unique=False)
+    description = db.Column(db.Text, index=False, unique=False)
     address = db.Column(db.String, index=False, unique=False)
     bedrooms = db.Column(db.Integer, index=False, unique=False)
     bathrooms = db.Column(db.Integer, index=False, unique=False)
     category = db.Column(db.String, index=False, unique=False)
     price = db.Column(db.Float, index=False, unique=False)
-    company_mail = db.Column(db.String, index=False,
-                             unique=False, nullable=True)
-    website_url = db.Column(db.String, index=False,
-                            unique=False, nullable=True)
-    contact = db.Column(db.String, index=False, unique=False, nullable=True)
     property_type = db.Column(db.String, index=False, unique=False)
-    active = db.Column(db.Boolean, index=False, unique=False)
-    created = db.Column(db.String, index=False, unique=False)
+    active = db.Column(db.Boolean, index=False, default=True, unique=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    property_images = db.Column(db.String, index=False, unique=False)
+    # property_images = db.relationship(
+    #     "Property_image", backref="property", lazy='dynamic', cascade='all, delete, delete-orphan')
+
+    # def __init__(self, owner_id, location, title, description, address, bedrooms, bathrooms, category, price, property_type, property_images):
+    #     self.owner_id = owner_id
+    #     self.location = location
+    #     self.title = title
+    #     self.description = description
+    #     self.address = address
+    #     self.bedrooms = bedrooms
+    #     self.bathrooms = bathrooms
+    #     self.category = category
+    #     self.price = price
+    #     self.property_type = property_type
+    #     self.property_images = json.dumps(property_images)
+   
+    def get_property_images(self):
+        return pickle.loads(self.property_images)
+
+    def __repr__(self):
+        return f'<Property "{self.title}">'
+
+    # Return all properties in dictionary
+    def serialize(self):
+        return {
+            "id": self.id,
+            "owner_id": self.owner_id,
+            "location": self.location,
+            "title": self.title,
+            "description": self.description,
+            "address": self.address,
+            "bedrooms": self.bedrooms,
+            "bathrooms": self.bathrooms,
+            "category": self.category,
+            "price": self.price,
+            "property_type": self.property_type,
+            "active": self.active,
+            "date_created": self.date_created,
+            "property_images": self.property_images
+        }
