@@ -7,8 +7,6 @@ from app.models.property import Property
 from app.models.realtor import Realtor
 from app.models.realtor_follower import Realtor_follower
 
-from app.models.property_image import Property_image
-
 # cred = credentials.Certificate("./realtors-254.json")
 # firebase_admin.initialize_app(cred)
 
@@ -44,12 +42,6 @@ f3 = Realtor_follower(follower_id=103, followed_id=1)
 f4 = Realtor_follower(follower_id=104, followed_id=2)
 f5 = Realtor_follower(follower_id=105, followed_id=2)
 
-p1_images = Property_image(property_id=1,
-                           file_url="pic url")
-p2_images = Property_image(property_id=2,
-                           file_url="pic url")
-p3_images = Property_image(property_id=2,
-                           file_url="pic url")
 
 db.drop_all()
 db.create_all()

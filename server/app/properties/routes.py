@@ -8,7 +8,7 @@ import pickle
 # Get all properties
 
 
-@bp.route('/properties')
+@bp.route('/property/all_properties')
 def get_all_properties():
     # Query the table with all properties
     properties = Property.query.all()
@@ -38,8 +38,7 @@ def get_property(property_id):
         # Return error msg
         return jsonify({"msg": f"property of id {property_id} not found"}), 200
     # Get the images of the property and return only the url
-    property_images = [
-        property_image.file_url for property_image in result.property_images.all()]
+    property_images = result.get_property_images()
     # Convert the property values to dictionary
     property_id_result = result.serialize()
     # Append the value of property_images with a list of images of the property
@@ -49,7 +48,7 @@ def get_property(property_id):
 # post a property to the db
 
 
-@bp.post('/property/new-property/<realtor_id>')
+@bp.post('/property/new_property/<realtor_id>')
 def create_property(realtor_id):
     user = Realtor.query.get(realtor_id)
     if user == None:
@@ -73,8 +72,90 @@ def create_property(realtor_id):
     try:
         db.session.add(new_property)
         db.session.commit()
-       
+
         return jsonify(f"{new_property.title} created successfully"), 201
     except Exception as e:
         db.session.rollback()
         return "An error occurred", 500
+
+# Update property
+
+
+@bp.patch('/property/update_property/<realtor_id>/<property_id>')
+def update_property(realtor_id, property_id):
+    property_details = Property.query.get(property_id)
+    request_data = request.get_json()
+
+    if property_details is None:
+        return "Bad request", 404
+    print(property_details.owner_id, realtor_id)
+    if str(property_details.owner_id) != str(realtor_id):
+        return jsonify("Not the owner of property"), 403
+
+    try:
+        property_details.location = request_data['location']
+        property_details.title = request_data['title']
+        property_details.description = request_data['description']
+        property_details.property_images = pickle.dumps(
+            request_data['property_images'])
+        property_details.address = request_data['address']
+        property_details.bedrooms = request_data['bedrooms']
+        property_details.bathrooms = request_data['bathrooms']
+        property_details.category = request_data['category']
+        property_details.price = request_data['price']
+        property_details.property_type = request_data['property_type']
+        db.session.commit()
+
+        updated_property = Property.query.get(property_id)
+        updated_property_images = updated_property.get_property_images()
+
+        serialized_property = updated_property.serialize()
+        serialized_property['property_images'] = updated_property_images
+
+        return jsonify(serialized_property), 200
+    except Exception as e:
+        db.session.rollback()
+        return "An error occured", 500
+
+# Update property availability
+
+
+@bp.patch('/property/update_property_availability/<realtor_id>/<property_id>')
+def update_property_availability(realtor_id, property_id):
+    property_details = Property.query.get(property_id)
+    request_data = request.get_json()
+
+    if property_details is None:
+        return "Bad request", 404
+
+    if str(property_details.owner_id) != str(realtor_id):
+        return "Not owner", 403
+
+    try:
+        if request_data['action'] == 'activate':
+            property_details.active = True
+            db.session.commit()
+            return "Activated property!", 200
+        elif request_data['action'] == 'deactivate':
+            property_details.active = False
+            db.session.commit()
+            return "Deactivated property!", 200
+        else:
+            return "Bad request", 404
+
+    except Exception as e:
+        return "An error occured", 500
+
+
+# Delete property
+@bp.delete('/property/delete_property/<realtor_id>/<property_id>')
+def delete_property(realtor_id, property_id):
+    property_details = Property.query.get(property_id)
+
+    try:
+        if str(property_details.owner_id) == str(realtor_id):
+            db.session.delete(Property.query.get(property_id))
+            return "Deleted successfully!", 200
+    except Exception as e:
+        db.session.rollback()
+        return "An error occured", 500

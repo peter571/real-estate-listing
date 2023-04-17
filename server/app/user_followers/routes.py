@@ -6,7 +6,7 @@ from app.extensions import db
 # Get realtor followers
 
 
-@bp.route('/realtor-followers/<realtor_id>')
+@bp.route('/realtor_followers/<realtor_id>')
 def get_realtor_followers(realtor_id):
     result = Realtor_follower.query.filter(
         Realtor_follower.followed_id == realtor_id).all()
@@ -18,7 +18,7 @@ def get_realtor_followers(realtor_id):
 # follow/unfollow realtor
 
 
-@bp.post('/realtor-followers/follow/<realtor_id>')
+@bp.post('/realtor_followers/follow/<realtor_id>')
 def follow(realtor_id):
     request_data = request.get_json()
 

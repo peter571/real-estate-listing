@@ -1,6 +1,5 @@
 from datetime import datetime
 from app.extensions import db
-from app.models.property_image import Property_image
 import pickle
 
 # Property model
@@ -22,22 +21,7 @@ class Property(db.Model):
     active = db.Column(db.Boolean, index=False, default=True, unique=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     property_images = db.Column(db.String, index=False, unique=False)
-    # property_images = db.relationship(
-    #     "Property_image", backref="property", lazy='dynamic', cascade='all, delete, delete-orphan')
 
-    # def __init__(self, owner_id, location, title, description, address, bedrooms, bathrooms, category, price, property_type, property_images):
-    #     self.owner_id = owner_id
-    #     self.location = location
-    #     self.title = title
-    #     self.description = description
-    #     self.address = address
-    #     self.bedrooms = bedrooms
-    #     self.bathrooms = bathrooms
-    #     self.category = category
-    #     self.price = price
-    #     self.property_type = property_type
-    #     self.property_images = json.dumps(property_images)
-   
     def get_property_images(self):
         return pickle.loads(self.property_images)
 
