@@ -1,29 +1,50 @@
 import React, { useState } from "react";
-import { Button, Modal } from "flowbite-react";
+import { Button, Modal, Spinner } from "flowbite-react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-
-interface FormValues {
-  companyName: string;
-  description: string;
-  profileImg: string;
-}
+import axios from "axios";
+import { register_realtor } from "../../api/api_urls";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterRealtor() {
   const [show, setShow] = useState(false);
   const [profilePic, setProfilePic] = useState("");
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (
-    values: FormValues,
+    values: RealtorFormValues,
     {
       setSubmitting,
       resetForm,
     }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: any }
   ) => {
-    console.log({ ...values, profileImg: profilePic });
-    resetForm();
-    setProfilePic("");
-    setSubmitting(false);
+    //Register account
+    await axios
+      .post(register_realtor, {
+        user_id: currentUser.uid,
+        company_name: values.company_name,
+        description: values.description,
+        profile_picture: profilePic,
+        company_mail: values.company_mail,
+        website_url: values.website_url,
+        contact: values.contact,
+      })
+      .then(({ data }) => {
+        console.log(data);
+        resetForm();
+        setProfilePic("");
+        setShow(false)
+        navigate("/realtor-admin");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
+    
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,10 +65,17 @@ export default function RegisterRealtor() {
         Register as Realtor
       </Button>
       <Modal dismissible={true} show={show} onClose={() => setShow(false)}>
-        <Modal.Header>Submit Details</Modal.Header>
+        <Modal.Header>Submit Details for Realtor account</Modal.Header>
         <Modal.Body className="flex justify-center items-center">
           <Formik
-            initialValues={{ companyName: "", description: "", profileImg: "" }}
+            initialValues={{
+              company_name: "",
+              description: "",
+              profile_picture: "",
+              website_url: "",
+              company_mail: "",
+              contact: "",
+            }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
@@ -57,11 +85,11 @@ export default function RegisterRealtor() {
                   <Field
                     className="rounded-md"
                     type="text"
-                    placeholder="Coompany Name..."
-                    name="companyName"
+                    placeholder="Company Name..."
+                    name="company_name"
                   />
-                  {touched.companyName && errors.companyName ? (
-                    <span className="text-red-500">{errors.companyName}</span>
+                  {touched.company_name && errors.company_name ? (
+                    <span className="text-red-500">{errors.company_name}</span>
                   ) : null}
                 </div>
                 <div className="flex flex-col">
@@ -73,6 +101,39 @@ export default function RegisterRealtor() {
                   />
                   {touched.description && errors.description ? (
                     <span className="text-red-500">{errors.description}</span>
+                  ) : null}
+                </div>
+                <div className="flex flex-col">
+                  <Field
+                    className="rounded-md"
+                    type="text"
+                    placeholder="Company mail..."
+                    name="company_mail"
+                  />
+                  {touched.company_mail && errors.company_mail ? (
+                    <span className="text-red-500">{errors.company_mail}</span>
+                  ) : null}
+                </div>
+                <div className="flex flex-col">
+                  <Field
+                    className="rounded-md"
+                    type="text"
+                    placeholder="Website url..."
+                    name="website_url"
+                  />
+                  {touched.website_url && errors.website_url ? (
+                    <span className="text-red-500">{errors.website_url}</span>
+                  ) : null}
+                </div>
+                <div className="flex flex-col">
+                  <Field
+                    className="rounded-md"
+                    type="text"
+                    placeholder="Contact..."
+                    name="contact"
+                  />
+                  {touched.contact && errors.contact ? (
+                    <span className="text-red-500">{errors.contact}</span>
                   ) : null}
                 </div>
                 <div className="flex flex-col">
@@ -104,7 +165,7 @@ export default function RegisterRealtor() {
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  Register
+                  {isSubmitting ? <Spinner aria-label="loading" /> : "Register"}
                 </Button>
               </Form>
             )}
@@ -116,6 +177,6 @@ export default function RegisterRealtor() {
 }
 
 const validationSchema = Yup.object().shape({
-  companyName: Yup.string().required("Company name is required."),
+  company_name: Yup.string().required("Company name is required."),
   description: Yup.string().required("Description is required."),
 });

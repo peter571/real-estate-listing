@@ -51,6 +51,12 @@ export default function NavigationBar() {
               dismissOnClick={false}
             >
               <Dropdown.Item
+                onClick={() => navigate("/realtor-admin")}
+                role="button font-semibold"
+              >
+                Profile
+              </Dropdown.Item>
+              <Dropdown.Item
                 onClick={() => logout()}
                 role="button font-semibold"
               >

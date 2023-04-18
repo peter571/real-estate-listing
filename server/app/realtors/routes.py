@@ -9,7 +9,9 @@ from app.extensions import db
 @bp.route('/realtors')
 def get_realtors():
     realtors = Realtor.query.all()
-    return jsonify([realtor.serialize() for realtor in realtors])
+    if realtors is None:
+        return jsonify([]), 200
+    return jsonify([realtor.serialize() for realtor in realtors]), 200
 
 # Registers a new realtor
 
@@ -78,7 +80,12 @@ def get_realtor_properties(realtor_id):
     if result is None:
         return jsonify([])
 
-    serialized_results = [item.serialize() for item in result]
+    serialized_results = []
+    for property_item in result:
+        item = property_item.serialize()
+        images = property_item.get_property_images()
+        item["property_images"] = images
+        serialized_results.append(item)
     return jsonify(serialized_results), 200
 
 
@@ -104,3 +111,13 @@ def change_account_status(realtor_id):
             return "bad request", 404
     except Exception as e:
         return "An error occured", 500
+
+
+# Get realtor by user ID
+@bp.get('/realtor/get_realtor_by_user_id/<user_id>')
+def get_realtor_by_user_id(user_id):
+    realtor_details = Realtor.query.filter(
+        Realtor.realtor_id == user_id).first()
+    if realtor_details is None:
+        return jsonify("None"), 200
+    return jsonify(realtor_details.serialize()), 200

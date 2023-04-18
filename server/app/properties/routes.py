@@ -150,12 +150,58 @@ def update_property_availability(realtor_id, property_id):
 # Delete property
 @bp.delete('/property/delete_property/<realtor_id>/<property_id>')
 def delete_property(realtor_id, property_id):
+    print(realtor_id, property_id)
     property_details = Property.query.get(property_id)
 
+    if property_details is None:
+        return "Property not available", 200
+
+    if str(property_details.owner_id) != str(realtor_id):
+        return "Not owner", 403
     try:
-        if str(property_details.owner_id) == str(realtor_id):
-            db.session.delete(Property.query.get(property_id))
-            return "Deleted successfully!", 200
+        db.session.delete(Property.query.get(property_id))
+        db.session.commit()
+        return "Deleted successfully!", 200
     except Exception as e:
+        print(e)
         db.session.rollback()
         return "An error occured", 500
+
+
+# Search properties
+@bp.get('/property/search_properties')
+def search_properties():
+    # Extract all arguments from request
+    search_text = request.args.get('search_text')
+    min_price = request.args.get('min_price')
+    max_price = request.args.get('max_price')
+    bedrooms = request.args.get('bedrooms')
+    bathrooms = request.args.get('bathrooms')
+    category = request.args.get('category')
+    property_type = request.args.get('property_type')
+
+    # Query the properties that match arguments
+    results = Property.query.filter(
+        Property.location.like('%{}%'.format(search_text)),
+        Property.title.like('%{}%'.format(search_text)),
+        Property.description.like('%{}%'.format(search_text)),
+        Property.address.like('%{}%'.format(search_text)),
+        Property.category == category,
+        Property.property_type == property_type,
+        Property.price >= min_price,
+        Property.price <= max_price,
+        Property.bathrooms <= bathrooms,
+        Property.bedrooms <= bedrooms
+    ).all()
+
+    if results is None:
+        return jsonify([]), 200
+
+    list_items_with_images = []
+    # Iterate the properties while appending the list with images of the property
+    for property_item in results:
+        listed_property = property_item.serialize()
+        listed_property["property_images"] = property_item.get_property_images()
+        list_items_with_images.append(listed_property)
+
+    return jsonify(list_items_with_images)

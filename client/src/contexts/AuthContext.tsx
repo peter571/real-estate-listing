@@ -10,6 +10,8 @@ import {
   User,
   UserCredential,
 } from "firebase/auth";
+import axios from "axios";
+import { get_realtor_by_user_id } from "../api/api_urls";
 
 interface AuthProps {
   currentUser: UserCredential | User | null | any;
@@ -19,6 +21,11 @@ interface AuthProps {
   resetPassword: (email: string) => Promise<void>;
   checkIfUserExists: (email: string) => Promise<string[]>;
   googleSignUp: () => void;
+  realtorUser: RealtorDetails | null
+}
+
+interface ExtendedUser extends User {
+  uid: string;
 }
 
 const AuthContext = createContext({} as AuthProps);
@@ -30,9 +37,10 @@ export default function AuthContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [currentUser, setCurrentUser] = useState<UserCredential | User | null>(
+  const [currentUser, setCurrentUser] = useState<User | ExtendedUser | null>(
     null
   );
+  const [realtorUser, setRealtorUser] = useState<RealtorDetails | null>(null);
   const [loading, setLoading] = useState(true);
 
   function signup(email: string, password: string) {
@@ -66,7 +74,6 @@ export default function AuthContextProvider({
   }
 
   function logout() {
-    console.log("Logged out!");
     return auth.signOut();
   }
 
@@ -78,6 +85,23 @@ export default function AuthContextProvider({
     return fetchSignInMethodsForEmail(auth, email);
   }
 
+  //Check if user has a realtor account
+  useEffect(() => {
+    (async function () {
+      if (currentUser) {
+        await axios
+          .get(get_realtor_by_user_id(currentUser.uid))
+          .then(({ data }) => {
+            if (data === "None") {
+              setRealtorUser(null);
+              return;
+            }
+            setRealtorUser(data);
+          });
+      }
+    })();
+  }, [currentUser]);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -86,6 +110,7 @@ export default function AuthContextProvider({
 
     return unsubscribe;
   }, []);
+
   const value = {
     currentUser,
     login,
@@ -94,7 +119,9 @@ export default function AuthContextProvider({
     resetPassword,
     checkIfUserExists,
     googleSignUp,
+    realtorUser
   };
+
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}
