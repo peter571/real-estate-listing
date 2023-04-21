@@ -6,12 +6,27 @@ import axios from "axios";
 import { register_realtor } from "../../api/api_urls";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { registerRealtorAccount } from "../../api/realtors";
 
 export default function RegisterRealtor() {
   const [show, setShow] = useState(false);
   const [profilePic, setProfilePic] = useState("");
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const createRealtorMutation = useMutation({
+    mutationFn: registerRealtorAccount,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["realtor", currentUser?.uid],
+      });
+      setProfilePic("");
+      setShow(false);
+      navigate("/realtor-admin");
+    },
+  });
 
   const handleSubmit = async (
     values: RealtorFormValues,
@@ -21,30 +36,18 @@ export default function RegisterRealtor() {
     }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: any }
   ) => {
     //Register account
-    await axios
-      .post(register_realtor, {
-        user_id: currentUser.uid,
-        company_name: values.company_name,
-        description: values.description,
-        profile_picture: profilePic,
-        company_mail: values.company_mail,
-        website_url: values.website_url,
-        contact: values.contact,
-      })
-      .then(({ data }) => {
-        console.log(data);
-        resetForm();
-        setProfilePic("");
-        setShow(false)
-        navigate("/realtor-admin");
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setSubmitting(false);
-      });
-    
+    createRealtorMutation.mutate({
+      user_id: currentUser.uid,
+      company_name: values.company_name,
+      description: values.description,
+      profile_picture: profilePic,
+      company_mail: values.company_mail,
+      website_url: values.website_url,
+      contact: values.contact,
+    });
+    if (createRealtorMutation.isSuccess) {
+      resetForm();
+    }
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,14 +143,14 @@ export default function RegisterRealtor() {
                   <label
                     className="border p-2 rounded-md font-semibold hover:text-blue-500"
                     role="button"
-                    htmlFor="images"
+                    htmlFor="image"
                   >
                     Upload picture
                   </label>
                   <input
+                    id="image"
                     className="hidden"
-                    id="images"
-                    name="images"
+                    name="image"
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
@@ -163,9 +166,13 @@ export default function RegisterRealtor() {
                 <Button
                   className="full-btn"
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={createRealtorMutation.isLoading}
                 >
-                  {isSubmitting ? <Spinner aria-label="loading" /> : "Register"}
+                  {createRealtorMutation.isLoading ? (
+                    <Spinner aria-label="loading" />
+                  ) : (
+                    "Register"
+                  )}
                 </Button>
               </Form>
             )}

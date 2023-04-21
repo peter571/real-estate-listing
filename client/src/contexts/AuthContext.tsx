@@ -10,8 +10,8 @@ import {
   User,
   UserCredential,
 } from "firebase/auth";
-import axios from "axios";
-import { get_realtor_by_user_id } from "../api/api_urls";
+import { useQuery } from "@tanstack/react-query";
+import { getRealtorByUserId } from "../api/realtors";
 
 interface AuthProps {
   currentUser: UserCredential | User | null | any;
@@ -21,7 +21,8 @@ interface AuthProps {
   resetPassword: (email: string) => Promise<void>;
   checkIfUserExists: (email: string) => Promise<string[]>;
   googleSignUp: () => void;
-  realtorUser: RealtorDetails | null
+  realtorUser: RealtorDetails | null;
+  setRealtorUser: React.Dispatch<React.SetStateAction<RealtorDetails | null>>;
 }
 
 interface ExtendedUser extends User {
@@ -42,6 +43,11 @@ export default function AuthContextProvider({
   );
   const [realtorUser, setRealtorUser] = useState<RealtorDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const { data: realtorDetails } = useQuery({
+    queryKey: ["realtor", currentUser?.uid],
+    enabled: currentUser !== null,
+    queryFn: () => getRealtorByUserId(currentUser!.uid),
+  });
 
   function signup(email: string, password: string) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -74,7 +80,9 @@ export default function AuthContextProvider({
   }
 
   function logout() {
-    return auth.signOut();
+    return auth.signOut().then(() => {
+      setRealtorUser(null);
+    });
   }
 
   function resetPassword(email: string) {
@@ -87,20 +95,10 @@ export default function AuthContextProvider({
 
   //Check if user has a realtor account
   useEffect(() => {
-    (async function () {
-      if (currentUser) {
-        await axios
-          .get(get_realtor_by_user_id(currentUser.uid))
-          .then(({ data }) => {
-            if (data === "None") {
-              setRealtorUser(null);
-              return;
-            }
-            setRealtorUser(data);
-          });
-      }
-    })();
-  }, [currentUser]);
+    if (realtorDetails && realtorDetails !== "None") {
+      setRealtorUser(realtorDetails);
+    }
+  }, [realtorDetails]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -119,7 +117,8 @@ export default function AuthContextProvider({
     resetPassword,
     checkIfUserExists,
     googleSignUp,
-    realtorUser
+    realtorUser,
+    setRealtorUser,
   };
 
   return (

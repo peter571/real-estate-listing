@@ -53,7 +53,7 @@ const updateRealtorDetails = async (
 //Change account status
 const changeAccountStatus = async (
   realtor_id: string,
-  action: { type: "activate" | "deactivate" }
+  action: ActionType 
 ) => {
   return await axios
     .patch(change_account_status(realtor_id), { action: action })

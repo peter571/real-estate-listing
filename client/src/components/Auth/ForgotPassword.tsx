@@ -16,7 +16,6 @@ export default function ForgotPassword() {
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     // Handle form submission here, such as sending a request to the server
-    console.log(values);
     setSubmitting(false);
   };
 

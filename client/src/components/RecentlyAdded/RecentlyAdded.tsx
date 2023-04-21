@@ -1,10 +1,16 @@
 import React from "react";
 import PropertyCard from "../PropertyCard/PropertyCard";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getAllProperties } from "../../api/properties";
 
 export default function RecentlyAdded() {
   const navigate = useNavigate();
 
+  const { data: allProperties } = useQuery({
+    queryKey: ["properties"],
+    queryFn: getAllProperties,
+  });
   return (
     <section className="py-20">
       <div className="flex flex-row justify-between">
@@ -17,8 +23,11 @@ export default function RecentlyAdded() {
           See all
         </span>
       </div>
-      <div className="flex flex-row mt-7">
-        <PropertyCard />
+      <div className="grid grid-cols-4 gap-4 mt-7">
+        {allProperties &&
+          allProperties.map((property: PropertyDetailsCard) => (
+            <PropertyCard key={property.id} {...property} />
+          ))}
       </div>
     </section>
   );

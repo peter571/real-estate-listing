@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import pic from "../../assets/images/estate.jpg";
 import { Button } from "flowbite-react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
+import { useRealtorAdminContext } from "./RealtorAdminContext";
+import { changeAccountStatus, updateRealtorDetails } from "../../api/realtors";
 
 const initialValues = {
   company_name: "",
@@ -14,18 +16,36 @@ const initialValues = {
 };
 
 export default function Settings() {
-  const { realtorUser } = useAuth();
+  const { realtorUser, currentUser } = useAuth();
   const [newChanges, setNewChanges] = useState(false);
   const [imgSrc, setImgSrc] = useState("");
   const [realtorDetails, setRealtorDetails] =
     useState<RealtorFormValues>(initialValues);
+  const queryClient = useQueryClient();
+
+  const updateRealtorMutation = useMutation({
+    mutationFn: () => updateRealtorDetails(realtorUser!.id, realtorDetails),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["realtor", currentUser?.uid] });
+    },
+  });
+
+  const updateStatusMutation = useMutation({
+    mutationFn: () =>
+      changeAccountStatus(
+        realtorUser!.id,
+        realtorUser?.active ? "deactivate" : "activate"
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["realtor", currentUser?.uid]})
+    }  
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewChanges(true);
     setRealtorDetails({ ...realtorDetails, [e.target.name]: e.target.value });
   };
 
-  
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
@@ -56,7 +76,7 @@ export default function Settings() {
         contact: realtorUser.contact,
       });
     }
-  }, []);
+  }, [realtorUser]);
 
   return (
     <section className="p-5">
@@ -71,8 +91,8 @@ export default function Settings() {
           role="button"
           className="text-red-500 text-sm my-2"
           onClick={() => {
-            setRealtorDetails({ ...realtorDetails, profile_picture: ""})
-            setImgSrc("")
+            setRealtorDetails({ ...realtorDetails, profile_picture: "" });
+            setImgSrc("");
           }}
         >
           Remove picture
@@ -170,8 +190,9 @@ export default function Settings() {
           <span
             className="block font-medium hover:text-blue-600 hover:underline"
             role="button"
+            onClick={() => updateStatusMutation.mutate()}
           >
-            Deactivate account
+            {realtorUser?.active ? "Deactivate account" : "Activate account"}
           </span>
           <span
             className="block font-medium hover:text-blue-600 hover:underline"
@@ -184,7 +205,7 @@ export default function Settings() {
           type="button"
           className="full-btn mt-14"
           disabled={!newChanges}
-          onClick={() => console.log(realtorDetails)}
+          onClick={() => updateRealtorMutation.mutate()}
         >
           Save
         </Button>

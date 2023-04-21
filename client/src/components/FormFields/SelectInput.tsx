@@ -1,6 +1,5 @@
 import React from "react";
 import { Field, FormikErrors, FormikTouched } from "formik";
-import { FormValues } from "../RealtorAdmin/UploadProperty";
 import { ErrorMessage } from "./Input";
 
 export default function SelectInput({
@@ -13,8 +12,8 @@ export default function SelectInput({
   labelName: string;
   name: string;
   optionsList: any[];
-  errors: FormikErrors<FormValues>;
-  touched: FormikTouched<FormValues>;
+  errors: FormikErrors<PropertyFormValues>;
+  touched: FormikTouched<PropertyFormValues>;
 }) {
   return (
     <div className="flex flex-col my-3">
@@ -27,12 +26,12 @@ export default function SelectInput({
             </option>
           ))}
       </Field>
-      {errors[name as keyof FormValues] &&
-        touched[name as keyof FormValues] && (
+      {errors[name as keyof PropertyFormValues] &&
+        touched[name as keyof PropertyFormValues] && (
           <ErrorMessage
             message={
-              typeof errors[name as keyof FormValues] === "string"
-                ? errors[name as keyof FormValues]
+              typeof errors[name as keyof PropertyFormValues] === "string"
+                ? errors[name as keyof PropertyFormValues]
                 : ""
             }
           />

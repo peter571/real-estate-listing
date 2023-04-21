@@ -36,6 +36,7 @@ export default function OngoingProjects() {
             </p>
           </div>
         </div>
+        {/*  */}
       </div>
     </section>
   );

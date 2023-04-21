@@ -43,8 +43,6 @@ export default function Login({
     setSubmitting(false);
   };
 
-  console.log(currentUser)
-
   return (
     <Formik
       initialValues={{ email: "", password: "" }}

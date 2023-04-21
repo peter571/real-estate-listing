@@ -1,6 +1,5 @@
 import React from "react";
 import { Field, FormikErrors, FormikTouched } from "formik";
-import { FormValues } from "../RealtorAdmin/UploadProperty";
 
 export default function Input({
   name,
@@ -10,20 +9,20 @@ export default function Input({
   placeholder
 }: {
   name: string;
-  errors: FormikErrors<FormValues>;
-  touched: FormikTouched<FormValues>;
+  errors: FormikErrors<PropertyFormValues>;
+  touched: FormikTouched<PropertyFormValues>;
   type: string;
   placeholder: string;
 }) {
   return (
     <div className="flex flex-col my-3">
       <Field className="rounded-md" id={name} name={name} type={type} placeholder={placeholder} />
-      {errors[name as keyof FormValues] &&
-        touched[name as keyof FormValues] && (
+      {errors[name as keyof PropertyFormValues] &&
+        touched[name as keyof PropertyFormValues] && (
           <ErrorMessage
             message={
-              typeof errors[name as keyof FormValues] === "string"
-                ? errors[name as keyof FormValues]
+              typeof errors[name as keyof PropertyFormValues] === "string"
+                ? errors[name as keyof PropertyFormValues]
                 : ""
             }
           />

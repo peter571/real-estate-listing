@@ -36,9 +36,6 @@ export default function Register({
     setSubmitting(false);
   };
 
-
-  console.log(currentUser)
-
   return (
     <Formik
       initialValues={{ email: "", password: "", repeatPassword: "" }}

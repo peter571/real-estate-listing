@@ -1,5 +1,16 @@
-import { createContext, ReactNode, useContext } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useTabState, Tab } from "../../hooks/useTabReducer";
+import { useAuth } from "../../contexts/AuthContext";
+import axios from "axios";
+import { get_realtor_by_user_id } from "../../api/api_urls";
+import { useQuery } from "@tanstack/react-query";
+import { getRealtorByUserId } from "../../api/realtors";
 
 interface RealtorAdminProps {
   selectedTab: Tab;
@@ -18,13 +29,21 @@ export default function RealtorAdminProvider({
   children: ReactNode;
 }) {
   const [selectedTab, dispatch] = useTabState();
+  const { currentUser } = useAuth();
+  const { data } = useQuery({
+    queryKey: ["realtor", currentUser?.uid],
+    enabled: currentUser !== null,
+    queryFn: () => getRealtorByUserId(currentUser.uid)
+  })
 
   const handleTabClick = (tab: Tab) => {
     dispatch({ type: "SELECT_TAB", payload: tab });
   };
 
   return (
-    <RealtorContext.Provider value={{ selectedTab, handleTabClick }}>
+    <RealtorContext.Provider
+      value={{ selectedTab, handleTabClick }}
+    >
       {children}
     </RealtorContext.Provider>
   );

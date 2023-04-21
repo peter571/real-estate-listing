@@ -67,7 +67,8 @@ def create_property(realtor_id):
                             bathrooms=request_data['bathrooms'],
                             category=request_data['category'],
                             price=request_data['price'],
-                            property_type=request_data['property_type'])
+                            property_type=request_data['property_type'],
+                            size=request_data["size"])
 
     try:
         db.session.add(new_property)

@@ -21,6 +21,7 @@ class Property(db.Model):
     active = db.Column(db.Boolean, index=False, default=True, unique=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     property_images = db.Column(db.String, index=False, unique=False)
+    size = db.Column(db.String, index=False, unique=False)
 
     def get_property_images(self):
         return pickle.loads(self.property_images)
@@ -44,5 +45,6 @@ class Property(db.Model):
             "property_type": self.property_type,
             "active": self.active,
             "date_created": self.date_created,
-            "property_images": self.property_images
+            "property_images": self.property_images,
+            "size": self.size
         }

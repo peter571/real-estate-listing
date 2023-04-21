@@ -13,12 +13,19 @@ import Blog from "./pages/Blog";
 import RealtorAdmin from "./components/RealtorAdmin/RealtorAdmin";
 import Favorites from "./pages/Favorites";
 import Properties from "./pages/Properties";
+import {
+  ProtectedRoute,
+  ProtectedRouteAdmin,
+} from "./ProtectedRoute/ProtectedRoute";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const location = useLocation();
 
   return (
     <div className="px-3 sm:px-10 bg-bodycolor min-h-screen scroll-smooth">
+      <ToastContainer />
       <div className="w-full">
         <NavigationBar />
         {location.pathname === "/all-properties" && <SearchBar />}
@@ -33,7 +40,14 @@ function App() {
         <Route path="/blog/:id" element={<Blog />} />
         <Route path="/password/recover/:id" element={<ResetPassword />} />
         <Route path="/password-reset" element={<ForgotPassword />} />
-        <Route path="/realtor-admin" element={<RealtorAdmin />} />
+        <Route
+          path="/realtor-admin"
+          element={
+            <ProtectedRouteAdmin>
+              <RealtorAdmin />
+            </ProtectedRouteAdmin>
+          }
+        />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/all-properties" element={<Properties />} />
       </Routes>

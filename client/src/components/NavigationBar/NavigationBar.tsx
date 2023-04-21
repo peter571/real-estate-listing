@@ -8,7 +8,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function NavigationBar() {
   const navigate = useNavigate();
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, realtorUser } = useAuth();
 
   return (
     <Navbar className="my-auto navbar" fluid={true} rounded={true}>
@@ -33,9 +33,12 @@ export default function NavigationBar() {
 
         {currentUser && (
           <div className="hidden md:flex gap-4">
-            <div className="hidden md:block">
-              <RegisterRealtor />
-            </div>
+            {!realtorUser && (
+              <div className="hidden md:block">
+                <RegisterRealtor />
+              </div>
+            )}
+
             <Dropdown
               inline={true}
               label={
@@ -50,12 +53,15 @@ export default function NavigationBar() {
               }
               dismissOnClick={false}
             >
-              <Dropdown.Item
-                onClick={() => navigate("/realtor-admin")}
-                role="button font-semibold"
-              >
-                Profile
-              </Dropdown.Item>
+              {realtorUser && (
+                <Dropdown.Item
+                  onClick={() => navigate("/realtor-admin")}
+                  role="button font-semibold"
+                >
+                  Profile & settings
+                </Dropdown.Item>
+              )}
+
               <Dropdown.Item
                 onClick={() => logout()}
                 role="button font-semibold"
@@ -96,7 +102,7 @@ export default function NavigationBar() {
             </span>
           )}
         </Navbar.Link>
-        {currentUser && (
+        {currentUser && !realtorUser && (
           <Navbar.Link className="block md:hidden">
             <RegisterRealtor />
           </Navbar.Link>
