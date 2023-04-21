@@ -18,7 +18,7 @@ export default function Realtors() {
       <h1 className="whitespace-nowrap text-3xl font-light my-6">
         Meet trusted Realtors around you
       </h1>
-      <div className="flex flex-row flex-wrap gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {realtors &&
           realtors.map((realtor: RealtorDetails, idx: number) => (
             <Realtor key={idx} {...realtor} />

@@ -82,7 +82,7 @@ export default function RegisterRealtor() {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ isSubmitting, touched, errors }) => (
+            {({ touched, errors }) => (
               <Form className="flex flex-col gap-4 w-full sm:w-[285px]">
                 <div className="flex flex-col">
                   <Field

@@ -33,13 +33,12 @@ const createNewProperty = async (propertyDetails: NewPropertyProps) => {
     .then(({ data }) => data);
 };
 
-const updateProperty = async (
-  realtor_id: string,
-  property_id: string,
-  propertyDetails: Object
-) => {
+const updateProperty = async (property: UpdatePropertyProps) => {
   return await axios
-    .patch(update_property(realtor_id, property_id), propertyDetails)
+    .patch(
+      update_property(property.realtor_id, property.property_id),
+      property.propertyDetails
+    )
     .then(({ data }) => data);
 };
 

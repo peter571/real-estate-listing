@@ -8,11 +8,14 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
 import DeleteModal from "./DeleteModal";
+import UpdateModal from "./UpdateModal";
 
 export default function PropertyRow(props: PropertyDetailsCard) {
   const { realtorUser } = useAuth();
   const queryClient = useQueryClient();
-  const [show, setShowDeleteModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [propertyId, setPropertyIdToUpdate] = useState<string | null>(null)
 
   const propertyStatusMutation = useMutation({
     mutationFn: () =>
@@ -73,14 +76,24 @@ export default function PropertyRow(props: PropertyDetailsCard) {
         <span
           role="button"
           className="font-medium text-blue-600 hover:underline"
+          onClick={() => {
+            setShowUpdateModal(true)
+            setPropertyIdToUpdate(props.id)
+          }}
         >
           Edit
         </span>
       </Table.Cell>
       <DeleteModal
-        show={show}
+        show={showDeleteModal}
         setShowDeleteModal={setShowDeleteModal}
         deleteItem={deletePropertyMutation}
+      />
+      <UpdateModal
+        show={showUpdateModal}
+        setShowUpdateModal={setShowUpdateModal}
+        propertyId={propertyId} 
+        setPropertyIdToUpdate={setPropertyIdToUpdate}
       />
     </Table.Row>
   );

@@ -1,6 +1,7 @@
 from datetime import datetime
 from app.extensions import db
 from app.models.property import Property
+from app.models.realtor_follower import Realtor_follower
 
 # Realtor model
 
@@ -20,6 +21,8 @@ class Realtor(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     properties = db.relationship(
         'Property', backref='realtor', lazy='dynamic', cascade='all, delete, delete-orphan')
+    followers = db.relationship(
+        'Realtor_follower', backref="realtor",  cascade='all, delete, delete-orphan')
 
     def __repr__(self):
         return f'<Realtor "{self.company_name}">'

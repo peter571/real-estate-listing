@@ -41,3 +41,23 @@ interface PropertyDetailsCard extends PropertyFormValues {
   property_images: string[];
   description: string;
 }
+
+interface PropertyDetails extends PropertyDetailsCard {}
+
+type FormType = "create" | "update";
+
+interface InitValuesProps {
+  formikValues: PropertyFormValues;
+  description: string;
+  property_images: string[];
+  property_id: string;
+}
+
+interface UpdatePropertyProps {
+  realtor_id: string;
+  property_id: string;
+  propertyDetails: Object;
+}
+
+
+type FollowAction = "follow" | "unfollow"

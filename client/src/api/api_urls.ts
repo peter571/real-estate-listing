@@ -55,3 +55,25 @@ export const get_realtor_followers = (realtor_id: string) =>
 
 export const follow_realtor = (realtor_id: string) =>
   api_url + "/realtor_followers/follow/" + realtor_id;
+
+export const check_user_follows_realtor = (
+  realtor_id: string,
+  user_id: string
+) =>
+  api_url +
+  "/realtor_followers/check_user_follows_realtor/" +
+  realtor_id +
+  "/" +
+  user_id;
+
+//Favorites
+
+export const get_user_favorites = (user_id: string) =>
+  api_url + "/favorites/" + user_id;
+
+export const add_to_favorite = api_url + "/favorites/add_to_favorites";
+
+export const check_property_in_favorites = (
+  user_id: string,
+  property_id: string
+) => api_url + "/favorites/check_property/" + user_id + "/" + property_id;

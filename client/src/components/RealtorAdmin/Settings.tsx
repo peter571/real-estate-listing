@@ -194,12 +194,12 @@ export default function Settings() {
           >
             {realtorUser?.active ? "Deactivate account" : "Activate account"}
           </span>
-          <span
+          {/* <span
             className="block font-medium hover:text-blue-600 hover:underline"
             role="button"
           >
             Close account
-          </span>
+          </span> */}
         </div>
         <Button
           type="button"
