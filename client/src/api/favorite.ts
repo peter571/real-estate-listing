@@ -9,9 +9,9 @@ const getUserFavorites = async (user_id: string) => {
   return await axios.get(get_user_favorites(user_id)).then(({ data }) => data);
 };
 
-const addToFavorites = async (user_id: string, property_id: string) => {
+const addToFavorites = async (user_id: string, property_id: string, action: AddToFavoriteAction) => {
   return await axios
-    .post(add_to_favorite, { user_id, property_id })
+    .post(add_to_favorite, { user_id, property_id, action })
     .then(({ data }) => data);
 };
 

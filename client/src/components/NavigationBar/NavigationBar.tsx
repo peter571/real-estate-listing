@@ -56,7 +56,8 @@ export default function NavigationBar() {
               {realtorUser && (
                 <Dropdown.Item
                   onClick={() => navigate("/realtor-admin")}
-                  role="button font-semibold"
+                  role="button"
+                  className="font-semibold whitespace-nowrap"
                 >
                   Profile & settings
                 </Dropdown.Item>
@@ -64,7 +65,8 @@ export default function NavigationBar() {
 
               <Dropdown.Item
                 onClick={() => logout()}
-                role="button font-semibold"
+                role="button"
+                className="font-semibold whitespace-nowrap"
               >
                 Sign out
               </Dropdown.Item>

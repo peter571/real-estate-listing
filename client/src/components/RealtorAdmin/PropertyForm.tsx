@@ -58,25 +58,28 @@ export default function PropertyForm({
     // handle form submission
     if (form_type === "create") {
       try {
-        createPropertyMutation.mutate({
-          realtor_id: realtorUser!.id,
-          propertyDetails: {
-            location: values.location,
-            title: values.title,
-            description: descriptionRef.current?.value,
-            address: values.address,
-            bedrooms: values.bedrooms,
-            bathrooms: values.bathrooms,
-            property_type: values.property_type,
-            category: values.category,
-            property_images: imagePreviews,
-            price: values.price,
-            size: values.size,
-          },
-        });
-        resetForm({ values: "" });
-        descriptionRef.current!.value = "";
-        setImagePreviews([]);
+        createPropertyMutation
+          .mutateAsync({
+            realtor_id: realtorUser!.id,
+            propertyDetails: {
+              location: values.location,
+              title: values.title,
+              description: descriptionRef.current?.value,
+              address: values.address,
+              bedrooms: values.bedrooms,
+              bathrooms: values.bathrooms,
+              property_type: values.property_type,
+              category: values.category,
+              property_images: imagePreviews,
+              price: values.price,
+              size: values.size,
+            },
+          })
+          .then(() => {
+            resetForm({ values: "" });
+            descriptionRef.current!.value = "";
+            setImagePreviews([]);
+          });
       } catch (error) {
       } finally {
         setSubmitting(false);

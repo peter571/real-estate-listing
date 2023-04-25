@@ -59,5 +59,11 @@ interface UpdatePropertyProps {
   propertyDetails: Object;
 }
 
+interface PropertyModalProp {
+  show: boolean
+  property_id: null | string
+}
 
 type FollowAction = "follow" | "unfollow"
+
+type AddToFavoriteAction = "add" | "remove"
