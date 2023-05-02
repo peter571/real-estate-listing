@@ -4,6 +4,7 @@ from app.models.realtor import Realtor
 from flask import jsonify, request
 from app.extensions import db
 import pickle
+import uuid
 
 # Get all properties
 
@@ -11,7 +12,7 @@ import pickle
 @bp.route('/property/all_properties')
 def get_all_properties():
     # Query the table with all properties
-    properties = Property.query.all()
+    properties = Property.query.filter(Property.active == True).all()
     # If properties is None return a empty list
     if properties == None:
         return [], 200
@@ -52,13 +53,13 @@ def get_property(property_id):
 def create_property(realtor_id):
     user = Realtor.query.get(realtor_id)
     if user == None:
-        return "Unauthorized user", 401
+        return jsonify("Unauthorized user"), 401
 
     request_data = request.get_json()
     # Create a new property
-    new_property = Property(owner_id=realtor_id,
+    new_property = Property(id=str(uuid.uuid4()),
+                            owner_id=realtor_id,
                             location=request_data['location'],
-                            title=request_data['title'],
                             description=request_data['description'],
                             property_images=pickle.dumps(
                                 request_data['property_images']),

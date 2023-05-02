@@ -4,23 +4,6 @@ import React, { useEffect, useState } from "react";
 import { getPropertyById } from "../../api/properties";
 import PropertyForm from "./PropertyForm";
 
-const defaultValues = {
-  formikValues: {
-    location: "",
-    title: "",
-    address: "",
-    bedrooms: "",
-    bathrooms: "",
-    property_type: "",
-    category: "",
-    price: "",
-    size: "",
-  },
-  description: "",
-  property_id: "",
-  property_images: [],
-};
-
 export default function UpdateModal({
   show,
   setShowUpdateModal,
@@ -45,7 +28,6 @@ export default function UpdateModal({
       const initialValues: InitValuesProps = {
         formikValues: {
           location: propertyData.location,
-          title: propertyData.title,
           address: propertyData.address,
           bedrooms: propertyData.bedrooms,
           bathrooms: propertyData.bathrooms,

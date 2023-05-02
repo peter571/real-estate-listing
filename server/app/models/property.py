@@ -6,11 +6,10 @@ import pickle
 
 
 class Property(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('realtor.id'),
                          index=True, unique=False)
     location = db.Column(db.String, index=True, unique=False)
-    title = db.Column(db.String, index=False, unique=False)
     description = db.Column(db.Text, index=False, unique=False)
     address = db.Column(db.String, index=False, unique=False)
     bedrooms = db.Column(db.Integer, index=False, unique=False)
@@ -27,7 +26,7 @@ class Property(db.Model):
         return pickle.loads(self.property_images)
 
     def __repr__(self):
-        return f'<Property "{self.title}">'
+        return f'<Property "{self.id}">'
 
     # Return all properties in dictionary
     def serialize(self):
@@ -35,7 +34,6 @@ class Property(db.Model):
             "id": self.id,
             "owner_id": self.owner_id,
             "location": self.location,
-            "title": self.title,
             "description": self.description,
             "address": self.address,
             "bedrooms": self.bedrooms,

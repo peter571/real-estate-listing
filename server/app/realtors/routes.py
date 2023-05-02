@@ -2,6 +2,7 @@ from app.realtors import bp
 from app.models.realtor import Realtor
 from flask import jsonify, request
 from app.extensions import db
+import uuid
 
 # Gets all realtors
 
@@ -20,7 +21,8 @@ def get_realtors():
 def register_realtor():
     request_data = request.get_json()
 
-    new_realtor = Realtor(realtor_id=request_data['user_id'],
+    new_realtor = Realtor(id=str(uuid.uuid4()), 
+                          realtor_id=request_data['user_id'],
                           company_name=request_data['company_name'],
                           description=request_data['description'],
                           profile_picture=request_data['profile_picture'],

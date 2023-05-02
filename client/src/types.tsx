@@ -24,7 +24,6 @@ interface NewPropertyProps {
 interface PropertyFormValues {
   location: string;
   address: string;
-  title: string;
   bedrooms: number | string;
   bathrooms: number | string;
   property_type: string;

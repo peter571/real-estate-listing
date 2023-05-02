@@ -11,6 +11,7 @@ export default function RecentlyAdded() {
     queryKey: ["properties"],
     queryFn: getAllProperties,
   });
+  
   return (
     <section className="py-20">
       <div className="flex flex-row justify-between">

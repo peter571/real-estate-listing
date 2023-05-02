@@ -3,7 +3,6 @@ import PropertyForm from "./PropertyForm";
 const initialValues: InitValuesProps = {
   formikValues: {
     location: "",
-    title: "",
     address: "",
     bedrooms: "",
     bathrooms: "",

@@ -15,7 +15,7 @@ export default function NavigationBar() {
       <Navbar.Brand role="button" onClick={() => navigate("/")}>
         <img src={logo} className="mr-3 h-6 sm:h-9" alt="254 Realtors" />
         <span className="hidden lg:block self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          254 Realtors
+          
         </span>
       </Navbar.Brand>
       <div className="flex items-center md:gap-6 md:order-2">
@@ -51,7 +51,7 @@ export default function NavigationBar() {
                   statusPosition="top-right"
                 />
               }
-              dismissOnClick={false}
+              dismissOnClick={true}
             >
               {realtorUser && (
                 <Dropdown.Item

@@ -63,7 +63,6 @@ export default function PropertyForm({
             realtor_id: realtorUser!.id,
             propertyDetails: {
               location: values.location,
-              title: values.title,
               description: descriptionRef.current?.value,
               address: values.address,
               bedrooms: values.bedrooms,
@@ -91,7 +90,6 @@ export default function PropertyForm({
           property_id: initialValues!.property_id,
           propertyDetails: {
             location: values.location,
-            title: values.title,
             description: descriptionRef.current?.value,
             address: values.address,
             bedrooms: values.bedrooms,
@@ -154,13 +152,6 @@ export default function PropertyForm({
           <Input
             placeholder={"Location"}
             name={"location"}
-            errors={errors}
-            touched={touched}
-            type={"text"}
-          />
-          <Input
-            placeholder={"Property title"}
-            name={"title"}
             errors={errors}
             touched={touched}
             type={"text"}
@@ -284,12 +275,6 @@ export default function PropertyForm({
 const validationSchema = Yup.object().shape({
   location: Yup.string().required("Location is required"),
   address: Yup.string().required("Address is required"),
-  title: Yup.string()
-    .required("Title is required")
-    .min(4)
-    .required("Title should be minimum length of 4")
-    .max(80)
-    .required("Title should not exceed length of 80"),
   bedrooms: Yup.number()
     .required("Bedrooms is required")
     .min(1)

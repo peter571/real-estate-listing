@@ -2,6 +2,7 @@ import React from "react";
 import { Carousel, Modal } from "flowbite-react";
 import { useQuery } from "@tanstack/react-query";
 import { getPropertyById } from "../../api/properties";
+import { FaBed, FaBath } from "react-icons/fa";
 
 export default function PropertyModal({
   propertyData,
@@ -18,35 +19,60 @@ export default function PropertyModal({
     queryFn: () => getPropertyById(propertyData.property_id!),
   });
 
-  console.log(property);
-
   return (
     <React.Fragment>
       <Modal
         show={propertyData.show}
         dismissible={true}
-        size="6xl"
+        size="7xl"
         onClose={() =>
           setShowPropertyModalData({ show: false, property_id: null })
         }
-        className="h-screen"
+        className=""
       >
-        <div className="h-3/4">
-          <Modal.Header>Property title</Modal.Header>
-          <Modal.Body className="grid grid-cols-2 h-full">
-            <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
+        <Modal.Header>{property?.category}</Modal.Header>
+        <Modal.Body className="grid grid-cols-2">
+          <div className="flex flex-col">
+            <div className="h-96">
               <Carousel slideInterval={5000}>
-                {property.property_images &&
+                {property?.property_images &&
                   property?.property_images.map((image: any, idx: number) => (
-                    <img key={idx} src={image} alt={property.title} />
+                    <img key={idx} src={image} alt={property?.description} />
                   ))}
               </Carousel>
             </div>
-            <div>
-              <p>{property?.description}</p>
+            <div className="py-3 font-bold flex flex-wrap gap-6 items-center">
+              <span className="p-2 gap-2 rounded-md bg-[#f3f3f3]">
+                KSH {property?.price.toLocaleString()}
+              </span>
+              <span className="p-2 gap-2 rounded-md bg-[#f3f3f3]">
+                {property?.address}
+              </span>
+              <span className="p-2 gap-2 rounded-md bg-[#f3f3f3]">
+                {property?.property_type
+                  .replace("_", " ")
+                  .charAt(0)
+                  .toUpperCase() +
+                  property?.property_type.replace("_", " ").slice(1)}
+              </span>
+              <span className="flex flex-row justify-center items-center p-2 gap-2 rounded-md bg-[#f3f3f3]">
+                <FaBed color="#1E3240" />
+                <span className="text-sm font-semibold">
+                  {property?.bedrooms}
+                </span>
+              </span>
+              <span className="flex flex-row justify-center items-center p-2 gap-2 rounded-md bg-[#f3f3f3]">
+                <FaBath color="#1E3240" />
+                <span className="text-sm font-semibold">
+                  {property?.bathrooms}
+                </span>
+              </span>
             </div>
-          </Modal.Body>
-        </div>
+          </div>
+          <div className="px-5 py-2 overflow-x-auto">
+            <p>{property?.description}</p>
+          </div>
+        </Modal.Body>
       </Modal>
     </React.Fragment>
   );

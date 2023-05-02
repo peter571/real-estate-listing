@@ -5,7 +5,7 @@ from app.extensions import db
 
 
 class Favorite(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String, primary_key=True)
     property_id = db.Column(db.Integer, db.ForeignKey('property.id'),
                             index=True, unique=False)
     user_id = db.Column(db.String, index=True, unique=False)

@@ -7,7 +7,7 @@ from app.models.realtor_follower import Realtor_follower
 
 
 class Realtor(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String, primary_key=True)
     realtor_id = db.Column(db.Integer, index=True, unique=True)
     company_name = db.Column(db.String, index=False, unique=False)
     description = db.Column(db.Text, index=False, unique=False)
