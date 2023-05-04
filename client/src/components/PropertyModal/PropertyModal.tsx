@@ -19,6 +19,8 @@ export default function PropertyModal({
     queryFn: () => getPropertyById(propertyData.property_id!),
   });
 
+  if (propertyData.property_id === null) return <></>;
+
   return (
     <React.Fragment>
       <Modal
@@ -30,7 +32,10 @@ export default function PropertyModal({
         }
         className=""
       >
-        <Modal.Header>{property?.category}</Modal.Header>
+        <Modal.Header>
+          {property?.category.replace("_", " ").charAt(0).toUpperCase() +
+            property?.category.replace("_", " ").slice(1)}
+        </Modal.Header>
         <Modal.Body className="grid grid-cols-2">
           <div className="flex flex-col">
             <div className="h-96">
@@ -69,7 +74,7 @@ export default function PropertyModal({
               </span>
             </div>
           </div>
-          <div className="px-5 py-2 overflow-x-auto">
+          <div className="px-5 py-2 overflow-y-auto h-96">
             <p>{property?.description}</p>
           </div>
         </Modal.Body>

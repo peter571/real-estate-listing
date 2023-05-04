@@ -26,7 +26,7 @@ export default function RecentlyAdded() {
       </div>
       <div className="grid grid-cols-4 gap-4 mt-7">
         {allProperties &&
-          allProperties.map((property: PropertyDetailsCard) => (
+          allProperties.slice(0, 4).map((property: PropertyDetailsCard) => (
             <PropertyCard key={property.id} {...property} />
           ))}
       </div>

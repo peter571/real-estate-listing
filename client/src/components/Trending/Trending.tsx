@@ -1,9 +1,9 @@
 import React from "react";
 import pic from "../../assets/images/house_1.jpg";
 import { useNavigate } from "react-router-dom";
-import TrendingPropertyCard from "./TrendingPropertyCard";
 import { useQuery } from "@tanstack/react-query";
 import { getAllProperties } from "../../api/properties";
+import PropertyCard from "../PropertyCard/PropertyCard";
 
 export default function Trending() {
   const navigate = useNavigate();
@@ -24,10 +24,10 @@ export default function Trending() {
           See all
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {allProperties &&
-          allProperties.map((property: PropertyDetailsCard) => (
-            <TrendingPropertyCard key={property.id} {...property} />
+          allProperties.slice(0, 4).map((property: PropertyDetailsCard) => (
+            <PropertyCard key={property.id} {...property} />
           ))}
       </div>
     </section>

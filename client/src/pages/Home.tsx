@@ -14,9 +14,9 @@ export default function Home() {
       <hr />
       <RecentlyAdded />
       <hr />
-      <OngoingProjects />
-      {/* <hr />
-      <Footer /> */}
+      {/* <OngoingProjects /> */}
+      {/* <hr /> */}
+      <Footer />
     </div>
   );
 }

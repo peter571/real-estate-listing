@@ -19,12 +19,13 @@ import {
 } from "./ProtectedRoute/ProtectedRoute";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropertySearch from "./components/PropertySearch/PropertySearch";
 
 function App() {
   const location = useLocation();
 
   return (
-    <div className="px-3 sm:px-10 bg-bodycolor min-h-screen scroll-smooth">
+    <div className="bg-bodycolor min-h-screen scroll-smooth px-3 sm:px-10">
       <ToastContainer />
       <div className="w-full">
         <NavigationBar />
@@ -40,6 +41,7 @@ function App() {
         <Route path="/blog/:id" element={<Blog />} />
         <Route path="/password/recover/:id" element={<ResetPassword />} />
         <Route path="/password-reset" element={<ForgotPassword />} />
+        <Route path="/search-properties/:search_query" element={<PropertySearch />} />
         <Route
           path="/realtor-admin"
           element={
