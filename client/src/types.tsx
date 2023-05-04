@@ -7,6 +7,32 @@ interface RealtorFormValues {
   contact: string;
 }
 
+interface SearchProps{
+  type: string
+  category: string
+  baths: string | number
+  beds: string | number
+  min_price: string | number
+  max_price: string | number
+  search_term: string
+  area_max: string | number
+}
+
+type SearchAction =
+  | { type: "Type"; payload: string }
+  | { type: "Category"; payload: string }
+  | { type: "SearchTerm"; payload: string }
+  | { type: "Baths"; payload: number | string }
+  | { type: "Beds"; payload: number | string }
+  | { type: "MinPrice"; payload: number | string }
+  | { type: "AreaMax"; payload: number | string }
+  | { type: "MaxPrice"; payload: number | string };
+
+interface SearchContextState {
+  data: SearchProps
+  dispatch: React.Dispatch<SearchAction>
+}
+
 interface RealtorDetails extends RealtorFormValues {
   id: string;
   date_created: string;
@@ -29,7 +55,7 @@ interface PropertyFormValues {
   property_type: string;
   category: string;
   price: number | string;
-  size?: string;
+  size: string;
 }
 
 interface PropertyDetailsCard extends PropertyFormValues {

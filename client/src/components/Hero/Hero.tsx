@@ -4,10 +4,12 @@ import estate_picture1 from "../../assets/images/luxury-home1.jpg";
 import estate_picture2 from "../../assets/images/residence.jpg";
 import { useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
+import { useSearch } from "../../contexts/SearchContext";
 
 export default function Hero() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const { dispatch } = useSearch()
 
   return (
     <div className="flex flex-col gap-8 justify-center items-center h-[500px] relative">
@@ -28,6 +30,7 @@ export default function Hero() {
           onKeyUp={(e) => {
             if (e.key === "Enter" && searchTerm) {
               navigate("/search-properties/" + searchTerm.toLowerCase());
+              dispatch({ type: "SearchTerm", payload: searchTerm })
             }
           }}
           required
