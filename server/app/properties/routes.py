@@ -96,7 +96,6 @@ def update_property(realtor_id, property_id):
 
     try:
         property_details.location = request_data['location']
-        property_details.title = request_data['title']
         property_details.description = request_data['description']
         property_details.property_images = pickle.dumps(
             request_data['property_images'])

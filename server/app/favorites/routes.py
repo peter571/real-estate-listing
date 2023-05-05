@@ -3,6 +3,7 @@ from app.models.favorite import Favorite
 from app.models.property import Property
 from flask import jsonify, request
 from app.extensions import db
+import uuid
 
 # Get user favorites
 
@@ -34,19 +35,20 @@ def add_to_favorite():
     request_data = request.get_json()
     result = Favorite.query.filter(
         Favorite.property_id == request_data['property_id'], Favorite.user_id == request_data['user_id']).first()
-    
-    
+
     if request_data['action'] == "add":
         if result != None:
             return jsonify(result.serialize()), 200
-        new_favorite = Favorite(
-            property_id=request_data['property_id'], user_id=request_data['user_id'])
+        new_favorite = Favorite(id=str(uuid.uuid4()),
+                                property_id=request_data['property_id'], 
+                                user_id=request_data['user_id'])
 
         db.session.add(new_favorite)
         try:
             db.session.commit()
             return jsonify(new_favorite.serialize()), 201
         except Exception as e:
+            print(e)
             db.session.rollback()
             return jsonify("An error occurred"), 500
     elif request_data['action'] == "remove":
