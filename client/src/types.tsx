@@ -16,6 +16,7 @@ interface SearchProps{
   max_price: string | number
   search_term: string
   area_max: string | number
+  [key: string]: string | number;
 }
 
 type SearchAction =

@@ -104,3 +104,31 @@ export const filterData = [
     queryName: "category",
   },
 ];
+
+export function checkIfAnySearchFilterIsTrue(data: SearchProps): boolean {
+  for (let prop in data) {
+    if (prop !== 'search_term' && data[prop]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function getTrueKeys(obj: SearchProps): string[] {
+  const trueKeys: string[] = [];
+  for (let prop in obj) {
+    if (prop !== 'search_term' && obj[prop]) {
+      trueKeys.push(prop);
+    }
+  }
+  return trueKeys;
+}
+
+export function checkIfAllKeysTrue(obj: SearchProps): boolean {
+  for (let prop in obj) {
+    if (prop !== 'search_term' && !obj[prop]) {
+      return false;
+    }
+  }
+  return true;
+}

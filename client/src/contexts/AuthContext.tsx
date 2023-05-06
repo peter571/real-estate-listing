@@ -49,6 +49,8 @@ export default function AuthContextProvider({
     queryFn: () => getRealtorByUserId(currentUser!.uid),
   });
 
+  console.log(currentUser)
+
   function signup(email: string, password: string) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
