@@ -1,29 +1,40 @@
-import axios from "axios";
 import {
-  check_user_follows_realtor,
-  follow_realtor,
-  get_realtor_followers,
-} from "./api_urls";
+  API,
+  APIWithToken,
+} from "./axiosInstance";
 
 const getRealtorFollowers = async (realtor_id: string) => {
-  return await axios
-    .get(get_realtor_followers(realtor_id))
+  return await API()
+    .get("/realtor_followers/" + realtor_id)
     .then(({ data }) => data);
 };
 
 const followRealtor = async (
   realtor_id: string,
   user_id: string,
-  action: FollowAction
+  action: FollowAction,
+  accessToken: string
 ) => {
-  return await axios
-    .post(follow_realtor(realtor_id), { action: action, user_id })
+  return await APIWithToken(accessToken)
+    .post("/realtor_followers/follow/" + realtor_id, {
+      action: action,
+      user_id,
+    })
     .then(({ data }) => data);
 };
 
-const checkUserFollowsRealtor = async (realtor_id: string, user_id: string) => {
-  return await axios
-    .get(check_user_follows_realtor(realtor_id, user_id))
+const checkUserFollowsRealtor = async (
+  realtor_id: string,
+  user_id: string,
+  accessToken: string
+) => {
+  return await APIWithToken(accessToken)
+    .get(
+      "/realtor_followers/check_user_follows_realtor/" +
+        realtor_id +
+        "/" +
+        user_id
+    )
     .then(({ data }) => data);
 };
 

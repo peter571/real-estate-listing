@@ -3,6 +3,7 @@ from app.models.realtor import Realtor
 from flask import jsonify, request
 from app.extensions import db
 import uuid
+from app.middleware.authenticate import authenticate_user
 
 # Gets all realtors
 
@@ -18,6 +19,7 @@ def get_realtors():
 
 
 @bp.post('/realtor/register_profile')
+@authenticate_user
 def register_realtor():
     request_data = request.get_json()
 
@@ -41,6 +43,7 @@ def register_realtor():
 
 
 @bp.patch('/realtor/update_details/<realtor_id>')
+@authenticate_user
 def update_realtor_details(realtor_id):
     realtor_details = Realtor.query.get(realtor_id)
     request_data = request.get_json()
@@ -94,6 +97,7 @@ def get_realtor_properties(realtor_id):
 # Activate/Deactivate account status
 
 @bp.patch('/realtor/account_status/<realtor_id>')
+@authenticate_user
 def change_account_status(realtor_id):
     realtor_details = Realtor.query.get(realtor_id)
     request_data = request.get_json()
@@ -117,6 +121,7 @@ def change_account_status(realtor_id):
 
 # Get realtor by user ID
 @bp.get('/realtor/get_realtor_by_user_id/<user_id>')
+@authenticate_user
 def get_realtor_by_user_id(user_id):
     realtor_details = Realtor.query.filter(
         Realtor.realtor_id == user_id).first()

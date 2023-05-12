@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Button, Modal, Spinner } from "flowbite-react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { register_realtor } from "../../api/api_urls";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -36,18 +34,22 @@ export default function RegisterRealtor() {
     }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: any }
   ) => {
     //Register account
-    createRealtorMutation.mutate({
-      user_id: currentUser.uid,
-      company_name: values.company_name,
-      description: values.description,
-      profile_picture: profilePic,
-      company_mail: values.company_mail,
-      website_url: values.website_url,
-      contact: values.contact,
-    });
-    if (createRealtorMutation.isSuccess) {
-      resetForm();
-    }
+    createRealtorMutation
+      .mutateAsync({
+        userToken: currentUser.accessToken,
+        realtorDetails: {
+          user_id: currentUser.uid,
+          company_name: values.company_name,
+          description: values.description,
+          profile_picture: profilePic,
+          company_mail: values.company_mail,
+          website_url: values.website_url,
+          contact: values.contact,
+        },
+      })
+      .then(() => {
+        resetForm();
+      });
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

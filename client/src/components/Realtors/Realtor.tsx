@@ -19,7 +19,7 @@ export default function Realtor(props: RealtorDetails) {
   const { data: isFollowed } = useQuery({
     enabled: currentUser !== null,
     queryKey: ["follows", props.id],
-    queryFn: () => checkUserFollowsRealtor(props.id, currentUser.uid),
+    queryFn: () => checkUserFollowsRealtor(props.id, currentUser.uid, currentUser.accessToken),
   });
 
   const { data: realtorFollows } = useQuery({
@@ -32,7 +32,8 @@ export default function Realtor(props: RealtorDetails) {
       followRealtor(
         props.id,
         currentUser.uid,
-        isFollowed === "True" ? "unfollow" : "follow"
+        isFollowed === "True" ? "unfollow" : "follow",
+        currentUser.accessToken
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({

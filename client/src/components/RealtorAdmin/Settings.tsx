@@ -24,7 +24,7 @@ export default function Settings() {
   const queryClient = useQueryClient();
 
   const updateRealtorMutation = useMutation({
-    mutationFn: () => updateRealtorDetails(realtorUser!.id, realtorDetails),
+    mutationFn: () => updateRealtorDetails(realtorUser!.id, realtorDetails, currentUser.accessToken),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["realtor", currentUser?.uid] });
     },
@@ -34,7 +34,8 @@ export default function Settings() {
     mutationFn: () =>
       changeAccountStatus(
         realtorUser!.id,
-        realtorUser?.active ? "deactivate" : "activate"
+        realtorUser?.active ? "deactivate" : "activate",
+        currentUser.accessToken
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["realtor", currentUser?.uid]})

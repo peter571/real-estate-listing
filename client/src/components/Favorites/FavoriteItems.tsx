@@ -10,19 +10,15 @@ export default function FavoriteItems() {
   const { data: favoriteProperties } = useQuery({
     queryKey: ["favorites", currentUser.uid],
     enabled: currentUser !== null,
-    queryFn: () => getUserFavorites(currentUser.uid),
+    queryFn: () => getUserFavorites(currentUser.uid, currentUser.accessToken),
   });
-
-  //console.log(favoriteProperties);
 
   return (
     <div className="grid grid-cols-4 gap-4">
       {Array.isArray(favoriteProperties) &&
         favoriteProperties.map((property: PropertyDetailsCard) => {
-          console.log(property)
-          return <PropertyCard key={property.id} {...property} />
-         
-})}
+          return <PropertyCard key={property.id} {...property} />;
+        })}
     </div>
   );
 }

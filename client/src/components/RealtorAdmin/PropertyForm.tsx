@@ -1,5 +1,5 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { Formik, Form, Field, FieldArray } from "formik";
+import { useEffect, useRef, useState } from "react";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Input from "../FormFields/Input";
 import { Button, Spinner } from "flowbite-react";
@@ -23,7 +23,7 @@ export default function PropertyForm({
 }) {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
-  const { realtorUser } = useAuth();
+  const { realtorUser, currentUser } = useAuth();
   const queryClient = useQueryClient();
 
   const createPropertyMutation = useMutation({
@@ -73,6 +73,7 @@ export default function PropertyForm({
               price: values.price,
               size: values.size,
             },
+            userToken: currentUser!.accessToken
           })
           .then(() => {
             resetForm({ values: "" });
@@ -100,6 +101,7 @@ export default function PropertyForm({
             price: values.price,
             size: values.size,
           },
+          userToken: currentUser!.accessToken
         });
       } catch (error) {
       } finally {

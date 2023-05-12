@@ -3,6 +3,7 @@ from app.models.realtor_follower import Realtor_follower
 from app.models.realtor import Realtor
 from flask import jsonify, request
 from app.extensions import db
+from app.middleware.authenticate import authenticate_user
 
 # Get realtor followers
 
@@ -17,6 +18,7 @@ def get_realtor_followers(realtor_id):
 # Check if user has followed realtor
 
 @bp.get('/realtor_followers/check_user_follows_realtor/<realtor_id>/<user_id>')
+@authenticate_user
 def check_follow_by_user(realtor_id, user_id):
     result = Realtor_follower.query.filter(
         Realtor_follower.follower_id == user_id, Realtor_follower.followed_id == realtor_id).first()
@@ -30,6 +32,7 @@ def check_follow_by_user(realtor_id, user_id):
 
 
 @bp.post('/realtor_followers/follow/<realtor_id>')
+@authenticate_user
 def follow(realtor_id):
     request_data = request.get_json()
 

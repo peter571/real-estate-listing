@@ -46,6 +46,16 @@ type ActionType = "activate" | "deactivate";
 interface NewPropertyProps {
   realtor_id: string;
   propertyDetails: Object;
+  userToken: string
+}
+
+interface RealtorObject extends RealtorFormValues {
+  user_id: string
+}
+
+interface RealtorAccountProps {
+  userToken: string
+  realtorDetails: RealtorObject
 }
 
 interface PropertyFormValues {
@@ -83,6 +93,7 @@ interface UpdatePropertyProps {
   realtor_id: string;
   property_id: string;
   propertyDetails: Object;
+  userToken: string
 }
 
 interface PropertyModalProp {

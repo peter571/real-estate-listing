@@ -11,7 +11,7 @@ import DeleteModal from "./DeleteModal";
 import UpdateModal from "./UpdateModal";
 
 export default function PropertyRow(props: PropertyDetailsCard) {
-  const { realtorUser } = useAuth();
+  const { realtorUser, currentUser } = useAuth();
   const queryClient = useQueryClient();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -22,7 +22,8 @@ export default function PropertyRow(props: PropertyDetailsCard) {
       updatePropertyAvailability(
         realtorUser!.id,
         props.id,
-        props.active ? "deactivate" : "activate"
+        props.active ? "deactivate" : "activate",
+        currentUser.accessToken
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -33,7 +34,7 @@ export default function PropertyRow(props: PropertyDetailsCard) {
   });
 
   const deletePropertyMutation = useMutation({
-    mutationFn: () => deleteProperty(realtorUser!.id, props.id),
+    mutationFn: () => deleteProperty(realtorUser!.id, props.id, currentUser.accessToken),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["realtor_properties", props.owner_id],
@@ -50,7 +51,7 @@ export default function PropertyRow(props: PropertyDetailsCard) {
           src={props.property_images[0]}
           alt="image"
         />
-        <p className="w-56 truncate">{props.title}</p>
+        <p className="w-56 truncate">{props.category}</p>
       </Table.Cell>
       <Table.Cell>{props.category}</Table.Cell>
       <Table.Cell>{props.price}</Table.Cell>

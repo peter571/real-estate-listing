@@ -13,8 +13,14 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { getRealtorByUserId } from "../api/realtors";
 
+
+interface ExtendedUser extends User {
+  uid: string;
+  accessToken: string
+}
+
 interface AuthProps {
-  currentUser: UserCredential | User | null | any;
+  currentUser: ExtendedUser | null | User | UserCredential | any;
   login: (email: string, password: string) => Promise<UserCredential>;
   signup: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
@@ -25,9 +31,6 @@ interface AuthProps {
   setRealtorUser: React.Dispatch<React.SetStateAction<RealtorDetails | null>>;
 }
 
-interface ExtendedUser extends User {
-  uid: string;
-}
 
 const AuthContext = createContext({} as AuthProps);
 
@@ -38,7 +41,7 @@ export default function AuthContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [currentUser, setCurrentUser] = useState<User | ExtendedUser | null>(
+  const [currentUser, setCurrentUser] = useState<ExtendedUser | User | null>(
     null
   );
   const [realtorUser, setRealtorUser] = useState<RealtorDetails | null>(null);
@@ -46,10 +49,8 @@ export default function AuthContextProvider({
   const { data: realtorDetails } = useQuery({
     queryKey: ["realtor", currentUser?.uid],
     enabled: currentUser !== null,
-    queryFn: () => getRealtorByUserId(currentUser!.uid),
+    queryFn: () => getRealtorByUserId(currentUser!.uid, currentUser!.accessToken),
   });
-
-  console.log(currentUser)
 
   function signup(email: string, password: string) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -110,6 +111,8 @@ export default function AuthContextProvider({
 
     return unsubscribe;
   }, []);
+
+  console.log(currentUser)
 
   const value = {
     currentUser,

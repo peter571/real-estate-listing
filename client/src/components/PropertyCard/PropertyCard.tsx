@@ -14,7 +14,7 @@ export default function PropertyCard(props: PropertyDetailsCard) {
   const { data: isFavorite } = useQuery({
     enabled: currentUser !== null,
     queryKey: ["isFavorite", props.id],
-    queryFn: () => checkPropertyIsFavorite(currentUser.uid, props.id),
+    queryFn: () => checkPropertyIsFavorite(currentUser.uid, props.id, currentUser.accessToken),
   });
 
   const addToFavoriteMutation = useMutation({
@@ -22,7 +22,8 @@ export default function PropertyCard(props: PropertyDetailsCard) {
       addToFavorites(
         currentUser?.uid,
         props.id,
-        isFavorite === "True" ? "remove" : "add"
+        isFavorite === "True" ? "remove" : "add",
+        currentUser.accessToken
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({

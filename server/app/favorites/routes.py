@@ -4,11 +4,13 @@ from app.models.property import Property
 from flask import jsonify, request
 from app.extensions import db
 import uuid
+from app.middleware.authenticate import authenticate_user
 
 # Get user favorites
 
 
 @bp.get('/favorites/<user_id>')
+@authenticate_user
 def get_user_favorites(user_id):
     favorite_items = [
         item.property_id for item in Favorite.query.filter_by(user_id=user_id).all()]

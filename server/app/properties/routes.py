@@ -5,6 +5,7 @@ from flask import jsonify, request
 from app.extensions import db
 import pickle
 import uuid
+from app.middleware.authenticate import authenticate_user
 
 # Get all properties
 
@@ -50,6 +51,7 @@ def get_property(property_id):
 
 
 @bp.post('/property/new_property/<realtor_id>')
+@authenticate_user
 def create_property(realtor_id):
     user = Realtor.query.get(realtor_id)
     if user == None:
@@ -84,6 +86,7 @@ def create_property(realtor_id):
 
 
 @bp.patch('/property/update_property/<realtor_id>/<property_id>')
+@authenticate_user
 def update_property(realtor_id, property_id):
     property_details = Property.query.get(property_id)
     request_data = request.get_json()
@@ -122,6 +125,7 @@ def update_property(realtor_id, property_id):
 
 
 @bp.patch('/property/update_property_availability/<realtor_id>/<property_id>')
+@authenticate_user
 def update_property_availability(realtor_id, property_id):
     property_details = Property.query.get(property_id)
     request_data = request.get_json()
@@ -150,6 +154,7 @@ def update_property_availability(realtor_id, property_id):
 
 # Delete property
 @bp.delete('/property/delete_property/<realtor_id>/<property_id>')
+@authenticate_user
 def delete_property(realtor_id, property_id):
     print(realtor_id, property_id)
     property_details = Property.query.get(property_id)

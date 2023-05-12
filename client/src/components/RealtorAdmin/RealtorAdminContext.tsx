@@ -8,7 +8,7 @@ import {
 import { useTabState, Tab } from "../../hooks/useTabReducer";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
-import { get_realtor_by_user_id } from "../../api/api_urls";
+import { get_realtor_by_user_id } from "../../api/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { getRealtorByUserId } from "../../api/realtors";
 
