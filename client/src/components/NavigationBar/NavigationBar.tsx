@@ -11,7 +11,7 @@ export default function NavigationBar() {
   const { currentUser, logout, realtorUser } = useAuth();
 
   return (
-    <Navbar className="my-auto navbar" fluid={true} rounded={true}>
+    <Navbar className="my-auto w-full z-20 navbar fixed top-0 left-0" fluid={true} rounded={true}>
       <Navbar.Brand role="button" onClick={() => navigate("/")}>
         <img src={logo} className="mr-3 h-6 sm:h-9" alt="254 Realtors" />
         <span className="hidden lg:block self-center whitespace-nowrap text-xl font-semibold dark:text-white">

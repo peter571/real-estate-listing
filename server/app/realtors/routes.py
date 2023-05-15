@@ -1,5 +1,6 @@
 from app.realtors import bp
 from app.models.realtor import Realtor
+from app.models.property import Property
 from flask import jsonify, request
 from app.extensions import db
 import uuid
@@ -23,7 +24,7 @@ def get_realtors():
 def register_realtor():
     request_data = request.get_json()
 
-    new_realtor = Realtor(id=str(uuid.uuid4()), 
+    new_realtor = Realtor(id=str(uuid.uuid4()),
                           realtor_id=request_data['user_id'],
                           company_name=request_data['company_name'],
                           description=request_data['description'],
@@ -80,18 +81,55 @@ def get_realtor(id):
 
 @bp.get('/realtor/realtor_properties/<realtor_id>')
 def get_realtor_properties(realtor_id):
-    result = Realtor.query.get(realtor_id).properties.all()
 
-    if result is None:
-        return jsonify([])
+    page_number = request.args.get("page", 1, type=int)
+    pagination_result = Realtor.query.get(
+        realtor_id).properties.paginate(page=page_number, per_page=20)
+
+    if pagination_result is None:
+        return jsonify({"properties": [], "pages": 0})
 
     serialized_results = []
-    for property_item in result:
+    for property_item in pagination_result.items:
         item = property_item.serialize()
         images = property_item.get_property_images()
         item["property_images"] = images
         serialized_results.append(item)
-    return jsonify(serialized_results), 200
+
+    return jsonify({"properties": serialized_results, "pages": pagination_result.pages}), 200
+
+# Get realtor active properties
+
+
+@bp.get('/realtor/active_or_paused_properties/<realtor_id>')
+@authenticate_user
+def get_realtor_active_or_paused_properties(realtor_id):
+    page_number = request.args.get("page", 1, type=int)
+    status = request.args.get('status')
+
+    pagination_result = None
+
+    if status == "active":
+        pagination_result = Realtor.query.get(realtor_id).properties.filter(
+        Property.active == True).paginate(page=page_number, per_page=10)
+
+    elif status == "paused":
+        pagination_result = Realtor.query.get(realtor_id).properties.filter(
+        Property.active == False).paginate(page=page_number, per_page=10)
+    else:
+        return jsonify({ "error": "No status available"})
+    
+    if pagination_result is None:
+        return jsonify({"properties": [], "pages": 0})
+
+    serialized_results = []
+    for property_item in pagination_result.items:
+        item = property_item.serialize()
+        images = property_item.get_property_images()
+        item["property_images"] = images
+        serialized_results.append(item)
+
+    return jsonify({"properties": serialized_results, "pages": pagination_result.pages}), 200
 
 
 # Activate/Deactivate account status

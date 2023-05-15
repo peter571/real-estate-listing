@@ -9,8 +9,8 @@ export default function Trending() {
   const navigate = useNavigate();
 
   const { data: allProperties } = useQuery({
-    queryKey: ["properties"],
-    queryFn: getAllProperties,
+    queryKey: ["properties-trending"],
+    queryFn: () => getAllProperties(2),
   });
   return (
     <section className="rounded-md py-20">
@@ -26,9 +26,11 @@ export default function Trending() {
       </div>
       <div className="grid grid-cols-4 gap-4">
         {allProperties &&
-          allProperties.slice(0, 4).map((property: PropertyDetailsCard) => (
-            <PropertyCard key={property.id} {...property} />
-          ))}
+          allProperties["properties"]
+            .slice(0, 4)
+            .map((property: PropertyDetailsCard) => (
+              <PropertyCard key={property.id} {...property} />
+            ))}
       </div>
     </section>
   );

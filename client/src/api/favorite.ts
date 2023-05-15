@@ -2,9 +2,9 @@ import {
   APIWithToken,
 } from "./axiosInstance";
 
-const getUserFavorites = async (user_id: string, accessToken: string) => {
+const getUserFavorites = async (user_id: string, accessToken: string, page: number) => {
   return await APIWithToken(accessToken)
-    .get("/favorites/" + user_id)
+    .get("/favorites/" + user_id + "?page=" + page)
     .then(({ data }) => data);
 };
 

@@ -27,7 +27,10 @@ export default function PropertyRow(props: PropertyDetailsCard) {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["realtor_properties", props.owner_id],
+        queryKey: ["active_properties"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["paused_properties"],
       });
       toast.success("Property status updated!");
     },
@@ -38,6 +41,12 @@ export default function PropertyRow(props: PropertyDetailsCard) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["realtor_properties", props.owner_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["active_properties"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["paused_properties"],
       });
       toast.success("Property deleted!");
     },

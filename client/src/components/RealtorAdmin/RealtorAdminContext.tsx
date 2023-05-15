@@ -7,8 +7,6 @@ import {
 } from "react";
 import { useTabState, Tab } from "../../hooks/useTabReducer";
 import { useAuth } from "../../contexts/AuthContext";
-import axios from "axios";
-import { get_realtor_by_user_id } from "../../api/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { getRealtorByUserId } from "../../api/realtors";
 
@@ -33,7 +31,7 @@ export default function RealtorAdminProvider({
   const { data } = useQuery({
     queryKey: ["realtor", currentUser?.uid],
     enabled: currentUser !== null,
-    queryFn: () => getRealtorByUserId(currentUser.uid)
+    queryFn: () => getRealtorByUserId(currentUser.uid, currentUser.accessToken)
   })
 
   const handleTabClick = (tab: Tab) => {

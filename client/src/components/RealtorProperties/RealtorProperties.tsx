@@ -6,19 +6,23 @@ import { useQuery } from "@tanstack/react-query";
 import { getRealtor, getRealtorProperties } from "../../api/realtors";
 import defaultImg from "../../assets/images/254.png";
 import { getRealtorFollowers } from "../../api/realtor_followers";
+import { usePagination } from "../../hooks/usePagination";
+import { Pagination } from "flowbite-react";
+import SpinnerLoader from "../Loader/Spinner";
 
 export default function RealtorProperties() {
   const { id } = useParams();
+  const { currentPage, onPageChange } = usePagination();
 
   const { data: realtor } = useQuery({
     queryKey: ["realtors", id],
     enabled: id !== undefined,
     queryFn: () => getRealtor(id!),
   });
-  const { data: realtorProperties } = useQuery({
+  const { data: realtorProperties, isLoading } = useQuery({
     enabled: id !== null,
-    queryKey: ["realtor_properties", id],
-    queryFn: () => getRealtorProperties(id!),
+    queryKey: ["realtor_properties", currentPage],
+    queryFn: () => getRealtorProperties(id!, currentPage),
   });
 
   const { data: realtorFollowers } = useQuery({
@@ -26,6 +30,8 @@ export default function RealtorProperties() {
     enabled: id !== null,
     queryFn: () => getRealtorFollowers(id!),
   });
+
+  if (isLoading) return <SpinnerLoader />
 
   return (
     <div className="grid divide-x grid-cols-5 h-screen">
@@ -57,11 +63,28 @@ export default function RealtorProperties() {
           </div>
         )}
       </div>
-      <div className="col-span-4 grid grid-cols-3 gap-6 h-full px-3 overflow-y-auto">
-        {realtorProperties &&
-          realtorProperties.map((property: PropertyDetailsCard) => (
-            <PropertyCard key={property.id} {...property} />
-          ))}
+      <div className="col-span-4">
+        <div className="grid grid-cols-3 gap-6 h-full px-3 overflow-y-auto">
+          {realtorProperties &&
+            realtorProperties["properties"].map(
+              (property: PropertyDetailsCard) => (
+                <PropertyCard key={property.id} {...property} />
+              )
+            )}
+        </div>
+        <div className="flex items-center justify-center text-center py-10">
+          {realtorProperties["pages"] > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              layout="pagination"
+              onPageChange={onPageChange}
+              showIcons={true}
+              totalPages={realtorProperties["pages"]}
+              previousLabel="Go back"
+              nextLabel="Go forward"
+            />
+          )}
+        </div>
       </div>
     </div>
   );

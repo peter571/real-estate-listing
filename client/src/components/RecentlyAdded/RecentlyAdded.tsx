@@ -8,10 +8,10 @@ export default function RecentlyAdded() {
   const navigate = useNavigate();
 
   const { data: allProperties } = useQuery({
-    queryKey: ["properties"],
-    queryFn: getAllProperties,
+    queryKey: ["properties-recent"],
+    queryFn: () => getAllProperties(1),
   });
-  
+
   return (
     <section className="py-20">
       <div className="flex flex-row justify-between">
@@ -26,9 +26,11 @@ export default function RecentlyAdded() {
       </div>
       <div className="grid grid-cols-4 gap-4 mt-7">
         {allProperties &&
-          allProperties.slice(0, 4).map((property: PropertyDetailsCard) => (
-            <PropertyCard key={property.id} {...property} />
-          ))}
+          allProperties["properties"]
+            .slice(0, 4)
+            .map((property: PropertyDetailsCard) => (
+              <PropertyCard key={property.id} {...property} />
+            ))}
       </div>
     </section>
   );

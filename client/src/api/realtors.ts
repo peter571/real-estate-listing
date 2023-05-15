@@ -1,7 +1,4 @@
-import {
-  API,
-  APIWithToken,
-} from "./axiosInstance";
+import { API, APIWithToken } from "./axiosInstance";
 
 //Register a realtor account
 const registerRealtorAccount = async (realtorDetails: RealtorAccountProps) => {
@@ -25,9 +22,9 @@ const getRealtor = async (id: string) => {
 };
 
 //Get all realtor properties
-const getRealtorProperties = async (id: string) => {
+const getRealtorProperties = async (id: string, page: number) => {
   return await API()
-    .get("/realtor/realtor_properties/" + id)
+    .get("/realtor/realtor_properties/" + id + "?page=" + page)
     .then(({ data }) => data);
 };
 
@@ -60,6 +57,30 @@ const changeAccountStatus = async (
     .then(({ data }) => data);
 };
 
+const getRealtorActiveProperties = async (
+  realtor_id: string,
+  accessToken: string,
+  page: number
+) => {
+  return APIWithToken(accessToken)
+    .get(
+      `/realtor/active_or_paused_properties/${realtor_id}?page=${page}&status=active`
+    )
+    .then(({ data }) => data);
+};
+
+const getRealtorPausedProperties = async (
+  realtor_id: string,
+  accessToken: string,
+  page: number
+) => {
+  return APIWithToken(accessToken)
+    .get(
+      `/realtor/active_or_paused_properties/${realtor_id}?page=${page}&status=paused`
+    )
+    .then(({ data }) => data);
+};
+
 export {
   getRealtor,
   getRealtors,
@@ -68,4 +89,6 @@ export {
   updateRealtorDetails,
   getRealtorProperties,
   registerRealtorAccount,
+  getRealtorActiveProperties,
+  getRealtorPausedProperties
 };

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import pic from "../../assets/images/estate.jpg";
 import { Button } from "flowbite-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
-import { useRealtorAdminContext } from "./RealtorAdminContext";
 import { changeAccountStatus, updateRealtorDetails } from "../../api/realtors";
+import { toast } from "react-toastify";
 
 const initialValues = {
   company_name: "",
@@ -206,7 +206,9 @@ export default function Settings() {
           type="button"
           className="full-btn mt-14"
           disabled={!newChanges}
-          onClick={() => updateRealtorMutation.mutate()}
+          onClick={() => updateRealtorMutation.mutateAsync().then(() => {
+            toast.success("Saved Changes!")
+          })}
         >
           Save
         </Button>

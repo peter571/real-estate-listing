@@ -12,11 +12,16 @@ from app.middleware.authenticate import authenticate_user
 @bp.get('/favorites/<user_id>')
 @authenticate_user
 def get_user_favorites(user_id):
+    page_number = request.args.get("page", 1, type=int)
+    pagination_result = Favorite.query.filter_by(
+        user_id=user_id).paginate(page=page_number, per_page=20)
+
     favorite_items = [
-        item.property_id for item in Favorite.query.filter_by(user_id=user_id).all()]
+        item.property_id for item in pagination_result.items]
+
     # print(favorite_items)
     if favorite_items is None:
-        return jsonify([]), 200
+        return jsonify({"properties": [], "pages": 0}), 200
     try:
         favorite_items_with_details = []
         for item in favorite_items:
@@ -25,7 +30,7 @@ def get_user_favorites(user_id):
             serialized_results["property_images"] = item_results.get_property_images(
             )
             favorite_items_with_details.append(serialized_results)
-        return jsonify(favorite_items_with_details), 200
+        return jsonify({"properties": favorite_items_with_details, "pages": pagination_result.pages}), 200
     except Exception as e:
         return jsonify(e), 500
 
@@ -42,7 +47,7 @@ def add_to_favorite():
         if result != None:
             return jsonify(result.serialize()), 200
         new_favorite = Favorite(id=str(uuid.uuid4()),
-                                property_id=request_data['property_id'], 
+                                property_id=request_data['property_id'],
                                 user_id=request_data['user_id'])
 
         db.session.add(new_favorite)

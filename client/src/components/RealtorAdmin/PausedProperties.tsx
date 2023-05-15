@@ -1,17 +1,24 @@
-import React from "react";
-import { Table } from "flowbite-react";
+import React, { useState } from "react";
+import { Pagination, Table } from "flowbite-react";
 import PropertyRow from "./PropertyRow";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
-import { getRealtorProperties } from "../../api/realtors";
+import { getRealtorPausedProperties, getRealtorProperties } from "../../api/realtors";
+import SpinnerLoader from "../Loader/Spinner";
+import { usePagination } from "../../hooks/usePagination";
 
 export default function PausedProperties() {
-  const { realtorUser } = useAuth();
-  const { data: realtorProperties } = useQuery({
+  const { realtorUser, currentUser } = useAuth();
+  const { currentPage, onPageChange } = usePagination()
+
+  const { data: realtorProperties, isLoading } = useQuery({
     enabled: realtorUser !== null,
-    queryKey: ["realtor_properties", realtorUser!.id],
-    queryFn: () => getRealtorProperties(realtorUser!.id),
+    queryKey: ["paused_properties", currentPage],
+    queryFn: () => getRealtorPausedProperties(realtorUser!.id, currentUser.accessToken, currentPage),
   });
+
+  if (isLoading) return <SpinnerLoader />
+
   return (
     <div className="p-5">
       <b className="">Paused Properties</b>
@@ -39,13 +46,26 @@ export default function PausedProperties() {
         </Table.Head>
         <Table.Body className="divide-y">
           {realtorProperties &&
-            realtorProperties
+            realtorProperties['properties']
               .filter((item: PropertyDetailsCard) => !item.active)
               .map((property: PropertyDetailsCard) => (
                 <PropertyRow key={property.id} {...property} />
               ))}
         </Table.Body>
       </Table>
+      <div className="flex items-center justify-center text-center py-10">
+        {realtorProperties["pages"] > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            layout="pagination"
+            onPageChange={onPageChange}
+            showIcons={true}
+            totalPages={realtorProperties["pages"]}
+            previousLabel="Go back"
+            nextLabel="Go forward"
+          />
+        )}
+      </div>
     </div>
   );
 }

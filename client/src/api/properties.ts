@@ -5,9 +5,9 @@ import { API, APIWithToken } from "./axiosInstance";
  * Properties API requests
  */
 
-const getAllProperties = async () => {
+const getAllProperties = async (page: number) => {
   return await API()
-    .get("/property/all_properties")
+    .get("/property/all_properties?page=" + page)
     .then(({ data }) => data);
 };
 
@@ -67,6 +67,14 @@ const deleteProperty = async (
     .then(({ data }) => data);
 };
 
+const searchProperties = async (values: SearchProps, page: number) => {
+  return await API()
+    .get(
+      `/property/search_properties?search_term=${values.search_term}&property_type=${values.type}&min_price=${values.min_price}&max_price=${values.max_price}&bedrooms=${values.beds}&bathrooms=${values.baths}&category=${values.category}&page=${page}&max_area=${values.area_max}`
+    )
+    .then(({ data }) => data);
+};
+
 export {
   getAllProperties,
   getPropertyById,
@@ -74,4 +82,5 @@ export {
   updateProperty,
   updatePropertyAvailability,
   deleteProperty,
+  searchProperties
 };

@@ -12,11 +12,17 @@ from app.middleware.authenticate import authenticate_user
 
 @bp.route('/property/all_properties')
 def get_all_properties():
+    page_number = request.args.get('page', 1, type=int)
     # Query the table with all properties
-    properties = Property.query.filter(Property.active == True).all()
+    pagination_properties = Property.query.filter(
+        Property.active == True).paginate(page=page_number, per_page=20)
+
     # If properties is None return a empty list
-    if properties == None:
-        return [], 200
+    if pagination_properties == None:
+        return jsonify({"properties": [], "pages": 0}), 200
+    # Extract pagination items and number of pages
+    properties = pagination_properties.items
+    number_of_pages = pagination_properties.pages
     # init an empty list
     list_items_with_images = []
 
@@ -26,7 +32,11 @@ def get_all_properties():
         listed_property["property_images"] = property_item.get_property_images()
         list_items_with_images.append(listed_property)
 
-    return jsonify(list_items_with_images)
+    response_data = {
+        "properties": list_items_with_images,
+        "pages": number_of_pages
+    }
+    return jsonify(response_data)
 
 # Get a property of a specific ID
 
@@ -156,7 +166,6 @@ def update_property_availability(realtor_id, property_id):
 @bp.delete('/property/delete_property/<realtor_id>/<property_id>')
 @authenticate_user
 def delete_property(realtor_id, property_id):
-    print(realtor_id, property_id)
     property_details = Property.query.get(property_id)
 
     if property_details is None:
@@ -178,36 +187,62 @@ def delete_property(realtor_id, property_id):
 @bp.get('/property/search_properties')
 def search_properties():
     # Extract all arguments from request
-    search_text = request.args.get('search_text')
+    search_text = request.args.get('search_term')
     min_price = request.args.get('min_price')
     max_price = request.args.get('max_price')
     bedrooms = request.args.get('bedrooms')
     bathrooms = request.args.get('bathrooms')
     category = request.args.get('category')
     property_type = request.args.get('property_type')
+    max_area = request.args.get("max_area")
+    page_number = request.args.get('page', 1, type=int)
 
-    # Query the properties that match arguments
-    results = Property.query.filter(
-        Property.location.like('%{}%'.format(search_text)),
-        Property.title.like('%{}%'.format(search_text)),
-        Property.description.like('%{}%'.format(search_text)),
-        Property.address.like('%{}%'.format(search_text)),
-        Property.category == category,
-        Property.property_type == property_type,
-        Property.price >= min_price,
-        Property.price <= max_price,
-        Property.bathrooms <= bathrooms,
-        Property.bedrooms <= bedrooms
-    ).all()
+    # print(request.args, len(category))
+
+    # define the base query with the search conditions
+    query = Property.query.filter(
+        db.or_(
+            Property.location.like('%{}%'.format(search_text)),
+            Property.category.like('%{}%'.format(search_text)),
+            Property.description.like('%{}%'.format(search_text)),
+            Property.address.like('%{}%'.format(search_text))
+        )
+    )
+
+    # add additional filters based on the search criteria
+    if len(category):
+        query = query.filter(Property.category == category.lower())
+        print("category")
+    if len(property_type):
+        query = query.filter(Property.property_type == property_type)
+        print("type")
+    if min_price and not (min_price == "" or min_price == "0"):
+        query = query.filter(Property.price >= int(min_price))
+        print("min-price")
+    if max_price and not (max_price == "" or max_price == "0"):
+        query = query.filter(Property.price <= int(max_price))
+        print("max-price")
+    if bathrooms and not (bathrooms == "" or bathrooms == "0"):
+        query = query.filter(Property.bathrooms <= int(bathrooms))
+        print("bath")
+    if bedrooms and not (bedrooms == "" or bedrooms == "0"):
+        query = query.filter(Property.bedrooms <= int(bedrooms))
+        print("beds")
+    if max_area and not (max_area == "" or max_area == "0"):
+        query = query.filter(Property.size >= int(max_area))
+        print("size")
+
+    # query all searches
+    results = query.paginate(page=page_number, per_page=20)
 
     if results is None:
-        return jsonify([]), 200
+        return jsonify({"results": [], "pages": 0}), 200
 
     list_items_with_images = []
     # Iterate the properties while appending the list with images of the property
-    for property_item in results:
+    for property_item in results.items:
         listed_property = property_item.serialize()
         listed_property["property_images"] = property_item.get_property_images()
         list_items_with_images.append(listed_property)
 
-    return jsonify(list_items_with_images)
+    return jsonify({"results": list_items_with_images, "pages": results.pages})
