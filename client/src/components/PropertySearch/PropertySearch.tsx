@@ -32,8 +32,11 @@ export default function PropertySearch() {
 
   return (
     <div className="">
+      <div className="w-full fixed z-10 top-16 left-0 bg-white -mt-2">
       <SearchBar />
-      <div className="grid grid-cols-3 col-span-1 gap-4 py-10">
+      </div>
+      
+      <div className="grid grid-cols-3 col-span-1 gap-4 py-10 mt-24">
         {allProperties["results"].length === 0 && (
           <h1>No matching properties!</h1>
         )}

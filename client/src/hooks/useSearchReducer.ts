@@ -39,6 +39,8 @@ function reducer(state: SearchProps, action: SearchAction): SearchProps {
       return { ...state, max_price: action.payload };
     case "AreaMax":
       return { ...state, area_max: action.payload };
+    case "Reset":
+      return { ...initialState, search_term: state.search_term }  
     default:
       return state;
   }

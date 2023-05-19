@@ -17,42 +17,52 @@ import {
   ProtectedRoute,
   ProtectedRouteAdmin,
 } from "./ProtectedRoute/ProtectedRoute";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import PropertySearch from "./components/PropertySearch/PropertySearch";
 
 function App() {
   const location = useLocation();
 
   return (
-    <div className="bg-bodycolor min-h-screen scroll-smooth px-3 sm:px-10">
+    <div className="bg-bodycolor min-h-screen scroll-smooth px-3 sm:px-10 relative">
       <ToastContainer />
       <div className="w-full">
         <NavigationBar />
-        {location.pathname === "/all-properties" && <SearchBar />}
+        <div className="w-full fixed top-16 z-10 bg-white left-0 -mt-1">
+          {location.pathname === "/all-properties" && <SearchBar />}
+        </div>
       </div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/real-estate-agents" element={<RealtorsAgents />} />
-        <Route path="/real-estate-agents/:id" element={<RealtorProperties />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<Blog />} />
-        <Route path="/password/recover/:id" element={<ResetPassword />} />
-        <Route path="/password-reset" element={<ForgotPassword />} />
-        <Route path="/search-properties/:search_query" element={<PropertySearch />} />
-        <Route
-          path="/realtor-admin"
-          element={
-            <ProtectedRouteAdmin>
-              <RealtorAdmin />
-            </ProtectedRouteAdmin>
-          }
-        />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/all-properties" element={<Properties />} />
-      </Routes>
+      <div className="">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/real-estate-agents" element={<RealtorsAgents />} />
+          <Route
+            path="/real-estate-agents/:id"
+            element={<RealtorProperties />}
+          />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<Blog />} />
+          <Route path="/password/recover/:id" element={<ResetPassword />} />
+          <Route path="/password-reset" element={<ForgotPassword />} />
+          <Route
+            path="/search-properties/:search_query"
+            element={<PropertySearch />}
+          />
+          <Route
+            path="/realtor-admin"
+            element={
+              <ProtectedRouteAdmin>
+                <RealtorAdmin />
+              </ProtectedRouteAdmin>
+            }
+          />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/all-properties" element={<Properties />} />
+        </Routes>
+      </div>
     </div>
   );
 }

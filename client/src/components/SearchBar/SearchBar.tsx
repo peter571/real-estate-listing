@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { TextInput } from "flowbite-react";
+import { Tooltip } from "flowbite-react";
 import { FiSearch } from "react-icons/fi";
 import SelectInput from "../Inputs/SelectInput";
 import { filterData } from "../../utils";
 import { useSearch } from "../../contexts/SearchContext";
 import { useNavigate } from "react-router-dom";
+import { BsFilterSquare } from "react-icons/bs";
 
 export default function SearchBar() {
   const { data, dispatch } = useSearch();
@@ -12,7 +13,7 @@ export default function SearchBar() {
   const navigate = useNavigate();
 
   return (
-    <ul className="grid grid-cols-4 lg:grid-cols-9 my-3 gap-4">
+    <ul className="grid grid-cols-4 lg:grid-cols-10 my-3 gap-4 px-4">
       <li className="col-span-2">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -33,7 +34,7 @@ export default function SearchBar() {
             }}
             onChange={(e) => {
               dispatch({ type: "SearchTerm", payload: e.target.value });
-              setSearchTerm(e.target.value)
+              setSearchTerm(e.target.value);
             }}
           />
         </div>
@@ -43,6 +44,18 @@ export default function SearchBar() {
           <SelectInput {...data} />
         </li>
       ))}
+      <li className="flex items-center justify-center">
+        <Tooltip content="Reset filters." placement="bottom">
+          <span
+            onClick={() => dispatch({ type: "Reset" })}
+            role="button"
+            className="flex gap-2 flex-row font-semibold"
+          >
+            <BsFilterSquare size={25} />
+            Reset
+          </span>
+        </Tooltip>
+      </li>
     </ul>
   );
 }

@@ -11,7 +11,7 @@ export default function AdminSidebar() {
   const { logout } = useAuth();
 
   return (
-    <div className="w-fit h-screen">
+    <div className="w-fit h-screen mt-16">
       <Sidebar aria-label="Sidebar content">
         <Sidebar.Items>
           <Sidebar.ItemGroup>

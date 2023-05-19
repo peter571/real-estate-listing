@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button } from "flowbite-react";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface FormValue {
   email: string;
@@ -10,17 +11,20 @@ interface FormValue {
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
+  const { resetPassword } = useAuth();
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: FormValue,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
-    // Handle form submission here, such as sending a request to the server
-    setSubmitting(false);
+    //
+    await resetPassword(values.email).finally(() => {
+      setSubmitting(false);
+    });
   };
 
   return (
-    <div className="flex justify-center align-items-center">
+    <div className="flex justify-center items-center h-screen">
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
@@ -28,6 +32,7 @@ export default function ForgotPassword() {
       >
         {({ isSubmitting, errors, touched }) => (
           <Form className="flex flex-col gap-4 w-full sm:w-[285px] mt-10">
+            <h1 className="font-bold text-center">Enter email</h1>
             <div className="flex flex-col">
               <Field
                 className="rounded-md"

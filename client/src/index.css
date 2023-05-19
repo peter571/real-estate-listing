@@ -5,6 +5,7 @@
 @layer base {
   body {
     font-family: "Quicksand", sans-serif;
+    background-color: "#F85A470E";
   }
 }
 
@@ -14,6 +15,10 @@
 
 .full-btn {
   @apply bg-reddish text-white !important;
+}
+
+.email-btn {
+  @apply bg-white text-blue-700 border-blue-700 focus:bg-gray-400 !important;
 }
 
 .text-input {

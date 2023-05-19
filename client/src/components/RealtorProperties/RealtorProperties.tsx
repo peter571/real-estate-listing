@@ -34,7 +34,7 @@ export default function RealtorProperties() {
   if (isLoading) return <SpinnerLoader />
 
   return (
-    <div className="grid divide-x grid-cols-5 h-screen">
+    <div className="grid divide-x grid-cols-5 h-screen mt-20">
       <div className="col-span-1">
         {realtor && (
           <div className="flex flex-col items-center pb-10 px-5">
@@ -64,7 +64,7 @@ export default function RealtorProperties() {
         )}
       </div>
       <div className="col-span-4">
-        <div className="grid grid-cols-3 gap-6 h-full px-3 overflow-y-auto">
+        <div className="grid grid-cols-3 gap-6 h-full px-3 overflow-y-auto pb-4">
           {realtorProperties &&
             realtorProperties["properties"].map(
               (property: PropertyDetailsCard) => (
@@ -72,7 +72,7 @@ export default function RealtorProperties() {
               )
             )}
         </div>
-        <div className="flex items-center justify-center text-center py-10">
+        <div className="flex items-center justify-center text-center py-10 mb-8">
           {realtorProperties["pages"] > 1 && (
             <Pagination
               currentPage={currentPage}

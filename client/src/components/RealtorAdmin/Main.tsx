@@ -8,7 +8,7 @@ import UploadProperty from "./UploadProperty";
 export default function Main() {
   const { selectedTab } = useRealtorAdminContext();
   return (
-    <section className="w-full overflow-y-auto h-screen scrollbar-hide">
+    <section className="w-full overflow-y-auto h-screen scrollbar-hide mt-16">
       {selectedTab === "properties" && <RealtorProperties />}
       {selectedTab === "uploadproperty" && <UploadProperty />}
       {selectedTab === "pausedproperties" && <PausedProperties />}

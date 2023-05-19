@@ -7,15 +7,15 @@ interface RealtorFormValues {
   contact: string;
 }
 
-interface SearchProps{
-  type: string
-  category: string
-  baths: string | number
-  beds: string | number
-  min_price: string | number
-  max_price: string | number
-  search_term: string
-  area_max: string | number
+interface SearchProps {
+  type: string;
+  category: string;
+  baths: string | number;
+  beds: string | number;
+  min_price: string | number;
+  max_price: string | number;
+  search_term: string;
+  area_max: string | number;
   [key: string]: string | number;
 }
 
@@ -27,11 +27,12 @@ type SearchAction =
   | { type: "Beds"; payload: number | string }
   | { type: "MinPrice"; payload: number | string }
   | { type: "AreaMax"; payload: number | string }
-  | { type: "MaxPrice"; payload: number | string };
+  | { type: "MaxPrice"; payload: number | string }
+  | { type: "Reset" };
 
 interface SearchContextState {
-  data: SearchProps
-  dispatch: React.Dispatch<SearchAction>
+  data: SearchProps;
+  dispatch: React.Dispatch<SearchAction>;
 }
 
 interface RealtorDetails extends RealtorFormValues {
@@ -46,16 +47,16 @@ type ActionType = "activate" | "deactivate";
 interface NewPropertyProps {
   realtor_id: string;
   propertyDetails: Object;
-  userToken: string
+  userToken: string;
 }
 
 interface RealtorObject extends RealtorFormValues {
-  user_id: string
+  user_id: string;
 }
 
 interface RealtorAccountProps {
-  userToken: string
-  realtorDetails: RealtorObject
+  userToken: string;
+  realtorDetails: RealtorObject;
 }
 
 interface PropertyFormValues {
@@ -93,14 +94,24 @@ interface UpdatePropertyProps {
   realtor_id: string;
   property_id: string;
   propertyDetails: Object;
-  userToken: string
+  userToken: string;
 }
 
 interface PropertyModalProp {
-  show: boolean
-  property_id: null | string
+  show: boolean;
+  property_id: null | string;
 }
 
-type FollowAction = "follow" | "unfollow"
+interface EmailAgentModalProp {
+  data: { show: boolean; realtor_id: string | null };
+  setShowEmailAgentModal: React.Dispatch<
+    React.SetStateAction<{
+      show: boolean;
+      realtor_id: string | null;
+    }>
+  >;
+}
 
-type AddToFavoriteAction = "add" | "remove"
+type FollowAction = "follow" | "unfollow";
+
+type AddToFavoriteAction = "add" | "remove";

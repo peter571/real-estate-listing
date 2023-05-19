@@ -21,7 +21,7 @@ export default function FavoriteItems() {
 
   return (
     <div>
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-4 pt-20">
       {favoriteProperties["properties"].length === 0 && <h1>You have not added any favorites!</h1>}
       {Array.isArray(favoriteProperties["properties"]) &&
         favoriteProperties["properties"].map((property: PropertyDetailsCard) => {

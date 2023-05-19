@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Button } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="flex justify-center align-items-center">
+    <div className="flex justify-center items-center h-screen">
       <Formik
         initialValues={{ password: "", repeatPassword: "" }}
         validationSchema={validationSchema}

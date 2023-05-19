@@ -12,7 +12,7 @@ export default function Hero() {
   const { dispatch } = useSearch()
 
   return (
-    <div className="flex flex-col gap-8 justify-center items-center h-[500px] relative">
+    <div className="flex flex-col gap-8 justify-center items-center h-[500px] relative mt-16">
       <blockquote className="text-5xl sm:text-6xl font-bold leading-[69px] text-center text-white backdrop-contrast-50 bg-white/30 p-2">
         {" "}
         Discover your perfect home.
