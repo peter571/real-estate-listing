@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
 import { Button, Modal, TextInput, Label, Textarea } from "flowbite-react";
+import { useQuery } from "@tanstack/react-query";
+import { getRealtor } from "../../api/realtors";
 
 export default function EmailAgentModal({
   data,
@@ -10,7 +12,14 @@ export default function EmailAgentModal({
   const emailRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
 
-  function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  const { data: propertyDetails } = useQuery({
+    queryKey: ["property_owner", data.realtor_id],
+    enabled: data.realtor_id !== null,
+    queryFn: () => getRealtor(data.realtor_id!),
+  });
+
+  
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (fullNamesRef && emailRef && messageRef) {
       const userMessage = {
@@ -35,7 +44,7 @@ export default function EmailAgentModal({
       >
         <Modal.Header />
         <Modal.Body>
-          <div className="space-y-6 px-6 pb-4 sm:pb-4 lg:px-4 xl:pb-4">
+          <form onSubmit={handleSubmit} className="space-y-6 px-6 pb-4 sm:pb-4 lg:px-4 xl:pb-4">
             <h3 className="text-xl text-gray-900 dark:text-white font-semibold">
               Find out more about this property.
             </h3>
@@ -87,7 +96,7 @@ export default function EmailAgentModal({
             </div>
 
             <div className="w-full flex justify-center items-center">
-              <Button className="w-2/3 full-btn" onClick={handleSubmit}>
+              <Button type="submit" className="w-2/3 full-btn">
                 Email Agent
               </Button>
             </div>
@@ -101,7 +110,7 @@ export default function EmailAgentModal({
               to you. This consent applies even if you are on a corporate, state
               or national Do Not Call list.
             </p>
-          </div>
+          </form>
         </Modal.Body>
       </Modal>
     </React.Fragment>

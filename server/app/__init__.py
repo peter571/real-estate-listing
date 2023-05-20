@@ -7,15 +7,23 @@ from app.realtors import bp as realtors_bp
 from app.favorites import bp as favorites_bp
 from app.properties import bp as properties_bp
 from app.user_followers import bp as user_followers_bp
+from app.extensions import mail
+from app.extensions import configuration
+import os
 
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    
     CORS(app)
     # Initialize Flask extensions here
     # Init db
     db.init_app(app)
+
+    #Init mail service
+    #mail.init_app(app)
+    configuration.api_key['api-key'] = os.environ.get('MAIL_KEY')
 
     # Register blueprints here
 

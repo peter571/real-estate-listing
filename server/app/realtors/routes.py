@@ -16,9 +16,8 @@ def get_realtors():
         return jsonify([]), 200
     return jsonify([realtor.serialize() for realtor in realtors]), 200
 
+
 # Registers a new realtor
-
-
 @bp.post('/realtor/register_profile')
 @authenticate_user
 def register_realtor():
@@ -111,14 +110,14 @@ def get_realtor_active_or_paused_properties(realtor_id):
 
     if status == "active":
         pagination_result = Realtor.query.get(realtor_id).properties.filter(
-        Property.active == True).paginate(page=page_number, per_page=10)
+            Property.active == True).paginate(page=page_number, per_page=10)
 
     elif status == "paused":
         pagination_result = Realtor.query.get(realtor_id).properties.filter(
-        Property.active == False).paginate(page=page_number, per_page=10)
+            Property.active == False).paginate(page=page_number, per_page=10)
     else:
-        return jsonify({ "error": "No status available"})
-    
+        return jsonify({"error": "No status available"})
+
     if pagination_result is None:
         return jsonify({"properties": [], "pages": 0})
 

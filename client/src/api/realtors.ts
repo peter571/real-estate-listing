@@ -81,6 +81,10 @@ const getRealtorPausedProperties = async (
     .then(({ data }) => data);
 };
 
+const sendEmailToRealtor = async (from: string, to: string, message: string) => {
+  return API().post('/send_mail', { from, to, message }).then(({ data }) => data)
+}
+
 export {
   getRealtor,
   getRealtors,
@@ -90,5 +94,6 @@ export {
   getRealtorProperties,
   registerRealtorAccount,
   getRealtorActiveProperties,
-  getRealtorPausedProperties
+  getRealtorPausedProperties,
+  sendEmailToRealtor
 };

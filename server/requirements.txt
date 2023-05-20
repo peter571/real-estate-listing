@@ -3,3 +3,5 @@ python-dotenv
 flask_sqlalchemy
 firebase_admin
 flask-cors
+flask-mail
+sib_api_v3_sdk

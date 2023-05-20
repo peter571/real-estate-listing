@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { useSearch } from "../../contexts/SearchContext";
+import { initialState } from "../../hooks/useSearchReducer";
 
 interface OptionProp {
   name: string;
@@ -17,11 +18,33 @@ export default function SelectInput({
   placeholder,
   queryName,
 }: SelectInputProps) {
-  const { dispatch } = useSearch();
+  const { data, dispatch } = useSearch();
+
+  const getSelectedValue = () => {
+    switch (queryName) {
+      case "type":
+        return data.type;
+      case "category":
+        return data.category;
+      case "bathsMin":
+        return data.baths;
+      case "roomsMin":
+        return data.beds;
+      case "minPrice":
+        return data.min_price;
+      case "maxPrice":
+        return data.max_price;
+      case "areaMax":
+        return data.area_max;
+      case "Reset":
+        return "";
+      default:
+        return "";
+    }
+  };
 
   return (
     <select
-      id="countries"
       className="bg-[#f3f3f3] border-0 text-gray-900 text-sm font-semibold rounded-lg focus:ring-0 block w-full p-2 cursor-pointer"
       name={queryName}
       placeholder={placeholder}
@@ -48,10 +71,13 @@ export default function SelectInput({
           case "areaMax":
             dispatch({ type: "AreaMax", payload: e.target.value });
             break;
+          case "Reset":
+            return { ...initialState, search_term: data.search_term };
           default:
             break;
         }
       }}
+      value={getSelectedValue()}
     >
       <option className="text-[#161616] text-sm font-semibold" value="">
         {placeholder}

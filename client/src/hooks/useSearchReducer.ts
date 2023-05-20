@@ -10,7 +10,7 @@ type State = {
   search_term: string;
 };
 
-const initialState: SearchProps = {
+export const initialState: SearchProps = {
   type: "",
   category: "",
   baths: 0,

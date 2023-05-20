@@ -28,11 +28,6 @@ export default function RealtorAdminProvider({
 }) {
   const [selectedTab, dispatch] = useTabState();
   const { currentUser } = useAuth();
-  const { data } = useQuery({
-    queryKey: ["realtor", currentUser?.uid],
-    enabled: currentUser !== null,
-    queryFn: () => getRealtorByUserId(currentUser.uid, currentUser.accessToken)
-  })
 
   const handleTabClick = (tab: Tab) => {
     dispatch({ type: "SELECT_TAB", payload: tab });

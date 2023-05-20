@@ -12,7 +12,7 @@ export default function FavoriteItems() {
   const { currentPage, onPageChange } = usePagination()
 
   const { data: favoriteProperties, isLoading } = useQuery({
-    queryKey: ["favorites", currentUser.uid],
+    queryKey: ["favorites", currentPage],
     enabled: currentUser !== null,
     queryFn: () => getUserFavorites(currentUser.uid, currentUser.accessToken, currentPage),
   });

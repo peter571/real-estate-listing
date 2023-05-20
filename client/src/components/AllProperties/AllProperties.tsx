@@ -17,14 +17,13 @@ export default function AllProperties() {
 
   function onPageChange(page: number) {
     setCurrentPage(page);
-    console.log(page);
     setPageParam({ page: page.toString() });
   }
 
   if (isLoading) return <SpinnerLoader />;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen mt-32">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {allProperties &&
           allProperties["properties"].map((property: PropertyDetailsCard) => (
