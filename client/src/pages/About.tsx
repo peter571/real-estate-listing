@@ -2,7 +2,7 @@ import React from "react";
 
 export default function About() {
   return (
-    <section className="flex justify-center flex-col md:px-28 lg:px-36 mt-14 mb-6">
+    <section className="flex justify-center flex-col md:px-28 lg:px-36 mb-6 mt-20">
       <p className="text-xl">
         Introducing the latest game-changer in the real estate industry - our
         innovative real estate venture that aims to connect people searching for

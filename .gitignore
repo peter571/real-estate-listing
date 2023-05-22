@@ -12,7 +12,7 @@ data2.json
 
 /server/.flaskenv
 /server/main.py
-
+/var
 # Logs
 logs
 *.log

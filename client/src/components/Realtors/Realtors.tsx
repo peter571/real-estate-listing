@@ -15,7 +15,7 @@ export default function Realtors() {
 
   return (
     <div>
-      <h1 className="whitespace-nowrap text-3xl my-6 font-semibold">
+      <h1 className="whitespace-nowrap text-3xl my-6 font-semibold py-3">
         Meet trusted Realtors around you
       </h1>
       <div className="grid grid-cols-4 gap-4">

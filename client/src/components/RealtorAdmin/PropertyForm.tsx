@@ -48,7 +48,7 @@ export default function PropertyForm({
     },
   });
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: PropertyFormValues,
     {
       setSubmitting,
@@ -57,36 +57,35 @@ export default function PropertyForm({
   ) => {
     // handle form submission
     if (form_type === "create") {
-      try {
-        createPropertyMutation
-          .mutateAsync({
-            realtor_id: realtorUser!.id,
-            propertyDetails: {
-              location: values.location,
-              description: descriptionRef.current?.value,
-              address: values.address,
-              bedrooms: values.bedrooms,
-              bathrooms: values.bathrooms,
-              property_type: values.property_type,
-              category: values.category,
-              property_images: imagePreviews,
-              price: values.price,
-              size: values.size,
-            },
-            userToken: currentUser!.accessToken
-          })
-          .then(() => {
-            resetForm({ values: "" });
-            descriptionRef.current!.value = "";
-            setImagePreviews([]);
-          });
-      } catch (error) {
-      } finally {
-        setSubmitting(false);
-      }
+      createPropertyMutation
+        .mutateAsync({
+          realtor_id: realtorUser!.id,
+          propertyDetails: {
+            location: values.location,
+            description: descriptionRef.current?.value,
+            address: values.address,
+            bedrooms: values.bedrooms,
+            bathrooms: values.bathrooms,
+            property_type: values.property_type,
+            category: values.category,
+            property_images: imagePreviews,
+            price: values.price,
+            size: values.size,
+          },
+          userToken: currentUser!.accessToken,
+        })
+        .then(() => {
+          resetForm({ values: "" });
+          descriptionRef.current!.value = "";
+          setImagePreviews([]);
+          setSubmitting(false);
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
     } else if (form_type === "update") {
-      try {
-        updatePropertyMutation.mutate({
+      updatePropertyMutation
+        .mutateAsync({
           realtor_id: realtorUser!.id,
           property_id: initialValues!.property_id,
           propertyDetails: {
@@ -101,12 +100,14 @@ export default function PropertyForm({
             price: values.price,
             size: values.size,
           },
-          userToken: currentUser!.accessToken
+          userToken: currentUser!.accessToken,
+        })
+        .then(() => {
+          setSubmitting(false);
+        })
+        .finally(() => {
+          setSubmitting(false);
         });
-      } catch (error) {
-      } finally {
-        setSubmitting(false);
-      }
     }
   };
 

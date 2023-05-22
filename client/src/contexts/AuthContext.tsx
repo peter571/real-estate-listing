@@ -47,7 +47,7 @@ export default function AuthContextProvider({
   const [loading, setLoading] = useState(true);
   
   const { data: realtorDetails } = useQuery({
-    queryKey: ["realtor", currentUser?.uid],
+    queryKey: ["realtor-account", currentUser?.uid],
     enabled: currentUser !== null,
     queryFn: async () => getRealtorByUserId(currentUser!.uid, await currentUser!.accessToken),
   });

@@ -1,12 +1,11 @@
-from app.extensions import db
-
+from app.extensions import db 
 
 # Property image model
 
 
 class Favorite(db.Model):
     id = db.Column(db.String, primary_key=True)
-    property_id = db.Column(db.Integer, db.ForeignKey('property.id'),
+    property_id = db.Column(db.String, db.ForeignKey('property.id'),
                             index=True, unique=False)
     user_id = db.Column(db.String, index=True, unique=False)
 

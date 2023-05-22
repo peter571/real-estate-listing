@@ -7,7 +7,7 @@ import pickle
 
 class Property(db.Model):
     id = db.Column(db.String, primary_key=True)
-    owner_id = db.Column(db.Integer, db.ForeignKey('realtor.id'),
+    owner_id = db.Column(db.String, db.ForeignKey('realtor.id'),
                          index=True, unique=False)
     location = db.Column(db.String, index=True, unique=False)
     description = db.Column(db.Text, index=False, unique=False)
@@ -19,11 +19,11 @@ class Property(db.Model):
     property_type = db.Column(db.String, index=False, unique=False)
     active = db.Column(db.Boolean, index=False, default=True, unique=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
-    property_images = db.Column(db.String, index=False, unique=False)
+    property_images = db.Column(db.PickleType, index=False, unique=False)
     size = db.Column(db.String, index=False, unique=False)
 
     def get_property_images(self):
-        return pickle.loads(self.property_images)
+        return pickle.loads(self.property_images.decode('utf-8'))
 
     def __repr__(self):
         return f'<Property "{self.id}">'

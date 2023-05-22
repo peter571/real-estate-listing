@@ -10,7 +10,7 @@ export default function Trending() {
 
   const { data: allProperties } = useQuery({
     queryKey: ["properties-trending"],
-    queryFn: () => getAllProperties(2),
+    queryFn: () => getAllProperties(1),
   });
   return (
     <section className="rounded-md py-20">

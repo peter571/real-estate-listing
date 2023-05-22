@@ -1,14 +1,12 @@
 from datetime import datetime
 from app.extensions import db
-from app.models.property import Property
-from app.models.realtor_follower import Realtor_follower
 
 # Realtor model
 
 
 class Realtor(db.Model):
     id = db.Column(db.String, primary_key=True)
-    realtor_id = db.Column(db.Integer, index=True, unique=True)
+    realtor_id = db.Column(db.String, index=True, unique=True)
     company_name = db.Column(db.String, index=False, unique=False)
     description = db.Column(db.Text, index=False, unique=False)
     profile_picture = db.Column(db.String, index=False, unique=False)

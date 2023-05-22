@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Pagination, Table } from "flowbite-react";
+import { Button, Pagination, Table } from "flowbite-react";
 import PropertyRow from "./PropertyRow";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
 import { getRealtorPausedProperties, getRealtorProperties } from "../../api/realtors";
 import SpinnerLoader from "../Loader/Spinner";
 import { usePagination } from "../../hooks/usePagination";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 export default function PausedProperties() {
   const { realtorUser, currentUser } = useAuth();
@@ -45,6 +46,11 @@ export default function PausedProperties() {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
+          {realtorProperties['properties'].length === 0 && (
+            <Table.Row className="ml-5 my-10">
+              <Table.Cell className="font-bold">No properties yet!</Table.Cell>
+            </Table.Row>
+          )}
           {realtorProperties &&
             realtorProperties['properties']
               .filter((item: PropertyDetailsCard) => !item.active)

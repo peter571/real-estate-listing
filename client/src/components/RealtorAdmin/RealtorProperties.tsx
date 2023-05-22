@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table } from "flowbite-react";
+import { Button, Table } from "flowbite-react";
 import PropertyRow from "./PropertyRow";
 import { useQuery } from "@tanstack/react-query";
 import { getRealtorActiveProperties } from "../../api/realtors";
@@ -7,15 +7,23 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Pagination } from "flowbite-react";
 import SpinnerLoader from "../Loader/Spinner";
 import { usePagination } from "../../hooks/usePagination";
+import { FaLongArrowAltRight } from "react-icons/fa";
+import { useRealtorAdminContext } from "./RealtorAdminContext";
 
 export default function RealtorProperties() {
   const { realtorUser, currentUser } = useAuth();
-  const {currentPage, onPageChange } = usePagination();
+  const { currentPage, onPageChange } = usePagination();
+  const { handleTabClick } = useRealtorAdminContext();
 
   const { data: realtorProperties, isLoading } = useQuery({
     enabled: realtorUser !== null,
     queryKey: ["active_properties", currentPage],
-    queryFn: () => getRealtorActiveProperties(realtorUser!.id, currentUser.accessToken, currentPage),
+    queryFn: () =>
+      getRealtorActiveProperties(
+        realtorUser!.id,
+        currentUser.accessToken,
+        currentPage
+      ),
   });
 
   if (isLoading) return <SpinnerLoader />;
@@ -45,6 +53,22 @@ export default function RealtorProperties() {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
+          {realtorProperties["properties"].length === 0 && (
+            <Table.Row className="my-10 ml-5">
+              <Table.Cell>
+                <h1 className="font-bold">No properties yet!</h1>
+                <Button
+                  color="gray"
+                  className="flex items-center my-5"
+                  type="button"
+                  onClick={() => handleTabClick("uploadproperty")}
+                >
+                  <span className="mr-2">Upload properties</span>
+                  <FaLongArrowAltRight />
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          )}
           {realtorProperties &&
             realtorProperties["properties"]
               .filter((item: PropertyDetailsCard) => item.active)

@@ -68,13 +68,14 @@ def create_property(realtor_id):
         return jsonify("Unauthorized user"), 401
 
     request_data = request.get_json()
+    print(request_data['property_images'])
     # Create a new property
     new_property = Property(id=str(uuid.uuid4()),
                             owner_id=realtor_id,
                             location=request_data['location'],
                             description=request_data['description'],
                             property_images=pickle.dumps(
-                                request_data['property_images']),
+                                request_data['property_images'], "utf-8"),
                             address=request_data['address'],
                             bedrooms=request_data['bedrooms'],
                             bathrooms=request_data['bathrooms'],
@@ -87,7 +88,7 @@ def create_property(realtor_id):
         db.session.add(new_property)
         db.session.commit()
 
-        return jsonify(f"{new_property.title} created successfully"), 201
+        return jsonify(f"{new_property.id} created successfully"), 201
     except Exception as e:
         db.session.rollback()
         return "An error occurred", 500
