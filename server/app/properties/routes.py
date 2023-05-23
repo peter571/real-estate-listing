@@ -3,7 +3,6 @@ from app.models.property import Property
 from app.models.realtor import Realtor
 from flask import jsonify, request
 from app.extensions import db
-import pickle
 import uuid
 from app.middleware.authenticate import authenticate_user
 
@@ -68,14 +67,13 @@ def create_property(realtor_id):
         return jsonify("Unauthorized user"), 401
 
     request_data = request.get_json()
-    print(request_data['property_images'])
+    
     # Create a new property
     new_property = Property(id=str(uuid.uuid4()),
                             owner_id=realtor_id,
                             location=request_data['location'],
                             description=request_data['description'],
-                            property_images=pickle.dumps(
-                                request_data['property_images'], "utf-8"),
+                            property_images=request_data['property_images'],
                             address=request_data['address'],
                             bedrooms=request_data['bedrooms'],
                             bathrooms=request_data['bathrooms'],
@@ -90,6 +88,7 @@ def create_property(realtor_id):
 
         return jsonify(f"{new_property.id} created successfully"), 201
     except Exception as e:
+        print(e)
         db.session.rollback()
         return "An error occurred", 500
 
@@ -111,8 +110,7 @@ def update_property(realtor_id, property_id):
     try:
         property_details.location = request_data['location']
         property_details.description = request_data['description']
-        property_details.property_images = pickle.dumps(
-            request_data['property_images'])
+        property_details.property_images = request_data['property_images']
         property_details.address = request_data['address']
         property_details.bedrooms = request_data['bedrooms']
         property_details.bathrooms = request_data['bathrooms']

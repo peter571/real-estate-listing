@@ -18,7 +18,7 @@ export default function RegisterRealtor() {
     mutationFn: registerRealtorAccount,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["realtor", currentUser?.uid],
+        queryKey: ["realtor-account"],
       });
       setProfilePic("");
       setShow(false);

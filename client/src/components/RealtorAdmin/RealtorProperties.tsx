@@ -55,7 +55,7 @@ export default function RealtorProperties() {
         <Table.Body className="divide-y">
           {realtorProperties["properties"].length === 0 && (
             <Table.Row className="my-10 ml-5">
-              <Table.Cell>
+              <Table.Cell className="">
                 <h1 className="font-bold">No properties yet!</h1>
                 <Button
                   color="gray"
@@ -69,7 +69,7 @@ export default function RealtorProperties() {
               </Table.Cell>
             </Table.Row>
           )}
-          {realtorProperties &&
+          {realtorProperties["properties"] &&
             realtorProperties["properties"]
               .filter((item: PropertyDetailsCard) => item.active)
               .map((property: PropertyDetailsCard) => (

@@ -9,7 +9,7 @@ import ForgotPassword from "./components/Auth/ForgotPassword";
 import RealtorsAgents from "./pages/RealtorsAgents";
 import RealtorProperties from "./components/RealtorProperties/RealtorProperties";
 import About from "./pages/About";
-import Blog from "./pages/Blog";
+//import Blog from "./pages/Blog";
 import RealtorAdmin from "./components/RealtorAdmin/RealtorAdmin";
 import Favorites from "./pages/Favorites";
 import Properties from "./pages/Properties";
@@ -26,7 +26,7 @@ function App() {
   const location = useLocation();
 
   return (
-    <div className="bg-bodycolor min-h-screen scroll-smooth px-3 sm:px-10 relative">
+    <div className=" min-h-screen scroll-smooth px-3 sm:px-10 relative">
       <ToastContainer />
       <div className="w-full bg-gray-400">
         <NavigationBar />
@@ -40,8 +40,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/real-estate-agents" element={<RealtorsAgents />} />
         <Route path="/real-estate-agents/:id" element={<RealtorProperties />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<Blog />} />
+        {/* <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<Blog />} /> */}
         <Route path="/password/recover/:id" element={<ResetPassword />} />
         <Route path="/password-reset" element={<ForgotPassword />} />
         <Route

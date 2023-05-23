@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNewProperty, updateProperty } from "../../api/properties";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
+import { uploadImages } from "../../api/utils";
 
 //Get Property types and categories list
 const typeList = filterData[0].items;
@@ -21,7 +22,9 @@ export default function PropertyForm({
   form_type: FormType;
   initialValues: InitValuesProps;
 }) {
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<(string | File)[]>([]);
+  const [selectedImages, setSelectedImages] = useState<(string | File)[]>([]);
+
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
   const { realtorUser, currentUser } = useAuth();
   const queryClient = useQueryClient();
@@ -30,6 +33,10 @@ export default function PropertyForm({
     mutationFn: createNewProperty,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["properties"] });
+      queryClient.invalidateQueries({ queryKey: ["realtor_properties"] });
+      queryClient.invalidateQueries({
+        queryKey: ["active_properties"],
+      });
       toast.success("Property added!");
     },
     onError: () => {
@@ -40,7 +47,15 @@ export default function PropertyForm({
   const updatePropertyMutation = useMutation({
     mutationFn: updateProperty,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["realtor_properties"] });
+      queryClient.invalidateQueries({
+        queryKey: ["realtor_properties"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["active_properties"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["paused_properties"],
+      });
       toast.success("Property updated!");
     },
     onError: () => {
@@ -84,6 +99,7 @@ export default function PropertyForm({
           setSubmitting(false);
         });
     } else if (form_type === "update") {
+      setSubmitting(true);
       updatePropertyMutation
         .mutateAsync({
           realtor_id: realtorUser!.id,
@@ -113,24 +129,43 @@ export default function PropertyForm({
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    const previews = [...imagePreviews];
+
+    if (files) {
+      setSelectedImages([...selectedImages, ...files]);
+    }
 
     if (files) {
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.readAsDataURL(files[i]);
         reader.onload = () => {
-          previews.push(reader.result as string);
-          setImagePreviews([...previews]);
+          imagePreviews.push(reader.result as string);
+          setImagePreviews([...imagePreviews]);
         };
       }
     }
+  };
+
+  const handleUploadImages = async () => {
+    const formData = new FormData();
+
+    selectedImages.forEach((image, index) => {
+      formData.append(`image${index}`, image);
+    });
+
+    return await uploadImages(currentUser.accessToken, formData).then(
+      (res) => res
+    );
   };
 
   const handleImageRemove = (index: number) => {
     const previews = [...imagePreviews];
     previews.splice(index, 1);
     setImagePreviews([...previews]);
+
+    const selected = [...selectedImages];
+    selected.splice(index, 1);
+    setSelectedImages([...selected]);
   };
 
   useEffect(() => {
@@ -234,7 +269,7 @@ export default function PropertyForm({
                 imagePreviews.map((preview, index) => (
                   <div className="my-1" key={index}>
                     <img
-                      src={preview}
+                      src={preview.toString()}
                       alt={`preview-${index}`}
                       className="w-32 h-24"
                     />
@@ -269,6 +304,9 @@ export default function PropertyForm({
               "Submit"
             )}
           </Button>
+          {/* <Button type="button" onClick={() => handleUploadImages()}>
+            Images
+          </Button> */}
         </Form>
       )}
     </Formik>
@@ -286,6 +324,7 @@ const validationSchema = Yup.object().shape({
     .required("Bathrooms is required")
     .min(1)
     .required("Minimum Value is 1"),
+  size: Yup.number().min(1).required("Minimum Value is 1"),
   property_type: Yup.string().required("Type is required"),
   category: Yup.string().required("Category is required"),
   price: Yup.number()

@@ -1,6 +1,7 @@
 from datetime import datetime
 from app.extensions import db
 import pickle
+from sqlalchemy.dialects.postgresql import ARRAY
 
 # Property model
 
@@ -19,11 +20,12 @@ class Property(db.Model):
     property_type = db.Column(db.String, index=False, unique=False)
     active = db.Column(db.Boolean, index=False, default=True, unique=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
-    property_images = db.Column(db.PickleType, index=False, unique=False)
+    property_images = db.Column(
+        ARRAY(db.String), default=[], index=False, unique=False)
     size = db.Column(db.String, index=False, unique=False)
 
     def get_property_images(self):
-        return pickle.loads(self.property_images.decode('utf-8'))
+        return self.property_images
 
     def __repr__(self):
         return f'<Property "{self.id}">'
