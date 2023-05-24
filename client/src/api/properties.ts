@@ -75,6 +75,10 @@ const searchProperties = async (values: SearchProps, page: number) => {
     .then(({ data }) => data);
 };
 
+const recentlyAddedProperties = async () => {
+  return API().get('/property/recently_added').then(({ data }) => data)
+}
+
 export {
   getAllProperties,
   getPropertyById,
@@ -82,5 +86,6 @@ export {
   updateProperty,
   updatePropertyAvailability,
   deleteProperty,
-  searchProperties
+  searchProperties,
+  recentlyAddedProperties
 };

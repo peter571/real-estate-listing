@@ -6,9 +6,13 @@ import { addToFavorites, checkPropertyIsFavorite } from "../../api/favorite";
 import { useAuth } from "../../contexts/AuthContext";
 import PropertyModal from "../PropertyModal/PropertyModal";
 import EmailAgentModal from "../EmailAgentModal/EmailAgentModal";
+import default_image from "../../assets/images/default_image.png";
+import { numberFormatter } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 export default function PropertyCard(props: PropertyDetailsCard) {
-  const { currentUser } = useAuth();
+  const { currentUser, isLoggedIn } = useAuth();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [showPropertyModalData, setShowPropertyModalData] =
     useState<PropertyModalProp>({ show: false, property_id: null });
@@ -49,12 +53,24 @@ export default function PropertyCard(props: PropertyDetailsCard) {
     },
   });
 
+  function favorite() {
+    if (isFavorite === "False" || isFavorite === undefined) {
+      return "gray";
+    } else {
+      return "red";
+    }
+  }
+
   return (
-    <div className="max-w-sm cursor-pointer relative bg-gray-50 drop-shadow-lg rounded-lg">
+    <div className="w-full md:max-w-sm cursor-pointer relative bg-gray-50 drop-shadow-lg rounded-lg">
       <img
         className="h-56 w-full object-cover rounded-md"
         alt="Property Image"
-        src={props.property_images[0]}
+        src={
+          props.property_images.length === 0
+            ? default_image
+            : props.property_images[0]
+        }
         role="button"
         onClick={() =>
           setShowPropertyModalData({ show: true, property_id: props.id })
@@ -62,14 +78,22 @@ export default function PropertyCard(props: PropertyDetailsCard) {
       />
 
       <div className="flex justify-between items-center py-2">
-        <h5 className="text-xl font-semibold tracking-tight text-gray-900 mx-3">
-          KSH {props.price.toLocaleString()}
+        <h5 className="xl:text-xl font-semibold tracking-tight text-gray-900 mx-3">
+          KSH {numberFormatter.format(Number(props.price))}
         </h5>
 
-        <Button className="m-2 email-btn" onClick={() => setShowEmailAgentModal({ show: true, realtor_id: props.owner_id })}>Email Agent</Button>
+        <Button
+          className="m-2 email-btn"
+          onClick={() =>
+            setShowEmailAgentModal({ show: true, realtor_id: props.owner_id })
+          }
+        >
+          Email Agent
+        </Button>
       </div>
 
       <p className="font-normal text-gray-700 mx-3">{props.address}</p>
+      
       <p className="flex justify-between mx-3 my-2">
         <span className="flex flex-row justify-center items-center p-2 gap-2 rounded-md bg-[#f3f3f3]">
           <FaBed color="#1E3240" />
@@ -84,23 +108,28 @@ export default function PropertyCard(props: PropertyDetailsCard) {
           <span className="text-sm font-semibold">{props.size}</span>
         </span>
       </p>
-      {currentUser && (
-        <span
-          role="button"
-          className="absolute top-4 right-4 rounded-md bg-white p-1"
-          onClick={() => addToFavoriteMutation.mutate()}
+
+      <span
+        role="button"
+        className="absolute top-4 right-4 rounded-md bg-white p-1"
+        onClick={() => {
+          if (isLoggedIn) {
+            addToFavoriteMutation.mutate();
+          } else {
+            navigate("/auth");
+          }
+        }}
+      >
+        <Tooltip
+          content={
+            isFavorite === "True"
+              ? "Remove from favorites."
+              : "Add to favorites."
+          }
         >
-          <Tooltip
-            content={
-              isFavorite === "True"
-                ? "Remove from favorites."
-                : "Add to favorites."
-            }
-          >
-            <FaHeart color={isFavorite === "False" ? "gray" : "red"} />
-          </Tooltip>
-        </span>
-      )}
+          <FaHeart color={favorite()} />
+        </Tooltip>
+      </span>
 
       <span className="absolute top-4 left-4 rounded-md text-sm font-semibold bg-[#F85A47] p-1 text-white">
         {props?.property_type.replace("_", " ").charAt(0).toUpperCase() +

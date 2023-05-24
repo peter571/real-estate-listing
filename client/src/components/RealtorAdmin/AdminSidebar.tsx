@@ -5,10 +5,12 @@ import { BsHouse, BsUpload, BsHouseFill } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import { useRealtorAdminContext } from "./RealtorAdminContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AdminSidebar() {
   const { handleTabClick, selectedTab } = useRealtorAdminContext();
   const { logout } = useAuth();
+  const queryClient = useQueryClient();
 
   return (
     <div className="w-fit h-screen mt-16">
@@ -50,7 +52,11 @@ export default function AdminSidebar() {
             </Sidebar.Item>
             <Sidebar.Item
               role="button"
-              onClick={() => logout()}
+              onClick={async () => {
+                await logout().then(() => {
+                  queryClient.clear();
+                });
+              }}
               icon={FaSignOutAlt}
             >
               Sign Out

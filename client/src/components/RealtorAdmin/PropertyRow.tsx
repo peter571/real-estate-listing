@@ -9,13 +9,14 @@ import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
 import DeleteModal from "./DeleteModal";
 import UpdateModal from "./UpdateModal";
+import default_image from "../../assets/images/default_image.png";
 
 export default function PropertyRow(props: PropertyDetailsCard) {
   const { realtorUser, currentUser } = useAuth();
   const queryClient = useQueryClient();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [propertyId, setPropertyIdToUpdate] = useState<string | null>(null)
+  const [propertyId, setPropertyIdToUpdate] = useState<string | null>(null);
 
   const propertyStatusMutation = useMutation({
     mutationFn: () =>
@@ -37,7 +38,8 @@ export default function PropertyRow(props: PropertyDetailsCard) {
   });
 
   const deletePropertyMutation = useMutation({
-    mutationFn: () => deleteProperty(realtorUser!.id, props.id, currentUser.accessToken),
+    mutationFn: () =>
+      deleteProperty(realtorUser!.id, props.id, currentUser.accessToken),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["realtor_properties", props.owner_id],
@@ -57,7 +59,11 @@ export default function PropertyRow(props: PropertyDetailsCard) {
       <Table.Cell className="inline-flex align-middle gap-2 whitespace-nowrap font-medium text-gray-900">
         <img
           className="h-8 w-12 object-cover"
-          src={props.property_images[0]}
+          src={
+            props.property_images.length === 0
+              ? default_image
+              : props.property_images[0]
+          }
           alt="image"
         />
         <p className="w-56 truncate">{props.category}</p>
@@ -87,8 +93,8 @@ export default function PropertyRow(props: PropertyDetailsCard) {
           role="button"
           className="font-medium text-blue-600 hover:underline"
           onClick={() => {
-            setShowUpdateModal(true)
-            setPropertyIdToUpdate(props.id)
+            setShowUpdateModal(true);
+            setPropertyIdToUpdate(props.id);
           }}
         >
           Edit
@@ -102,7 +108,7 @@ export default function PropertyRow(props: PropertyDetailsCard) {
       <UpdateModal
         show={showUpdateModal}
         setShowUpdateModal={setShowUpdateModal}
-        propertyId={propertyId} 
+        propertyId={propertyId}
         setPropertyIdToUpdate={setPropertyIdToUpdate}
       />
     </Table.Row>

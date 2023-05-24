@@ -5,13 +5,19 @@ import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import RegisterRealtor from "../RegisterRealtor/RegisterRealtor";
 import { useAuth } from "../../contexts/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function NavigationBar() {
   const navigate = useNavigate();
   const { currentUser, logout, realtorUser } = useAuth();
+  const queryClient = useQueryClient();
 
   return (
-    <Navbar className="my-auto w-full z-20 navbar fixed top-0 left-0" fluid={true} rounded={true}>
+    <Navbar
+      className="my-auto w-full z-20 navbar fixed top-0 left-0"
+      fluid={true}
+      rounded={true}
+    >
       <Navbar.Brand role="button" onClick={() => navigate("/")}>
         <img src={logo} className="mr-3 h-6 sm:h-9" alt="254 Realtors" />
         <span className="hidden lg:block self-center whitespace-nowrap text-xl font-semibold dark:text-white">
@@ -26,7 +32,7 @@ export default function NavigationBar() {
             onClick={() => navigate("/favorites")}
           >
             <Tooltip content="Favorites">
-              <FaHeart color="gray" size={26} />
+              <FaHeart color="#F85A47" size={26} />
             </Tooltip>
           </span>
         )}
@@ -64,7 +70,11 @@ export default function NavigationBar() {
               )}
 
               <Dropdown.Item
-                onClick={() => logout()}
+                onClick={async () => {
+                  await logout().then(() => {
+                    queryClient.clear()
+                  })
+                }}
                 role="button"
                 className="font-semibold whitespace-nowrap"
               >
@@ -94,8 +104,8 @@ export default function NavigationBar() {
         >
           Realtors
         </Navbar.Link>
-        <Navbar.Link role="button" onClick={() => navigate("/blog")}>
-          Blog
+        <Navbar.Link role="button" onClick={() => navigate("/all-properties")}>
+          Explore
         </Navbar.Link>
         <Navbar.Link className="block md:hidden">
           {currentUser && (

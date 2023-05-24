@@ -3,6 +3,7 @@ import { Carousel, Modal } from "flowbite-react";
 import { useQuery } from "@tanstack/react-query";
 import { getPropertyById } from "../../api/properties";
 import { FaBed, FaBath } from "react-icons/fa";
+import default_image from "../../assets/images/default_image.png";
 
 export default function PropertyModal({
   propertyData,
@@ -39,12 +40,16 @@ export default function PropertyModal({
         <Modal.Body className="grid grid-cols-2">
           <div className="flex flex-col">
             <div className="h-96">
-              <Carousel slideInterval={5000}>
-                {property?.property_images &&
-                  property?.property_images.map((image: any, idx: number) => (
-                    <img key={idx} src={image} alt={property?.description} />
-                  ))}
-              </Carousel>
+              {property?.property_images.length === 0 ? (
+               <img src={default_image} alt="default image" className="object-cover h-96 w-full" />
+              ) : (
+                <Carousel slideInterval={5000}>
+                  {property?.property_images &&
+                    property?.property_images.map((image: any, idx: number) => (
+                      <img key={idx} src={image} alt={property?.description} />
+                    ))}
+                </Carousel>
+              )}
             </div>
             <div className="py-3 font-bold flex flex-wrap gap-6 items-center">
               <span className="p-2 gap-2 rounded-md bg-[#f3f3f3]">

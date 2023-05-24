@@ -9,7 +9,7 @@ export default function Search() {
     const { dispatch } = useSearch()
     
   return (
-    <div className="relative w-1/2">
+    <div className="relative w-3/4 md:w-2/3 lg:w-1/2 pt-2">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <FiSearch className="w-5 h-5 text-gray-500 dark:text-gray-400" />
         </div>

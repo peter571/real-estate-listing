@@ -28,15 +28,17 @@ export default function Login({
     setErrMsg("");
     const res = await checkIfUserExists(values.email);
     if (res.length > 0) {
-      await login(values.email, values.password).catch((err) => {
-        const errorCode = err.code;
-        const errorMessage = err.message;
-        if (errorCode === "auth/wrong-password") {
-          setErrMsg("Invalid password");
-        } else {
-          console.error(errorMessage);
-        }
-      });
+      await login(values.email, values.password)
+        .catch((err) => {
+          const errorCode = err.code;
+          const errorMessage = err.message;
+          if (errorCode === "auth/wrong-password") {
+            setErrMsg("Invalid password");
+          } else {
+            console.error(errorMessage);
+          }
+        })
+        .then(() => navigate("/"));
     } else if (res.length === 0) {
       setErrMsg("This user does not exists! Create Account");
     }
@@ -59,7 +61,15 @@ export default function Login({
             </Alert>
           )}
           <div className="w-full">
-            <Button onClick={() => googleSignUp()} className="w-full ring-btn">
+            <Button
+              onClick={async () => {
+                try {
+                  await googleSignUp();
+                  navigate("/");
+                } catch (error) {}
+              }}
+              className="w-full ring-btn"
+            >
               <FcGoogle className="mr-2" size={22} />
               <span>Login with Google</span>
             </Button>

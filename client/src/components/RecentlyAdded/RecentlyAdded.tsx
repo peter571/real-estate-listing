@@ -2,14 +2,14 @@ import React from "react";
 import PropertyCard from "../PropertyCard/PropertyCard";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getAllProperties } from "../../api/properties";
+import { getAllProperties, recentlyAddedProperties } from "../../api/properties";
 
 export default function RecentlyAdded() {
   const navigate = useNavigate();
 
-  const { data: allProperties } = useQuery({
-    queryKey: ["properties-recent"],
-    queryFn: () => getAllProperties(1),
+  const { data: recentProperties } = useQuery({
+    queryKey: ["recent-properties"],
+    queryFn: () => recentlyAddedProperties(),
   });
 
   return (
@@ -24,9 +24,9 @@ export default function RecentlyAdded() {
           See all
         </span>
       </div>
-      <div className="grid grid-cols-4 gap-4 mt-7">
-        {allProperties &&
-          allProperties["properties"]
+      <div className="grid place-items-stretch grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-7">
+        {recentProperties &&
+          recentProperties
             .slice(0, 4)
             .map((property: PropertyDetailsCard) => (
               <PropertyCard key={property.id} {...property} />

@@ -14,8 +14,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getRealtorByUserId } from "../api/realtors";
 
 interface ExtendedUser extends User {
-  uid: string
-  accessToken: string
+  uid: string;
+  accessToken: string;
 }
 
 interface AuthProps {
@@ -25,11 +25,11 @@ interface AuthProps {
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   checkIfUserExists: (email: string) => Promise<string[]>;
-  googleSignUp: () => void;
+  googleSignUp: () => Promise<void>;
   realtorUser: RealtorDetails | null;
   setRealtorUser: React.Dispatch<React.SetStateAction<RealtorDetails | null>>;
+  isLoggedIn: boolean;
 }
-
 
 const AuthContext = createContext({} as AuthProps);
 
@@ -40,25 +40,25 @@ export default function AuthContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [currentUser, setCurrentUser] = useState<any>(
-    null
-  );
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [realtorUser, setRealtorUser] = useState<RealtorDetails | null>(null);
   const [loading, setLoading] = useState(true);
-  
+  const [isLoggedIn, setLoggedIn] = useState(false);
+
   const { data: realtorDetails } = useQuery({
     queryKey: ["realtor-account", currentUser?.uid],
     enabled: currentUser !== null,
-    queryFn: async () => getRealtorByUserId(currentUser!.uid, await currentUser!.accessToken),
+    queryFn: async () =>
+      getRealtorByUserId(currentUser!.uid, await currentUser!.accessToken),
   });
 
   function signup(email: string, password: string) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
-  function googleSignUp() {
+  async function googleSignUp() {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
+    await signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -82,8 +82,8 @@ export default function AuthContextProvider({
     return signInWithEmailAndPassword(auth, email, password);
   }
 
-  function logout() {
-    return auth.signOut().then(() => {
+  async function logout() {
+    return await auth.signOut().then(() => {
       setRealtorUser(null);
     });
   }
@@ -104,6 +104,14 @@ export default function AuthContextProvider({
   }, [realtorDetails]);
 
   useEffect(() => {
+    if (currentUser) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false)
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
       setLoading(false);
@@ -122,8 +130,8 @@ export default function AuthContextProvider({
     googleSignUp,
     realtorUser,
     setRealtorUser,
+    isLoggedIn
   };
-
 
   return (
     <AuthContext.Provider value={value}>

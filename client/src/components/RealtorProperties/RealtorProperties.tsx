@@ -31,11 +31,12 @@ export default function RealtorProperties() {
     queryFn: () => getRealtorFollowers(id!),
   });
 
-  if (isLoading) return <SpinnerLoader />
+  if (isLoading) return <SpinnerLoader />;
 
   return (
-    <div className="grid divide-x grid-cols-5 h-screen mt-20">
-      <div className="col-span-1">
+    <div className="grid divide-x grid-cols-5 min-h-screen">
+
+      <aside className="hidden sm:block sm:fixed top-24 left-0 w-1/5">
         {realtor && (
           <div className="flex flex-col items-center pb-10 px-5">
             <Image src={realtor.profile_picture} fallbackSrc={defaultImg} />
@@ -60,11 +61,19 @@ export default function RealtorProperties() {
             >
               {realtor.description}
             </p>
+            <a
+              href={"https://" + realtor.website_url}
+              target="_blank"
+              className="text-blue-500 hover:underline text-sm"
+            >
+              {realtor.website_url}
+            </a>
           </div>
         )}
-      </div>
-      <div className="col-span-4">
-        <div className="grid grid-cols-3 gap-6 h-full px-3 overflow-y-auto pb-4">
+      </aside>
+
+      <section className="w-full sm:w-4/5 right-0 top-24 fixed overflow-y-auto h-screen pb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-3 pb-4">
           {realtorProperties &&
             realtorProperties["properties"].map(
               (property: PropertyDetailsCard) => (
@@ -85,7 +94,8 @@ export default function RealtorProperties() {
             />
           )}
         </div>
-      </div>
+      </section>
+
     </div>
   );
 }

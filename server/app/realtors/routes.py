@@ -83,8 +83,8 @@ def get_realtor_properties(realtor_id):
 
     page_number = request.args.get("page", 1, type=int)
     pagination_result = Realtor.query.get(
-        realtor_id).properties.paginate(page=page_number, per_page=20)
-    
+        realtor_id).properties.filter(Property.active == True).paginate(page=page_number, per_page=20)
+
     print(pagination_result.items)
 
     if pagination_result is None:
@@ -92,7 +92,7 @@ def get_realtor_properties(realtor_id):
 
     if len(pagination_result.items) == 0:
         return jsonify({"properties": [], "pages": 0})
-    
+
     serialized_results = []
     for property_item in pagination_result.items:
         item = property_item.serialize()

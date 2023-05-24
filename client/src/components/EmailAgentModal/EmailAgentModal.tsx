@@ -1,7 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Modal, TextInput, Label, Textarea } from "flowbite-react";
 import { useQuery } from "@tanstack/react-query";
 import { getRealtor } from "../../api/realtors";
+import { sendEmailToRealtor } from "../../api/utils";
+import { toast } from "react-toastify";
 
 export default function EmailAgentModal({
   data,
@@ -11,6 +13,7 @@ export default function EmailAgentModal({
   const phoneRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const { data: propertyDetails } = useQuery({
     queryKey: ["property_owner", data.realtor_id],
@@ -18,17 +21,36 @@ export default function EmailAgentModal({
     queryFn: () => getRealtor(data.realtor_id!),
   });
 
-  
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (fullNamesRef && emailRef && messageRef) {
-      const userMessage = {
-        full_names: fullNamesRef.current?.value,
-        phone_number: phoneRef.current?.value,
-        email: emailRef.current?.value,
-        message: messageRef.current?.value,
-      };
-      console.log(userMessage);
+    if (
+      fullNamesRef.current?.value &&
+      emailRef.current?.value &&
+      messageRef.current?.value &&
+      phoneRef.current?.value &&
+      propertyDetails?.company_mail
+    ) {
+      setSubmitting(true);
+      await sendEmailToRealtor(
+        fullNamesRef.current.value,
+        emailRef.current.value,
+        phoneRef.current.value,
+        messageRef.current.value,
+        propertyDetails.company_mail
+      )
+        .then((res) => {
+          //Reset input values after email is sent
+          if (fullNamesRef.current && emailRef.current && phoneRef.current && messageRef.current) {
+            fullNamesRef.current.value = "";
+            emailRef.current.value = "";
+            phoneRef.current.value = "";
+            messageRef.current.value = "I would like more details about this property."
+          }
+          toast.success("Email sent!");
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
     }
   }
 
@@ -44,7 +66,10 @@ export default function EmailAgentModal({
       >
         <Modal.Header />
         <Modal.Body>
-          <form onSubmit={handleSubmit} className="space-y-6 px-6 pb-4 sm:pb-4 lg:px-4 xl:pb-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6 px-6 pb-4 sm:pb-4 lg:px-4 xl:pb-4"
+          >
             <h3 className="text-xl text-gray-900 dark:text-white font-semibold">
               Find out more about this property.
             </h3>
@@ -78,7 +103,7 @@ export default function EmailAgentModal({
                 ref={phoneRef}
                 id="phone"
                 placeholder="Phone Number"
-                required={false}
+                required={true}
               />
             </div>
             <div>
@@ -96,7 +121,11 @@ export default function EmailAgentModal({
             </div>
 
             <div className="w-full flex justify-center items-center">
-              <Button type="submit" className="w-2/3 full-btn">
+              <Button
+                type="submit"
+                className="w-2/3 full-btn"
+                disabled={submitting}
+              >
                 Email Agent
               </Button>
             </div>

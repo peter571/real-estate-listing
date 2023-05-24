@@ -42,6 +42,7 @@ export default function Realtor(props: RealtorDetails) {
     },
   });
 
+
   return (
     <div className="max-w-sm">
       <Card>
@@ -67,6 +68,7 @@ export default function Realtor(props: RealtorDetails) {
           >
             {props.description}
           </span>
+          
           <div className="mt-4 flex space-x-3 lg:mt-6">
             <span
               role="button"

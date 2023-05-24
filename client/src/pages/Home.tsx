@@ -10,12 +10,10 @@ export default function Home() {
     <div>
       <Hero />
       <hr />
-      <Trending />
-      <hr />
+      {/* <Trending />
+      <hr /> */}
       <RecentlyAdded />
       <hr />
-      {/* <OngoingProjects /> */}
-      {/* <hr /> */}
       <Footer />
     </div>
   );

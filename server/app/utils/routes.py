@@ -4,7 +4,7 @@ import os
 from flask import request, jsonify
 import requests
 from firebase_admin import credentials, storage
-#from google.cloud import storage
+# from google.cloud import storage
 import uuid
 
 # Send mail::
@@ -13,15 +13,40 @@ import uuid
 @bp.post('/utils/send_mail')
 def send_mail():
     data = request.get_json()
+    email = phone_number = full_names = message = agent_email = None
 
-    from_email = data['from']
-    to_email = data['to']
-    message = data['message']
-    subject = "New Message from 254 Realtors Homes"
+    if data:
+        if 'email' in data:
+            email = data['email']
+        if 'phone_number' in data:
+            phone_number = data['phone_number']
+        if 'full_names' in data:
+            full_names = data['full_names']
+        if 'message' in data:
+            message = data['message']
+        if 'agent_email' in data:
+            agent_email = data['agent_email']
+
+    subject = "Property Inquiry"
 
     # Assuming getSecret() is implemented to retrieve the API key
     api_key = os.environ.get("MAIL_KEY")
 
+    # HTML Template
+    html_template = '''
+                        <html>
+                        <head>
+                        </head>
+                        <body>
+                            <h1>{full_names}</h1>
+                            <h1>{email}</h1>
+                            <h1>{phone_number}</h1>
+                            <br>
+                            <p>{message}</p>
+                        </body>
+                        </html>
+                    '''
+    
     endpoint = 'https://api.brevo.com/v3/smtp/email'
     headers = {
         'accept': 'application/json',
@@ -30,22 +55,21 @@ def send_mail():
     }
     payload = {
         'sender': {'email': "254realtors.homes@gmail.com"},
-        'to': [{"email": to_email}],
-        'replyTo': {'email': from_email},
-        'textContent': message,
-        'subject': subject
-    }
+        'to': [{"email": agent_email}],
+        'replyTo': {'email': email},
+        'subject': subject,
+        'htmlContent': html_template.format(full_names=full_names, email=email, phone_number=phone_number, message=message)}
 
     try:
         response = requests.post(endpoint, headers=headers, json=payload)
 
         if not response.ok:
-            return jsonify({'result': 'error'})
+            return jsonify({'result': 'error'}), 500
 
-        return jsonify({'result': 'success'})
+        return jsonify({'result': 'success'}), 200
     except Exception as e:
         print(e)
-        return jsonify({'result': 'error'})
+        return jsonify({'result': 'error'}), 500
 
 
 # upload images to firebase storage

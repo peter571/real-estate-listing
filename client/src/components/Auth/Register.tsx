@@ -5,7 +5,7 @@ import { Button, Alert } from "flowbite-react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { HiInformationCircle} from 'react-icons/hi'
+import { HiInformationCircle } from "react-icons/hi";
 
 interface FormValues {
   email: string;
@@ -18,20 +18,20 @@ export default function Register({
 }: {
   setShowLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const {signup, checkIfUserExists, currentUser, googleSignUp } = useAuth()
+  const { signup, checkIfUserExists, currentUser, googleSignUp } = useAuth();
   const navigate = useNavigate();
-  const [errMsg, setErrMsg] = useState('')
+  const [errMsg, setErrMsg] = useState("");
 
   const handleSubmit = async (
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
-    setErrMsg('')
-    const res = await checkIfUserExists(values.email)
+    setErrMsg("");
+    const res = await checkIfUserExists(values.email);
     if (res.length === 0) {
-      await signup(values.email, values.password)
-    } else if(res.length > 0) {
-      setErrMsg('This email is already registered.')
+      await signup(values.email, values.password).then(() => navigate("/"));
+    } else if (res.length > 0) {
+      setErrMsg("This email is already registered.");
     }
     setSubmitting(false);
   };
@@ -44,21 +44,20 @@ export default function Register({
     >
       {({ isSubmitting, touched, errors }) => (
         <Form className="flex flex-col gap-4 w-full sm:w-[285px]">
-        {errMsg && (
-          <Alert
-          color="failure"
-          icon={HiInformationCircle}
-        >
-          <span>
-            <span className="font-medium">
-              SignUp Error!
-            </span>
-            {' '} {errMsg}
-          </span>
-        </Alert>
-        )}
+          {errMsg && (
+            <Alert color="failure" icon={HiInformationCircle}>
+              <span>
+                <span className="font-medium">SignUp Error!</span> {errMsg}
+              </span>
+            </Alert>
+          )}
           <div className="w-full">
-            <Button onClick={() => googleSignUp()} className="w-full ring-btn">
+            <Button
+              onClick={async () =>
+                await googleSignUp().then(() => navigate("/"))
+              }
+              className="w-full ring-btn"
+            >
               <FcGoogle className="mr-2 ring-btn" size={22} />
               <span>Sign Up with Google</span>
             </Button>

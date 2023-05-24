@@ -5,10 +5,10 @@ from flask import jsonify, request
 from app.extensions import db
 import uuid
 from app.middleware.authenticate import authenticate_user
+from sqlalchemy import func
+
 
 # Get all properties
-
-
 @bp.route('/property/all_properties')
 def get_all_properties():
     page_number = request.args.get('page', 1, type=int)
@@ -37,9 +37,8 @@ def get_all_properties():
     }
     return jsonify(response_data)
 
+
 # Get a property of a specific ID
-
-
 @bp.get('/property/<property_id>')
 def get_property(property_id):
     # Query the db for the property of `id`
@@ -56,9 +55,8 @@ def get_property(property_id):
     property_id_result["property_images"] = property_images
     return jsonify(property_id_result), 200
 
+
 # post a property to the db
-
-
 @bp.post('/property/new_property/<realtor_id>')
 @authenticate_user
 def create_property(realtor_id):
@@ -67,7 +65,7 @@ def create_property(realtor_id):
         return jsonify("Unauthorized user"), 401
 
     request_data = request.get_json()
-    
+
     # Create a new property
     new_property = Property(id=str(uuid.uuid4()),
                             owner_id=realtor_id,
@@ -92,9 +90,8 @@ def create_property(realtor_id):
         db.session.rollback()
         return "An error occurred", 500
 
+
 # Update property
-
-
 @bp.patch('/property/update_property/<realtor_id>/<property_id>')
 @authenticate_user
 def update_property(realtor_id, property_id):
@@ -130,9 +127,8 @@ def update_property(realtor_id, property_id):
         db.session.rollback()
         return "An error occured", 500
 
+
 # Update property availability
-
-
 @bp.patch('/property/update_property_availability/<realtor_id>/<property_id>')
 @authenticate_user
 def update_property_availability(realtor_id, property_id):
@@ -201,10 +197,16 @@ def search_properties():
     # define the base query with the search conditions
     query = Property.query.filter(
         db.or_(
-            Property.location.like('%{}%'.format(search_text)),
-            Property.category.like('%{}%'.format(search_text)),
-            Property.description.like('%{}%'.format(search_text)),
-            Property.address.like('%{}%'.format(search_text))
+            db.or_(
+                func.lower(Property.location).like(
+                    '%{}%'.format(search_text.lower())),
+                func.lower(Property.category).like(
+                    '%{}%'.format(search_text.lower())),
+                func.lower(Property.description).like(
+                    '%{}%'.format(search_text.lower())),
+                func.lower(Property.address).like(
+                    '%{}%'.format(search_text.lower()))
+            )
         )
     )
 
@@ -245,3 +247,18 @@ def search_properties():
         list_items_with_images.append(listed_property)
 
     return jsonify({"results": list_items_with_images, "pages": results.pages})
+
+
+# Recently added properties
+@bp.get('/property/recently_added')
+def search_recently_added():
+    results = Property.query.order_by(Property.date_created.desc()).limit(4)
+
+    if results is None:
+        return jsonify([]), 200
+
+    recent_properties = []
+    for item in results:
+        recent_properties.append(item.serialize())
+
+    return jsonify(recent_properties)

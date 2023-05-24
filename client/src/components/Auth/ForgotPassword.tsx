@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Button } from "flowbite-react";
+import { Alert, Button } from "flowbite-react";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -12,15 +12,20 @@ interface FormValue {
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const { resetPassword } = useAuth();
+  const [status, setStatus] = useState("");
 
   const handleSubmit = async (
     values: FormValue,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     //
-    await resetPassword(values.email).finally(() => {
-      setSubmitting(false);
-    });
+    await resetPassword(values.email)
+      .then((res) => {
+        setStatus("submitted");
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   };
 
   return (
@@ -32,6 +37,20 @@ export default function ForgotPassword() {
       >
         {({ isSubmitting, errors, touched }) => (
           <Form className="flex flex-col gap-4 w-full sm:w-[285px] mt-10">
+            {status === "submitted" && (
+              <Alert
+                color="success"
+                onDismiss={function onDismiss() {
+                  setStatus("");
+                }}
+              >
+                <span>
+                  <span className="font-medium">Success!</span>{" "} 
+                  Check your email for instructions.
+                </span>
+              </Alert>
+            )}
+
             <h1 className="font-bold text-center">Enter email</h1>
             <div className="flex flex-col">
               <Field

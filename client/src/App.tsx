@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavigationBar from "./components/NavigationBar/NavigationBar";
 import SearchBar from "./components/SearchBar/SearchBar";
 import Home from "./pages/Home";
@@ -24,6 +24,19 @@ import Search from "./components/Search/Search";
 
 function App() {
   const location = useLocation();
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className=" min-h-screen scroll-smooth px-3 sm:px-10 relative">
@@ -52,7 +65,13 @@ function App() {
           path="/realtor-admin"
           element={
             <ProtectedRouteAdmin>
-              <RealtorAdmin />
+              {screenWidth >= 1024 ? (
+                <RealtorAdmin />
+              ) : (
+                <h1 className="top-28 fixed font-semibold">
+                  You can only view this page on bigger screen!
+                </h1>
+              )}
             </ProtectedRouteAdmin>
           }
         />
