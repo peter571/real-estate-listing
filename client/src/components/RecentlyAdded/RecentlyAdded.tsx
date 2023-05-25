@@ -11,7 +11,7 @@ import {
 export default function RecentlyAdded() {
   const navigate = useNavigate();
 
-  const { data: recentProperties, isFetching } = useQuery({
+  const { data: recentProperties, isLoading } = useQuery({
     queryKey: ["recent-properties"],
     queryFn: () => recentlyAddedProperties(),
   });
@@ -29,12 +29,12 @@ export default function RecentlyAdded() {
         </span>
       </div>
       <div className="grid place-items-stretch grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-7">
-        {isFetching &&
+        {isLoading &&
           Array(4)
             .fill(<PropertyCardLoader />)
-            .map((el) => el)}
+            .map((el, idx) => <div key={idx}>{el}</div>)}
         {recentProperties &&
-          !isFetching &&
+          !isLoading &&
           recentProperties
             .slice(0, 4)
             .map((property: PropertyDetailsCard) => (
