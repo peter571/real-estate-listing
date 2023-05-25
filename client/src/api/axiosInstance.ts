@@ -1,11 +1,10 @@
 import axios, { AxiosInstance } from "axios";
 
-const api_url = "http://127.0.0.1:5000";
 
 //For Endpoints that require user authentication
 const APIWithToken = (token: string): AxiosInstance => {
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://realtors-backend-api-6utrins7sa-uc.a.run.app",
   });
 
   axiosInstance.interceptors.request.use(
@@ -24,7 +23,7 @@ const APIWithToken = (token: string): AxiosInstance => {
 //Public api endpoints
 const API = (): AxiosInstance => {
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://realtors-backend-api-6utrins7sa-uc.a.run.app",
   });
 
   return axiosInstance;

@@ -10,6 +10,7 @@ from app.user_followers import bp as user_followers_bp
 from app.utils import bp as utils_bp
 import firebase_admin
 from firebase_admin import credentials
+import os
 
 
 def create_app(config_class=Config):
@@ -29,10 +30,12 @@ def create_app(config_class=Config):
     app.register_blueprint(user_followers_bp)
     app.register_blueprint(realtors_bp)
     app.register_blueprint(utils_bp)
-
+    #projects/603732657929/secrets/FIREBASE_KEYS
     # Initialize Firebase Admin SDK
-    cred = credentials.Certificate("./realtors-254.json")
+    # cred = credentials.Certificate("./realtors-254.json")
+
+    cred = credentials.ApplicationDefault()
     if not firebase_admin._apps:  # Check if Firebase has already been initialized
-        firebase_admin.initialize_app(cred, { 'storageBucket': "realtors-254.appspot.com" })
+        firebase_admin.initialize_app(cred, { 'storageBucket': os.environ.get('BUCKET') })
 
     return app

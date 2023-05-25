@@ -115,3 +115,5 @@ interface EmailAgentModalProp {
 type FollowAction = "follow" | "unfollow";
 
 type AddToFavoriteAction = "add" | "remove";
+
+//export {}

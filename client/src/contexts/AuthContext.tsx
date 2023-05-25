@@ -101,7 +101,7 @@ export default function AuthContextProvider({
     if (realtorDetails && realtorDetails !== "None") {
       setRealtorUser(realtorDetails);
     }
-  }, [realtorDetails]);
+  }, [realtorDetails, currentUser]);
 
   useEffect(() => {
     if (currentUser) {
