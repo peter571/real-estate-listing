@@ -4,7 +4,6 @@ import { FaBed, FaBath, FaHeart, FaRuler } from "react-icons/fa";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addToFavorites, checkPropertyIsFavorite } from "../../api/favorite";
 import { useAuth } from "../../contexts/AuthContext";
-import PropertyModal from "../PropertyModal/PropertyModal";
 import EmailAgentModal from "../EmailAgentModal/EmailAgentModal";
 import default_image from "../../assets/images/default_image.png";
 import { numberFormatter } from "../../utils";
@@ -14,8 +13,8 @@ export default function PropertyCard(props: PropertyDetailsCard) {
   const { currentUser, isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [showPropertyModalData, setShowPropertyModalData] =
-    useState<PropertyModalProp>({ show: false, property_id: null });
+  // const [showPropertyModalData, setShowPropertyModalData] =
+  //   useState<PropertyModalProp>({ show: false, property_id: null });
   const [showEmailAgentModal, setShowEmailAgentModal] = useState<{
     show: boolean;
     realtor_id: string | null;
@@ -62,7 +61,7 @@ export default function PropertyCard(props: PropertyDetailsCard) {
   }
 
   return (
-    <div className="w-full md:max-w-sm cursor-pointer relative bg-gray-50 drop-shadow-lg rounded-lg">
+    <div className="w-full md:max-w-sm cursor-pointer relative bg-gray-50 drop-shadow-lg rounded-lg hover:bg-gray-200">
       <img
         className="h-56 w-full object-cover rounded-md"
         alt="Property Image"
@@ -73,7 +72,8 @@ export default function PropertyCard(props: PropertyDetailsCard) {
         }
         role="button"
         onClick={() =>
-          setShowPropertyModalData({ show: true, property_id: props.id })
+          // setShowPropertyModalData({ show: true, property_id: props.id })
+          navigate('/property/'+props.id)
         }
       />
 
@@ -92,7 +92,7 @@ export default function PropertyCard(props: PropertyDetailsCard) {
         </Button>
       </div>
 
-      <p className="font-normal text-gray-700 mx-3">{props.address}</p>
+      <p className="font-semibold text-gray-700 mx-3">{props.address}</p>
       
       <p className="flex justify-between mx-3 my-2">
         <span className="flex flex-row justify-center items-center p-2 gap-2 rounded-md bg-[#f3f3f3]">
@@ -136,10 +136,10 @@ export default function PropertyCard(props: PropertyDetailsCard) {
           props?.property_type.replace("_", " ").slice(1)}
       </span>
 
-      <PropertyModal
+      {/* <PropertyModal
         propertyData={showPropertyModalData}
         setShowPropertyModalData={setShowPropertyModalData}
-      />
+      /> */}
       <EmailAgentModal
         data={showEmailAgentModal}
         setShowEmailAgentModal={setShowEmailAgentModal}

@@ -21,6 +21,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PropertySearch from "./components/PropertySearch/PropertySearch";
 import Search from "./components/Search/Search";
+import PropertyPage from "./components/PropertyPage/PropertyPage";
 
 function App() {
   const location = useLocation();
@@ -53,6 +54,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/real-estate-agents" element={<RealtorsAgents />} />
         <Route path="/real-estate-agents/:id" element={<RealtorProperties />} />
+        <Route path="/property/:id" element={<PropertyPage />} />
         {/* <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:id" element={<Blog />} /> */}
         <Route path="/password/recover/:id" element={<ResetPassword />} />

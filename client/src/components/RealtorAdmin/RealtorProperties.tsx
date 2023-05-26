@@ -5,10 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getRealtorActiveProperties } from "../../api/realtors";
 import { useAuth } from "../../contexts/AuthContext";
 import { Pagination } from "flowbite-react";
-import SpinnerLoader from "../Loader/Spinner";
+import SpinnerLoader from "../Loaders/Spinner";
 import { usePagination } from "../../hooks/usePagination";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { useRealtorAdminContext } from "./RealtorAdminContext";
+import PropertyRowLoader from "../Loaders/PropertyRowLoader";
 
 export default function RealtorProperties() {
   const { realtorUser, currentUser } = useAuth();
@@ -25,8 +26,6 @@ export default function RealtorProperties() {
         currentPage
       ),
   });
-
-  if (isLoading) return <SpinnerLoader />;
 
   return (
     <div className="p-5">
@@ -53,7 +52,9 @@ export default function RealtorProperties() {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {realtorProperties["properties"].length === 0 && (
+          {isLoading &&
+            <PropertyRowLoader />}
+          {!isLoading && realtorProperties["properties"].length === 0 && (
             <Table.Row className="my-10 ml-5">
               <Table.Cell className="">
                 <h1 className="font-bold">No properties yet!</h1>
@@ -69,7 +70,8 @@ export default function RealtorProperties() {
               </Table.Cell>
             </Table.Row>
           )}
-          {realtorProperties["properties"] &&
+          {!isLoading &&
+            realtorProperties["properties"] &&
             realtorProperties["properties"]
               .filter((item: PropertyDetailsCard) => item.active)
               .map((property: PropertyDetailsCard) => (
@@ -78,7 +80,7 @@ export default function RealtorProperties() {
         </Table.Body>
       </Table>
       <div className="flex items-center justify-center text-center py-10">
-        {realtorProperties["pages"] > 1 && (
+        {!isLoading && realtorProperties["pages"] > 1 && (
           <Pagination
             currentPage={currentPage}
             layout="pagination"

@@ -296,17 +296,18 @@ export default function PropertyForm({
           <Button
             className="full-btn my-3"
             type="submit"
-            disabled={createPropertyMutation.isLoading}
+            disabled={
+              createPropertyMutation.isLoading ||
+              updatePropertyMutation.isLoading
+            }
           >
-            {createPropertyMutation.isLoading ? (
+            {createPropertyMutation.isLoading ||
+            createPropertyMutation.isLoading ? (
               <Spinner aria-label="loading" />
             ) : (
               "Submit"
             )}
           </Button>
-          {/* <Button type="button" onClick={() => handleUploadImages()}>
-            Images
-          </Button> */}
         </Form>
       )}
     </Formik>

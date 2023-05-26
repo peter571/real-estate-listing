@@ -1,6 +1,6 @@
 import React from "react";
 import PropertyCard from "../PropertyCard/PropertyCard";
-import PropertyCardLoader from "../PropertyCard/PropertyCardLoader";
+import PropertyCardLoader from "../Loaders/PropertyCardLoader";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {

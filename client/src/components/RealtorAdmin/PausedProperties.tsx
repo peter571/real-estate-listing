@@ -3,22 +3,29 @@ import { Button, Pagination, Table } from "flowbite-react";
 import PropertyRow from "./PropertyRow";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
-import { getRealtorPausedProperties, getRealtorProperties } from "../../api/realtors";
-import SpinnerLoader from "../Loader/Spinner";
+import {
+  getRealtorPausedProperties,
+  getRealtorProperties,
+} from "../../api/realtors";
+import SpinnerLoader from "../Loaders/Spinner";
 import { usePagination } from "../../hooks/usePagination";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import PropertyRowLoader from "../Loaders/PropertyRowLoader";
 
 export default function PausedProperties() {
   const { realtorUser, currentUser } = useAuth();
-  const { currentPage, onPageChange } = usePagination()
+  const { currentPage, onPageChange } = usePagination();
 
   const { data: realtorProperties, isLoading } = useQuery({
     enabled: realtorUser !== null,
     queryKey: ["paused_properties", currentPage],
-    queryFn: () => getRealtorPausedProperties(realtorUser!.id, currentUser.accessToken, currentPage),
+    queryFn: () =>
+      getRealtorPausedProperties(
+        realtorUser!.id,
+        currentUser.accessToken,
+        currentPage
+      ),
   });
-
-  if (isLoading) return <SpinnerLoader />
 
   return (
     <div className="p-5">
@@ -46,13 +53,16 @@ export default function PausedProperties() {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {realtorProperties['properties'].length === 0 && (
+          {isLoading &&
+            <PropertyRowLoader />}
+          {!isLoading && realtorProperties["properties"].length === 0 && (
             <Table.Row className="ml-5 my-10">
               <Table.Cell className="font-bold">No properties yet!</Table.Cell>
             </Table.Row>
           )}
-          {realtorProperties &&
-            realtorProperties['properties']
+          {!isLoading &&
+            realtorProperties &&
+            realtorProperties["properties"]
               .filter((item: PropertyDetailsCard) => !item.active)
               .map((property: PropertyDetailsCard) => (
                 <PropertyRow key={property.id} {...property} />
@@ -60,7 +70,7 @@ export default function PausedProperties() {
         </Table.Body>
       </Table>
       <div className="flex items-center justify-center text-center py-10">
-        {realtorProperties["pages"] > 1 && (
+        {!isLoading && realtorProperties["pages"] > 1 && (
           <Pagination
             currentPage={currentPage}
             layout="pagination"

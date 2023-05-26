@@ -8,49 +8,51 @@ import defaultImg from "../../assets/images/254.png";
 import { getRealtorFollowers } from "../../api/realtor_followers";
 import { usePagination } from "../../hooks/usePagination";
 import { Pagination } from "flowbite-react";
-import SpinnerLoader from "../Loader/Spinner";
+import SpinnerLoader from "../Loaders/Spinner";
+import RealtorLoader from "../Loaders/RealtorLoader";
+import PropertyCardLoader from "../Loaders/PropertyCardLoader";
 
 export default function RealtorProperties() {
   const { id } = useParams();
   const { currentPage, onPageChange } = usePagination();
 
-  const { data: realtor } = useQuery({
+  const { data: realtor, isLoading: loadingRealtor } = useQuery({
     queryKey: ["realtors", id],
     enabled: id !== undefined,
     queryFn: () => getRealtor(id!),
   });
-  const { data: realtorProperties, isLoading } = useQuery({
+  const { data: realtorProperties, isLoading: loadingProperties } = useQuery({
     enabled: id !== null,
     queryKey: ["realtor_properties", currentPage],
     queryFn: () => getRealtorProperties(id!, currentPage),
   });
 
-  const { data: realtorFollowers } = useQuery({
+  const { data: realtorFollowers, isLoading: loadingFollowers } = useQuery({
     queryKey: ["follows", id],
     enabled: id !== null,
     queryFn: () => getRealtorFollowers(id!),
   });
 
-  if (isLoading) return <SpinnerLoader />;
-
   return (
     <div className="grid divide-x grid-cols-5 min-h-screen">
-
       <aside className="hidden sm:block sm:fixed top-24 left-0 w-1/5">
-        {realtor && (
+        {loadingRealtor && <RealtorLoader />}
+        {!loadingRealtor && realtor && (
           <div className="flex flex-col items-center pb-10 px-5">
             <Image src={realtor.profile_picture} fallbackSrc={defaultImg} />
             <h5 className="mb-1 text-xl font-medium text-gray-900 text-center">
               {realtor.company_name}
             </h5>
-            {realtorFollowers && realtorFollowers.length > 0 && (
-              <p className="text-center">
-                Followers{" "}
-                <span className="font-bold text-sm">
-                  {realtorFollowers.length}
-                </span>
-              </p>
-            )}
+            {!loadingFollowers &&
+              realtorFollowers &&
+              realtorFollowers.length > 0 && (
+                <p className="text-center">
+                  Followers{" "}
+                  <span className="font-bold text-sm">
+                    {realtorFollowers.length}
+                  </span>
+                </p>
+              )}
             <p
               style={{
                 display: "-webkit-box",
@@ -74,7 +76,12 @@ export default function RealtorProperties() {
 
       <section className="w-full sm:w-4/5 right-0 top-24 fixed overflow-y-auto h-screen pb-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-3 pb-4">
-          {realtorProperties &&
+          {loadingProperties &&
+            Array(6)
+              .fill(<PropertyCardLoader />)
+              .map((el, idx) => <div key={idx}>{el}</div>)}
+          {!loadingProperties &&
+            realtorProperties &&
             realtorProperties["properties"].map(
               (property: PropertyDetailsCard) => (
                 <PropertyCard key={property.id} {...property} />
@@ -82,7 +89,7 @@ export default function RealtorProperties() {
             )}
         </div>
         <div className="flex items-center justify-center text-center py-10 mb-8">
-          {realtorProperties["pages"] > 1 && (
+          {!loadingProperties && realtorProperties["pages"] > 1 && (
             <Pagination
               currentPage={currentPage}
               layout="pagination"
@@ -95,7 +102,6 @@ export default function RealtorProperties() {
           )}
         </div>
       </section>
-
     </div>
   );
 }

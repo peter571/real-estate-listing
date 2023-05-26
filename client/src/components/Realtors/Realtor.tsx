@@ -19,7 +19,12 @@ export default function Realtor(props: RealtorDetails) {
   const { data: isFollowed } = useQuery({
     enabled: currentUser !== null,
     queryKey: ["follows", props.id],
-    queryFn: () => checkUserFollowsRealtor(props.id, currentUser.uid, currentUser.accessToken),
+    queryFn: () =>
+      checkUserFollowsRealtor(
+        props.id,
+        currentUser.uid,
+        currentUser.accessToken
+      ),
   });
 
   const { data: realtorFollows } = useQuery({
@@ -41,7 +46,6 @@ export default function Realtor(props: RealtorDetails) {
       });
     },
   });
-
 
   return (
     <div className="max-w-sm">
@@ -68,7 +72,7 @@ export default function Realtor(props: RealtorDetails) {
           >
             {props.description}
           </span>
-          
+
           <div className="mt-4 flex space-x-3 lg:mt-6">
             <span
               role="button"
