@@ -13,7 +13,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function Realtor(props: RealtorDetails) {
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, isLoggedIn } = useAuth();
   const queryClient = useQueryClient();
 
   const { data: isFollowed } = useQuery({
@@ -77,7 +77,14 @@ export default function Realtor(props: RealtorDetails) {
             <span
               role="button"
               className="inline-flex items-center rounded-lg bg-blue-700 py-2 px-4 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-              onClick={() => followMutation.mutate()}
+              onClick={() => {
+                if (isLoggedIn) {
+                  followMutation.mutate();
+                } else {
+                  navigate('/auth')
+                }
+                
+              }}
             >
               {isFollowed === "True" ? "Unfollow" : "Follow"}
             </span>
