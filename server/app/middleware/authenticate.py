@@ -11,7 +11,8 @@ def authenticate_user(f):
         try:
             user = auth.verify_id_token(request.headers['Authorization'])
             request.user = user
-        except:
+        except Exception as e:
+            print(e)
             return {'message': 'Invalid token provided.'}, 400
         return f(*args, **kwargs)
     return wrap

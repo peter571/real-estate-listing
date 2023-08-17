@@ -1,10 +1,11 @@
 import axios, { AxiosInstance } from "axios";
-
+const BASE_URL = "https://real-estate-api-kdwj.onrender.com"
+const LOCALHOST_URL = "http://127.0.0.1:5000"
 
 //For Endpoints that require user authentication
 const APIWithToken = (token: string): AxiosInstance => {
   const axiosInstance = axios.create({
-    baseURL: "https://real-estate-api-kdwj.onrender.com",
+    baseURL: import.meta.env.DEV ? LOCALHOST_URL : BASE_URL,
   });
 
   axiosInstance.interceptors.request.use(
@@ -23,7 +24,7 @@ const APIWithToken = (token: string): AxiosInstance => {
 //Public api endpoints
 const API = (): AxiosInstance => {
   const axiosInstance = axios.create({
-    baseURL: "https://real-estate-api-kdwj.onrender.com",
+    baseURL: import.meta.env.DEV ? LOCALHOST_URL : BASE_URL,
   });
 
   return axiosInstance;

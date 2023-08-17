@@ -124,6 +124,7 @@ def update_property(realtor_id, property_id):
 
         return jsonify(serialized_property), 200
     except Exception as e:
+        print(e)
         db.session.rollback()
         return "An error occured", 500
 

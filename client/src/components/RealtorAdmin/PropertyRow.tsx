@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import DeleteModal from "./DeleteModal";
 import UpdateModal from "./UpdateModal";
 import default_image from "../../assets/images/default_image.png";
+import { deleteFileFromStorage } from "../../firebase/util_functions";
+import { getImageNameFromUrl } from "../../utils";
 
 export default function PropertyRow(props: PropertyDetailsCard) {
   const { realtorUser, currentUser } = useAuth();
@@ -37,10 +39,26 @@ export default function PropertyRow(props: PropertyDetailsCard) {
     },
   });
 
+  const handleDeleteImagesFromStorage = async () => {
+    if (props.property_images.length > 0) {
+      await Promise.all(
+        props.property_images.map(async (file_url) => {
+          try {
+            await deleteFileFromStorage(getImageNameFromUrl(file_url));
+          } catch (error) {}
+        })
+      );
+    }
+  };
+
   const deletePropertyMutation = useMutation({
     mutationFn: () =>
       deleteProperty(realtorUser!.id, props.id, currentUser.accessToken),
-    onSuccess: () => {
+    onSuccess: async () => {
+      //Delete images from storage
+      await handleDeleteImagesFromStorage()
+
+      //Invalidate queries
       queryClient.invalidateQueries({
         queryKey: ["realtor_properties", props.owner_id],
       });

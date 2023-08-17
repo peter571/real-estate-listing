@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from config import Config
+from config import import_firebase_variables
 from app.extensions import db
 from app.main import bp as main_bp
 from app.realtors import bp as realtors_bp
@@ -32,9 +33,9 @@ def create_app(config_class=Config):
     app.register_blueprint(utils_bp)
     #projects/603732657929/secrets/FIREBASE_KEYS
     # Initialize Firebase Admin SDK
-    # cred = credentials.Certificate("./realtors-254.json")
+    cred = credentials.Certificate(import_firebase_variables())
 
-    cred = credentials.ApplicationDefault()
+    # cred = credentials.ApplicationDefault()
     if not firebase_admin._apps:  # Check if Firebase has already been initialized
         firebase_admin.initialize_app(cred, { 'storageBucket': os.environ.get('BUCKET') })
 

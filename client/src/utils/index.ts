@@ -118,7 +118,7 @@ export const filterData = [
 
 export function checkIfAnySearchFilterIsTrue(data: SearchProps): boolean {
   for (let prop in data) {
-    if (prop !== 'search_term' && data[prop]) {
+    if (prop !== "search_term" && data[prop]) {
       return true;
     }
   }
@@ -128,7 +128,7 @@ export function checkIfAnySearchFilterIsTrue(data: SearchProps): boolean {
 export function getTrueKeys(obj: SearchProps): string[] {
   const trueKeys: string[] = [];
   for (let prop in obj) {
-    if (prop !== 'search_term' && obj[prop]) {
+    if (prop !== "search_term" && obj[prop]) {
       trueKeys.push(prop);
     }
   }
@@ -137,11 +137,21 @@ export function getTrueKeys(obj: SearchProps): string[] {
 
 export function checkIfAllKeysTrue(obj: SearchProps): boolean {
   for (let prop in obj) {
-    if (prop !== 'search_term' && !obj[prop]) {
+    if (prop !== "search_term" && !obj[prop]) {
       return false;
     }
   }
   return true;
 }
 
-export const numberFormatter = Intl.NumberFormat('en', { notation: "compact" })
+export const numberFormatter = Intl.NumberFormat("en", { notation: "compact" });
+
+export const getImageNameFromUrl = (url: string) => {
+  if (typeof url !== "string") return "";
+  const queryStringIndex = url.indexOf("?");
+  const filenameWithQuery =
+    queryStringIndex !== -1 ? url.substring(0, queryStringIndex) : url;
+  const parts = filenameWithQuery.split("/");
+  const filename = parts[parts.length - 1];
+  return filename;
+};

@@ -1,34 +1,30 @@
-import firebase from "firebase/app";
-import { getStorage, ref } from "firebase/storage";
-import { app } from "./firebase";
+import {
+    getStorage,
+    ref,
+    uploadString,
+    getDownloadURL,
+    deleteObject,
+  } from "firebase/storage";
+  import { app } from "./firebase";
+  
+  const storage = getStorage(app);
+  
+  export async function uploadFileToStorage(file_url: string, file_name: string) {
+    const storageRef = ref(storage, file_name);
+    try {
+      const snapshot = await uploadString(storageRef, file_url, "data_url");
+      const download_url = await getDownloadURL(snapshot.ref);
+      return download_url;
+    } catch (error) {}
+  }
 
-// Define function to upload images to Firebase Storage
-// async function uploadImages(images: File[]): Promise<string[]> {
-//   const storageRef = firebase.storage().ref();
-//   const urls: string[] = [];
+  export async function deleteFileFromStorage(file_name: string) {
+    const storageRef = ref(storage, file_name)
 
-//   const storage = getStorage();
-
-//   // Create a child reference
-//   const imagesRef = ref(storage, "images");
-//   // imagesRef now points to 'images'
-
-//   // Loop through images and upload each one to Firebase Storage
-//   for (const image of images) {
-//     // Create a reference to the file in Firebase Storage
-//     //const imageRef = storageRef.child(`images/${image.name}`);
-
-//     const imageRef = ref(storage, `images/${image.name}`);
-//     // Upload the file to Firebase Storage
-//     const snapshot = await imageRef.put(image);
-
-//     // Get the URL of the uploaded file
-//     const url = await snapshot.ref.getDownloadURL();
-
-//     // Add the URL to the array of URLs
-//     urls.push(url);
-//   }
-
-//   // Return the array of URLs
-//   return urls;
-// }
+    await deleteObject(storageRef).then(() => {
+        return "Deleted successfully!"
+    }).catch((err) => {
+        console.log(err)
+        return "An error occured!"
+    })
+  }

@@ -22,7 +22,6 @@ def get_realtors():
 @authenticate_user
 def register_realtor():
     request_data = request.get_json()
-
     new_realtor = Realtor(id=str(uuid.uuid4()),
                           realtor_id=request_data['user_id'],
                           company_name=request_data['company_name'],
@@ -31,11 +30,13 @@ def register_realtor():
                           company_mail=request_data['company_mail'],
                           website_url=request_data['website_url'],
                           contact=request_data['contact'])
+
     try:
         db.session.add(new_realtor)
         db.session.commit()
         return f"Registered {new_realtor.company_name} successfully!", 201
-    except:
+    except Exception as e:
+        print(e)
         db.session.rollback()
         return "An error occured!", 500
 
@@ -167,6 +168,7 @@ def change_account_status(realtor_id):
 def get_realtor_by_user_id(user_id):
     realtor_details = Realtor.query.filter(
         Realtor.realtor_id == user_id).first()
+    print(realtor_details)
     if realtor_details is None:
         return jsonify("None"), 200
     return jsonify(realtor_details.serialize()), 200

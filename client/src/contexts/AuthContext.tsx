@@ -10,7 +10,6 @@ import {
   User,
   UserCredential,
 } from "firebase/auth";
-import { useQuery } from "@tanstack/react-query";
 import { getRealtorByUserId } from "../api/realtors";
 
 interface ExtendedUser extends User {
@@ -45,12 +44,17 @@ export default function AuthContextProvider({
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setLoggedIn] = useState(false);
 
-  const { data: realtorDetails } = useQuery({
-    queryKey: ["realtor-account", currentUser?.uid],
-    enabled: currentUser !== null,
-    queryFn: async () =>
-      getRealtorByUserId(currentUser!.uid, await currentUser!.accessToken),
-  });
+  async function fetchRealtorByUserId() {
+    try {
+      if (currentUser) {
+        const data = await getRealtorByUserId(
+          currentUser.uid,
+          currentUser.accessToken
+        );
+        setRealtorUser(data);
+      }
+    } catch (error) {}
+  }
 
   function signup(email: string, password: string) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -98,16 +102,14 @@ export default function AuthContextProvider({
 
   //Check if user has a realtor account
   useEffect(() => {
-    if (realtorDetails && realtorDetails !== "None") {
-      setRealtorUser(realtorDetails);
-    }
-  }, [realtorDetails, currentUser]);
+    fetchRealtorByUserId();
+  }, [currentUser]);
 
   useEffect(() => {
     if (currentUser) {
       setLoggedIn(true);
     } else {
-      setLoggedIn(false)
+      setLoggedIn(false);
     }
   }, [currentUser]);
 
@@ -130,7 +132,7 @@ export default function AuthContextProvider({
     googleSignUp,
     realtorUser,
     setRealtorUser,
-    isLoggedIn
+    isLoggedIn,
   };
 
   return (

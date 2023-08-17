@@ -4,12 +4,14 @@ import * as Yup from "yup";
 import Input from "../FormFields/Input";
 import { Button, Spinner } from "flowbite-react";
 import SelectInput from "../FormFields/SelectInput";
-import { filterData } from "../../utils";
+import { filterData, getImageNameFromUrl } from "../../utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNewProperty, updateProperty } from "../../api/properties";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
 import { uploadImages } from "../../api/utils";
+import { deleteFileFromStorage, uploadFileToStorage } from "../../firebase/util_functions";
+import { v4 as uuidv4 } from "uuid";
 
 //Get Property types and categories list
 const typeList = filterData[0].items;
@@ -22,8 +24,9 @@ export default function PropertyForm({
   form_type: FormType;
   initialValues: InitValuesProps;
 }) {
-  const [imagePreviews, setImagePreviews] = useState<(string | File)[]>([]);
-  const [selectedImages, setSelectedImages] = useState<(string | File)[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<(FileType | string)[]>([]);
+  const [selectedImages, setSelectedImages] = useState<FileType[]>([]);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
 
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
   const { realtorUser, currentUser } = useAuth();
@@ -71,6 +74,8 @@ export default function PropertyForm({
     }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: any }
   ) => {
     // handle form submission
+    const images = await handleUploadImages();
+
     if (form_type === "create") {
       createPropertyMutation
         .mutateAsync({
@@ -83,7 +88,7 @@ export default function PropertyForm({
             bathrooms: values.bathrooms,
             property_type: values.property_type,
             category: values.category,
-            property_images: imagePreviews,
+            property_images: images,
             price: values.price,
             size: values.size,
           },
@@ -112,7 +117,7 @@ export default function PropertyForm({
             bathrooms: values.bathrooms,
             property_type: values.property_type,
             category: values.category,
-            property_images: imagePreviews,
+            property_images: images,
             price: values.price,
             size: values.size,
           },
@@ -127,38 +132,59 @@ export default function PropertyForm({
     }
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+  const handleFileChange = (e: React.ChangeEvent<any>) => {
+    const files = e.target.files;
 
-    if (files) {
-      setSelectedImages([...selectedImages, ...files]);
-    }
+    const filePreviews: (string | FileType)[] = [...imagePreviews];
 
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.readAsDataURL(files[i]);
-        reader.onload = () => {
-          imagePreviews.push(reader.result as string);
-          setImagePreviews([...imagePreviews]);
-        };
-      }
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const preview = event.target?.result;
+        if (typeof preview === "string") {
+          filePreviews.push({
+            file_url: preview,
+            name: file.name,
+            type: file.type,
+          });
+          setImagePreviews([...filePreviews]);
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleUploadImages = async () => {
-    const formData = new FormData();
-
-    selectedImages.forEach((image, index) => {
-      formData.append(`image${index}`, image);
-    });
-
-    return await uploadImages(currentUser.accessToken, formData).then(
-      (res) => res
+    /**Upload files to file storage and get back the urls */
+    setUploadingFiles(true);
+    const fileUrls = await Promise.all(
+      imagePreviews.map(async (file: any) => {
+        try {
+          if (typeof file === "object") {
+            const url = await uploadFileToStorage(
+              file.file_url,
+              uuidv4() + file.name
+            );
+            return url;
+          }
+          return file;
+        } catch (error) {
+          // Handle the error if needed
+          console.error(error);
+          //return file; // Return the file without modifying the URL
+        }
+      })
     );
+    setUploadingFiles(false);
+
+    return fileUrls;
   };
 
-  const handleImageRemove = (index: number) => {
+  //Delete a selected image
+  const handleImageRemove = async (index: number) => {
     const previews = [...imagePreviews];
     previews.splice(index, 1);
     setImagePreviews([...previews]);
@@ -166,6 +192,13 @@ export default function PropertyForm({
     const selected = [...selectedImages];
     selected.splice(index, 1);
     setSelectedImages([...selected]);
+
+    let item = previews[index]
+
+    if (typeof item === "string") {
+      const res = await deleteFileFromStorage(getImageNameFromUrl(item))
+      console.log(res)
+    }
   };
 
   useEffect(() => {
@@ -262,15 +295,21 @@ export default function PropertyForm({
               type="file"
               accept="image/*"
               multiple
-              onChange={handleImageChange}
+              onChange={handleFileChange}
             />
             <div className="flex flex-row gap-2 flex-wrap my-3">
               {imagePreviews.length > 0 &&
                 imagePreviews.map((preview, index) => (
                   <div className="my-1" key={index}>
                     <img
-                      src={preview.toString()}
-                      alt={`preview-${index}`}
+                      src={
+                        typeof preview === "object" ? preview.file_url : preview
+                      }
+                      alt={`preview-${
+                        typeof preview === "object"
+                          ? preview.name
+                          : getImageNameFromUrl(preview)
+                      }`}
                       className="w-32 h-24"
                     />
                     <span
@@ -298,7 +337,8 @@ export default function PropertyForm({
             type="submit"
             disabled={
               createPropertyMutation.isLoading ||
-              updatePropertyMutation.isLoading
+              updatePropertyMutation.isLoading ||
+              uploadingFiles
             }
           >
             {createPropertyMutation.isLoading ||

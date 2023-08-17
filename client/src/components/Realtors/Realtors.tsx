@@ -15,6 +15,7 @@ export default function Realtors() {
     queryFn: getRealtors,
   });
 
+
   return (
     <div>
       <h1 className="text-3xl my-6 font-semibold py-3">

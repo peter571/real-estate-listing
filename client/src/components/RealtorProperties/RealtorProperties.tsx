@@ -16,11 +16,12 @@ export default function RealtorProperties() {
   const { id } = useParams();
   const { currentPage, onPageChange } = usePagination();
 
-  const { data: realtor, isLoading: loadingRealtor } = useQuery({
+  const { data: realtor, isLoading: loadingRealtor, isRefetching } = useQuery({
     queryKey: ["realtors", id],
     enabled: id !== undefined,
     queryFn: () => getRealtor(id!),
   });
+  
   const { data: realtorProperties, isLoading: loadingProperties } = useQuery({
     enabled: id !== null,
     queryKey: ["realtor_properties", currentPage],

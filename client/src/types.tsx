@@ -86,7 +86,7 @@ type FormType = "create" | "update";
 interface InitValuesProps {
   formikValues: PropertyFormValues;
   description: string;
-  property_images: string[];
+  property_images: FileType[];
   property_id: string;
 }
 
@@ -115,5 +115,11 @@ interface EmailAgentModalProp {
 type FollowAction = "follow" | "unfollow";
 
 type AddToFavoriteAction = "add" | "remove";
+
+interface FileType {
+  name: string
+  type: string
+  file_url: string
+}
 
 //export {}

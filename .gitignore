@@ -12,6 +12,7 @@ data2.json
 deploy_server.sh
 
 /server/.flaskenv
+/server/.env
 /server/main.py
 /var
 # Logs

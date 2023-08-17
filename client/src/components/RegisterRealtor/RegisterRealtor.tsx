@@ -49,6 +49,8 @@ export default function RegisterRealtor() {
       })
       .then(() => {
         resetForm();
+      }).catch((err) => {
+        console.log(err)
       });
   };
 
