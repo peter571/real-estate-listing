@@ -1,3 +1,7 @@
-Introducing the latest game-changer in the real estate industry - our innovative real estate venture that aims to connect people searching for properties with available properties. We understand that searching for the perfect property can be a daunting task, but with our platform, we strive to simplify the process and make it as seamless as possible.
+A real estate listing web app venture that aims to connect people searching for properties with available properties. Realtors get to list their properties and customers can search and contact realtors.
 
-Our venture is designed to cater to all types of property seekers, whether you are a first-time homebuyer or a seasoned investor, we have something for everyone. With our user-friendly interface and advanced search filters, you can easily find your dream property within seconds. We have a wide range of properties listed on our platform, from luxurious apartments to spacious villas and everything in between. We work closely with some of the best developers and real estate agents in the country, ensuring that you have access to the latest and most exclusive properties on the market. So why wait? Sign up today and let us help you find your perfect property!
+#### Client
+>Frontend built with react-typescript, react query and tailwind CSS.
+#### Server
+> Backend microservices serving the frontend with api endpoints. Built with Flask and PostgreSQL.
+
