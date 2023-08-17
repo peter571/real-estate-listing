@@ -10,18 +10,20 @@ import { registerRealtorAccount } from "../../api/realtors";
 export default function RegisterRealtor() {
   const [show, setShow] = useState(false);
   const [profilePic, setProfilePic] = useState("");
-  const { currentUser } = useAuth();
+  const { currentUser, setRealtorUser } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const createRealtorMutation = useMutation({
     mutationFn: registerRealtorAccount,
-    onSuccess: () => {
+    onSuccess: (data) => {
+
       queryClient.invalidateQueries({
         queryKey: ["realtor-account"],
       });
       setProfilePic("");
       setShow(false);
+      setRealtorUser(data)
       navigate("/realtor-admin");
     },
   });
@@ -33,9 +35,9 @@ export default function RegisterRealtor() {
       resetForm,
     }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: any }
   ) => {
-    //Register account
-    createRealtorMutation
-      .mutateAsync({
+    try {
+      //Register account
+      const data = await createRealtorMutation.mutateAsync({
         userToken: currentUser.accessToken,
         realtorDetails: {
           user_id: currentUser.uid,
@@ -46,12 +48,10 @@ export default function RegisterRealtor() {
           website_url: values.website_url,
           contact: values.contact,
         },
-      })
-      .then(() => {
-        resetForm();
-      }).catch((err) => {
-        console.log(err)
       });
+      
+      resetForm();
+    } catch (error) {}
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

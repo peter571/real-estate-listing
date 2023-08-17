@@ -52,24 +52,25 @@ export default function RealtorProperties() {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {isLoading &&
-            <PropertyRowLoader />}
-          {!isLoading && realtorProperties["properties"].length === 0 && (
-            <Table.Row className="my-10 ml-5">
-              <Table.Cell className="">
-                <h1 className="font-bold">No properties yet!</h1>
-                <Button
-                  color="gray"
-                  className="flex items-center my-5"
-                  type="button"
-                  onClick={() => handleTabClick("uploadproperty")}
-                >
-                  <span className="mr-2">Upload properties</span>
-                  <FaLongArrowAltRight />
-                </Button>
-              </Table.Cell>
-            </Table.Row>
-          )}
+          {isLoading && <PropertyRowLoader />}
+          {!isLoading &&
+            realtorProperties["properties"] &&
+            realtorProperties["properties"].length === 0 && (
+              <Table.Row className="my-10 ml-5">
+                <Table.Cell className="">
+                  <h1 className="font-bold">No properties yet!</h1>
+                  <Button
+                    color="gray"
+                    className="flex items-center my-5"
+                    type="button"
+                    onClick={() => handleTabClick("uploadproperty")}
+                  >
+                    <span className="mr-2">Upload properties</span>
+                    <FaLongArrowAltRight />
+                  </Button>
+                </Table.Cell>
+              </Table.Row>
+            )}
           {!isLoading &&
             realtorProperties["properties"] &&
             realtorProperties["properties"]

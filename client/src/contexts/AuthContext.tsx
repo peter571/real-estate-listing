@@ -51,7 +51,10 @@ export default function AuthContextProvider({
           currentUser.uid,
           currentUser.accessToken
         );
-        setRealtorUser(data);
+        if (data !== "None") {
+          setRealtorUser(data);
+        }
+        
       }
     } catch (error) {}
   }

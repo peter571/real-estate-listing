@@ -34,7 +34,7 @@ def register_realtor():
     try:
         db.session.add(new_realtor)
         db.session.commit()
-        return f"Registered {new_realtor.company_name} successfully!", 201
+        return jsonify(new_realtor.serialize()), 201
     except Exception as e:
         print(e)
         db.session.rollback()

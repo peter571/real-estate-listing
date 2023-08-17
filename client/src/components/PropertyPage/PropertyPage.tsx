@@ -54,7 +54,7 @@ export default function PropertyPage() {
           </span>
 
           <span className="p-2 gap-2 rounded-md block">
-            KSH {property?.price.toLocaleString()}
+            $ {property?.price.toLocaleString()}
           </span>
 
           <span className="p-2 gap-2 rounded-md block">

@@ -79,7 +79,7 @@ export default function PropertyCard(props: PropertyDetailsCard) {
 
       <div className="flex justify-between items-center py-2">
         <h5 className="xl:text-xl font-semibold tracking-tight text-gray-900 mx-3">
-          KSH {numberFormatter.format(Number(props.price))}
+          $ {numberFormatter.format(Number(props.price))}
         </h5>
 
         <Button

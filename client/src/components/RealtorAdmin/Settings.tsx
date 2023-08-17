@@ -24,9 +24,16 @@ export default function Settings() {
   const queryClient = useQueryClient();
 
   const updateRealtorMutation = useMutation({
-    mutationFn: () => updateRealtorDetails(realtorUser!.id, realtorDetails, currentUser.accessToken),
+    mutationFn: () =>
+      updateRealtorDetails(
+        realtorUser!.id,
+        realtorDetails,
+        currentUser.accessToken
+      ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["realtor", currentUser?.uid] });
+      queryClient.invalidateQueries({
+        queryKey: ["realtor", currentUser?.uid],
+      });
     },
   });
 
@@ -38,8 +45,10 @@ export default function Settings() {
         currentUser.accessToken
       ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["realtor", currentUser?.uid]})
-    }  
+      queryClient.invalidateQueries({
+        queryKey: ["realtor", currentUser?.uid],
+      });
+    },
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -206,9 +215,12 @@ export default function Settings() {
           type="button"
           className="full-btn mt-14"
           disabled={!newChanges}
-          onClick={() => updateRealtorMutation.mutateAsync().then(() => {
-            toast.success("Saved Changes!")
-          })}
+          onClick={async () => {
+            try {
+              await updateRealtorMutation.mutateAsync();
+              toast.success("Saved Changes!");
+            } catch (error) {}
+          }}
         >
           Save
         </Button>

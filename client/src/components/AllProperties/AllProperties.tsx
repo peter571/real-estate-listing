@@ -33,6 +33,9 @@ export default function AllProperties() {
           allProperties["properties"].map((property: PropertyDetailsCard) => (
             <PropertyCard key={property.id} {...property} />
           ))}
+          {!isLoading && allProperties["properties"].length === 0 && (
+          <h1>No properties</h1>
+        )}
       </div>
       <div className="flex items-center justify-center text-center py-10">
         {!isLoading && allProperties["pages"] > 1 && (
@@ -46,6 +49,7 @@ export default function AllProperties() {
             nextLabel="Go forward"
           />
         )}
+        
       </div>
     </div>
   );
