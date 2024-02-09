@@ -3,9 +3,7 @@ import PropertyCard from "components/PropertyCard/PropertyCard";
 import PropertyCardLoader from "components/Loaders/PropertyCardLoader";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import {
-  recentlyAddedProperties,
-} from "api/properties";
+import { recentlyAddedProperties } from "api/properties";
 
 export default function RecentlyAdded() {
   const navigate = useNavigate();
@@ -14,6 +12,8 @@ export default function RecentlyAdded() {
     queryKey: ["recent-properties"],
     queryFn: () => recentlyAddedProperties(),
   });
+
+  if (!recentProperties || recentProperties.length === 0) return null;
 
   return (
     <section className="py-20">

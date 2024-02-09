@@ -54,7 +54,6 @@ export default function AuthContextProvider({
         if (data !== "None") {
           setRealtorUser(data);
         }
-        
       }
     } catch (error) {}
   }

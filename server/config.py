@@ -3,16 +3,13 @@ import json
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')\
         or 'sqlite:///' + os.path.join(basedir, 'myDB.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-
 def import_firebase_variables():
-
     variables = {
         "type": os.environ.get("type"),
         "project_id": os.environ.get("project_id"),
@@ -26,5 +23,4 @@ def import_firebase_variables():
         "client_x509_cert_url": os.environ.get("client_x509_cert_url"),
         "universe_domain": os.environ.get("universe_domain")
     }
-
     return variables
