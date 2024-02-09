@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import Input from "../FormFields/Input";
+import Input from "components/FormFields/Input";
 import { Button, Spinner } from "flowbite-react";
-import SelectInput from "../FormFields/SelectInput";
-import { filterData, getImageNameFromUrl } from "../../utils";
+import SelectInput from "components/FormFields/SelectInput";
+import { filterData, getImageNameFromUrl } from "@/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNewProperty, updateProperty } from "../../api/properties";
-import { useAuth } from "../../contexts/AuthContext";
+import { createNewProperty, updateProperty } from "api/properties";
+import { useAuth } from "context/AuthContext";
 import { toast } from "react-toastify";
-import { uploadImages } from "../../api/utils";
-import { deleteFileFromStorage, uploadFileToStorage } from "../../firebase/util_functions";
+import { deleteFileFromStorage, uploadFileToStorage } from "firebaseapp/util_functions";
 import { v4 as uuidv4 } from "uuid";
 
 //Get Property types and categories list

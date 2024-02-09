@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FiSearch } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { useSearch } from '../../contexts/SearchContext';
+import { useSearch } from 'context/SearchContext';
 
 export default function Search() {
     const navigate = useNavigate();

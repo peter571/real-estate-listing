@@ -1,14 +1,12 @@
 import React from "react";
 import Realtor from "./Realtor";
 import { useQuery } from "@tanstack/react-query";
-import { getRealtors } from "../../api/realtors";
-import SpinnerLoader from "../Loaders/Spinner";
-import RealtorCardLoader from "../Loaders/RealtorCardLoader";
+import { getRealtors } from "api/realtors";
+import RealtorCardLoader from "components/Loaders/RealtorCardLoader";
 
 export default function Realtors() {
   const {
     data: realtors,
-    isRefetching,
     isLoading,
   } = useQuery({
     queryKey: ["realtors"],

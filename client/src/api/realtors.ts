@@ -1,4 +1,4 @@
-import { API, APIWithToken } from "./axiosInstance";
+import { API, APIWithToken } from "api/axiosInstance";
 
 //Register a realtor account
 const registerRealtorAccount = async (realtorDetails: RealtorAccountProps) => {

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Button, Modal, TextInput, Label, Textarea } from "flowbite-react";
 import { useQuery } from "@tanstack/react-query";
-import { getRealtor } from "../../api/realtors";
-import { sendEmailToRealtor } from "../../api/utils";
+import { getRealtor } from "api/realtors";
+import { sendEmailToRealtor } from "api/utils";
 import { toast } from "react-toastify";
 
 export default function EmailAgentModal({

@@ -4,14 +4,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   deleteProperty,
   updatePropertyAvailability,
-} from "../../api/properties";
-import { useAuth } from "../../contexts/AuthContext";
+} from "api/properties";
+import { useAuth } from "context/AuthContext";
 import { toast } from "react-toastify";
-import DeleteModal from "./DeleteModal";
-import UpdateModal from "./UpdateModal";
-import default_image from "../../assets/images/default_image.png";
-import { deleteFileFromStorage } from "../../firebase/util_functions";
-import { getImageNameFromUrl } from "../../utils";
+import DeleteModal from "components/RealtorAdmin/DeleteModal";
+import UpdateModal from "components/RealtorAdmin/UpdateModal";
+import default_image from "assets/images/default_image.png";
+import { deleteFileFromStorage } from "firebaseapp/util_functions";
+import { getImageNameFromUrl } from "@/utils";
 
 export default function PropertyRow(props: PropertyDetailsCard) {
   const { realtorUser, currentUser } = useAuth();

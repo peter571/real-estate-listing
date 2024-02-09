@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { Button, Table } from "flowbite-react";
-import PropertyRow from "./PropertyRow";
+import PropertyRow from "components/RealtorAdmin/PropertyRow";
 import { useQuery } from "@tanstack/react-query";
-import { getRealtorActiveProperties } from "../../api/realtors";
-import { useAuth } from "../../contexts/AuthContext";
+import { getRealtorActiveProperties } from "api/realtors";
+import { useAuth } from "context/AuthContext";
 import { Pagination } from "flowbite-react";
-import SpinnerLoader from "../Loaders/Spinner";
-import { usePagination } from "../../hooks/usePagination";
+import { usePagination } from "hooks/usePagination";
 import { FaLongArrowAltRight } from "react-icons/fa";
-import { useRealtorAdminContext } from "./RealtorAdminContext";
-import PropertyRowLoader from "../Loaders/PropertyRowLoader";
+import { useRealtorAdminContext } from "components/RealtorAdmin/RealtorAdminContext";
+import PropertyRowLoader from "components/Loaders/PropertyRowLoader";
 
 export default function RealtorProperties() {
   const { realtorUser, currentUser } = useAuth();

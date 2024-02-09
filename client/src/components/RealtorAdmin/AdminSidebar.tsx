@@ -3,8 +3,8 @@ import { Sidebar } from "flowbite-react";
 import { FaSignOutAlt } from "react-icons/fa";
 import { BsHouse, BsUpload, BsHouseFill } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
-import { useRealtorAdminContext } from "./RealtorAdminContext";
-import { useAuth } from "../../contexts/AuthContext";
+import { useRealtorAdminContext } from "components/RealtorAdmin/RealtorAdminContext";
+import { useAuth } from "context/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function AdminSidebar() {

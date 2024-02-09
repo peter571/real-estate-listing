@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, FormikErrors, FormikTouched } from "formik";
-import { ErrorMessage } from "./Input";
+import { ErrorMessage } from "components/FormFields/Input";
 
 export default function SelectInput({
   labelName,

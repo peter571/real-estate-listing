@@ -1,10 +1,10 @@
 import React from "react";
 import { Navbar, Avatar, Tooltip, Dropdown } from "flowbite-react";
-import logo from "../../assets/images/254__1.png";
+import logo from "assets/images/254__1.png";
 import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import RegisterRealtor from "../RegisterRealtor/RegisterRealtor";
-import { useAuth } from "../../contexts/AuthContext";
+import RegisterRealtor from "components/RegisterRealtor/RegisterRealtor";
+import { useAuth } from "context/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function NavigationBar() {

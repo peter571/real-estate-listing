@@ -1,9 +1,9 @@
 import React from "react";
-import PausedProperties from "./PausedProperties";
-import { useRealtorAdminContext } from "./RealtorAdminContext";
-import RealtorProperties from "./RealtorProperties";
-import Settings from "./Settings";
-import UploadProperty from "./UploadProperty";
+import PausedProperties from "components/RealtorAdmin/PausedProperties";
+import { useRealtorAdminContext } from "components/RealtorAdmin/RealtorAdminContext";
+import RealtorProperties from "components/RealtorAdmin/RealtorProperties";
+import Settings from "components/RealtorAdmin/Settings";
+import UploadProperty from "components/RealtorAdmin/UploadProperty";
 
 export default function Main() {
   const { selectedTab } = useRealtorAdminContext();

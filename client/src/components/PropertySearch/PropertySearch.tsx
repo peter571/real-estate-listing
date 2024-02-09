@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { searchProperties } from "../../api/properties";
+import { searchProperties } from "api/properties";
 import PropertyCard from "../PropertyCard/PropertyCard";
 import SearchBar from "../SearchBar/SearchBar";
-import { useSearch } from "../../contexts/SearchContext";
+import { useSearch } from "context/SearchContext";
 import { Pagination } from "flowbite-react";
-import { usePagination } from "../../hooks/usePagination";
-import PropertyCardLoader from "../Loaders/PropertyCardLoader";
+import { usePagination } from "hooks/usePagination";
+import PropertyCardLoader from "components/Loaders/PropertyCardLoader";
 
 export default function PropertySearch() {
   const { search_query } = useParams();

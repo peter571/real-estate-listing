@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import pic from "../../assets/images/estate.jpg";
 import { Button } from "flowbite-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "../../contexts/AuthContext";
-import { changeAccountStatus, updateRealtorDetails } from "../../api/realtors";
+import { useAuth } from "context/AuthContext";
+import { changeAccountStatus, updateRealtorDetails } from "api/realtors";
 import { toast } from "react-toastify";
 
 const initialValues = {
@@ -204,12 +203,6 @@ export default function Settings() {
           >
             {realtorUser?.active ? "Deactivate account" : "Activate account"}
           </span>
-          {/* <span
-            className="block font-medium hover:text-blue-600 hover:underline"
-            role="button"
-          >
-            Close account
-          </span> */}
         </div>
         <Button
           type="button"

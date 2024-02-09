@@ -1,4 +1,4 @@
-import PropertyForm from "./PropertyForm";
+import PropertyForm from "components/RealtorAdmin/PropertyForm";
 
 const initialValues: InitValuesProps = {
   formikValues: {

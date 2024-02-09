@@ -1,10 +1,8 @@
 import React, {
-  ReducerWithoutAction,
   createContext,
   useContext,
-  useReducer,
 } from "react";
-import useSearchReducer from "../hooks/useSearchReducer";
+import useSearchReducer from "hooks/useSearchReducer";
 
 const SearchContext = createContext({} as SearchContextState);
 

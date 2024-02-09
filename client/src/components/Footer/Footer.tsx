@@ -1,6 +1,4 @@
 import React from "react";
-import { Label, TextInput, Button } from "flowbite-react";
-import { HiMail } from "react-icons/hi";
 import { AiOutlineCopyright } from "react-icons/ai";
 
 export default function Footer() {

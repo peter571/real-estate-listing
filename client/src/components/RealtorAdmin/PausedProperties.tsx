@@ -1,16 +1,13 @@
-import React, { useState } from "react";
-import { Button, Pagination, Table } from "flowbite-react";
-import PropertyRow from "./PropertyRow";
+import React from "react";
+import { Pagination, Table } from "flowbite-react";
+import PropertyRow from "components/RealtorAdmin/PropertyRow";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "context/AuthContext";
 import {
   getRealtorPausedProperties,
-  getRealtorProperties,
-} from "../../api/realtors";
-import SpinnerLoader from "../Loaders/Spinner";
-import { usePagination } from "../../hooks/usePagination";
-import { FaLongArrowAltRight } from "react-icons/fa";
-import PropertyRowLoader from "../Loaders/PropertyRowLoader";
+} from "api/realtors";
+import { usePagination } from "hooks/usePagination";
+import PropertyRowLoader from "components/Loaders/PropertyRowLoader";
 
 export default function PausedProperties() {
   const { realtorUser, currentUser } = useAuth();

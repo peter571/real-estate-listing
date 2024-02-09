@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Button, Modal, Spinner } from "flowbite-react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { registerRealtorAccount } from "../../api/realtors";
+import { registerRealtorAccount } from "api/realtors";
 
 export default function RegisterRealtor() {
   const [show, setShow] = useState(false);

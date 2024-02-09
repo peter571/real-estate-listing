@@ -1,5 +1,4 @@
 import React from "react";
-import pic from "../../assets/images/home_1.jpg";
 import { FaShare } from "react-icons/fa";
 import { Tooltip } from "flowbite-react";
 

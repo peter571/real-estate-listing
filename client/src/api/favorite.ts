@@ -1,6 +1,6 @@
 import {
   APIWithToken,
-} from "./axiosInstance";
+} from "api/axiosInstance";
 
 const getUserFavorites = async (user_id: string, accessToken: string, page: number) => {
   return await APIWithToken(accessToken)

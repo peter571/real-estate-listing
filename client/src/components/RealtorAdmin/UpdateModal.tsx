@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button, Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { getPropertyById } from "../../api/properties";
-import PropertyForm from "./PropertyForm";
+import { getPropertyById } from "api/properties";
+import PropertyForm from "components/RealtorAdmin/PropertyForm";
 
 export default function UpdateModal({
   show,

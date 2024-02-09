@@ -2,13 +2,9 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
-  useState,
 } from "react";
-import { useTabState, Tab } from "../../hooks/useTabReducer";
-import { useAuth } from "../../contexts/AuthContext";
-import { useQuery } from "@tanstack/react-query";
-import { getRealtorByUserId } from "../../api/realtors";
+import { useTabState, Tab } from "hooks/useTabReducer";
+import { useAuth } from "context/AuthContext";
 
 interface RealtorAdminProps {
   selectedTab: Tab;

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Card } from "flowbite-react";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import defaultImg from "../../assets/images/254.png";
+import defaultImg from "assets/images/254.png";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   checkUserFollowsRealtor,
   followRealtor,
   getRealtorFollowers,
-} from "../../api/realtor_followers";
-import { useAuth } from "../../contexts/AuthContext";
+} from "api/realtor_followers";
+import { useAuth } from "context/AuthContext";
 
 export default function Realtor(props: RealtorDetails) {
   const navigate = useNavigate();

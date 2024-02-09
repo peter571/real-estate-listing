@@ -17,6 +17,7 @@
     "flowbite-react": "^0.3.8",
     "formik": "^2.2.9",
     "google-map-react": "^2.2.0",
+    "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-formik": "^0.1.5",

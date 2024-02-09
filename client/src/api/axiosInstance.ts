@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from "axios";
-const BASE_URL = "https://real-estate-api-kdwj.onrender.com"
-const LOCALHOST_URL = "http://127.0.0.1:5000"
+import config from "@/config";
+
+const BASE_URL = config.BASE_URL;
+const LOCALHOST_URL = config.LOCALHOST_URL;
 
 //For Endpoints that require user authentication
 const APIWithToken = (token: string): AxiosInstance => {
@@ -30,4 +32,4 @@ const API = (): AxiosInstance => {
   return axiosInstance;
 };
 
-export { API, APIWithToken }
+export { API, APIWithToken };

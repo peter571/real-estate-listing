@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from "react";
-import NavigationBar from "./components/NavigationBar/NavigationBar";
-import SearchBar from "./components/SearchBar/SearchBar";
-import Home from "./pages/Home";
+import NavigationBar from "components/NavigationBar/NavigationBar";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Auth from "./components/Auth/Auth";
-import ResetPassword from "./components/Auth/ResetPassword";
-import ForgotPassword from "./components/Auth/ForgotPassword";
-import RealtorsAgents from "./pages/RealtorsAgents";
-import RealtorProperties from "./components/RealtorProperties/RealtorProperties";
-import About from "./pages/About";
-//import Blog from "./pages/Blog";
-import RealtorAdmin from "./components/RealtorAdmin/RealtorAdmin";
-import Favorites from "./pages/Favorites";
-import Properties from "./pages/Properties";
-import {
-  ProtectedRoute,
-  ProtectedRouteAdmin,
-} from "./ProtectedRoute/ProtectedRoute";
+import Auth from "components/Auth/Auth";
+import ResetPassword from "components/Auth/ResetPassword";
+import ForgotPassword from "components/Auth/ForgotPassword";
+import RealtorsAgents from "pages/RealtorsAgents";
+import RealtorProperties from "components/RealtorProperties/RealtorProperties";
+import RealtorAdmin from "components/RealtorAdmin/RealtorAdmin";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PropertySearch from "./components/PropertySearch/PropertySearch";
-import Search from "./components/Search/Search";
-import PropertyPage from "./components/PropertyPage/PropertyPage";
+import PropertySearch from "components/PropertySearch/PropertySearch";
+import Search from "components/Search/Search";
+import PropertyPage from "components/PropertyPage/PropertyPage";
+import About from "pages/About";
+import Favorites from "pages/Favorites";
+import Properties from "pages/Properties";
+import Home from "pages/Home";
+import {
+  ProtectedRouteAdmin,
+} from "@/ProtectedRoute/ProtectedRoute";
+
 
 function App() {
   const location = useLocation();

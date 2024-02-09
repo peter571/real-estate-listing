@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import estate_picture from "../../assets/images/estate.jpg";
-import estate_picture1 from "../../assets/images/luxury-home1.jpg";
-import estate_picture2 from "../../assets/images/residence.jpg";
+import estate_picture1 from "assets/images/luxury-home1.jpg";
 import { useNavigate } from "react-router-dom";
-import { FiSearch } from "react-icons/fi";
-import { useSearch } from "../../contexts/SearchContext";
-import Search from "../Search/Search";
+import { useSearch } from "context/SearchContext";
+import Search from "components/Search/Search";
 
 export default function Hero() {
   const navigate = useNavigate();

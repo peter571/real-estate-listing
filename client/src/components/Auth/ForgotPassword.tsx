@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import { Alert, Button } from "flowbite-react";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "context/AuthContext";
 
 interface FormValue {
   email: string;

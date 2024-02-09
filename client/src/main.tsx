@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import AuthContextProvider from "./contexts/AuthContext";
+import AuthContextProvider from "context/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "./index.css";
-import SearchContextProvider from "./contexts/SearchContext";
+import SearchContextProvider from "context/SearchContext";
+import App from "@/App";
+import "@/index.css";
 
 const queryClient = new QueryClient();
 

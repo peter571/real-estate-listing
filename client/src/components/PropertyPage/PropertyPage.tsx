@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { getPropertyById } from "../../api/properties";
+import { getPropertyById } from "api/properties";
 import { Button, Carousel } from "flowbite-react";
-import default_image from "../../assets/images/default_image.png";
+import default_image from "assets/images/default_image.png";
 import { FaBath, FaBed, FaRuler } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import EmailAgentModal from "../EmailAgentModal/EmailAgentModal";
-import PropertyPageLoader from "../Loaders/PropertyPageLoader";
+import EmailAgentModal from "components/EmailAgentModal/EmailAgentModal";
+import PropertyPageLoader from "components/Loaders/PropertyPageLoader";
 
 export default function PropertyPage() {
   const [showEmailAgentModal, setShowEmailAgentModal] = useState<{

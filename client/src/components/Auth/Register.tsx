@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { Button, Alert } from "flowbite-react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "context/AuthContext";
 import { HiInformationCircle } from "react-icons/hi";
 
 interface FormValues {

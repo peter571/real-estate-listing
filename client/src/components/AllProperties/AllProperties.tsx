@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import PropertyCard from "../PropertyCard/PropertyCard";
+import PropertyCard from "components/PropertyCard/PropertyCard";
 import { useQuery } from "@tanstack/react-query";
-import { getAllProperties } from "../../api/properties";
-import SpinnerLoader from "../Loaders/Spinner";
+import { getAllProperties } from "api/properties";
 import { Pagination } from "flowbite-react";
 import { useSearchParams } from "react-router-dom";
-import PropertyCardLoader from "../Loaders/PropertyCardLoader";
+import PropertyCardLoader from "components/Loaders/PropertyCardLoader";
 
 export default function AllProperties() {
   const [currentPage, setCurrentPage] = useState(1);

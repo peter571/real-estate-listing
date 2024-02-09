@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Carousel, Modal } from "flowbite-react";
 import { useQuery } from "@tanstack/react-query";
-import { getPropertyById } from "../../api/properties";
+import { getPropertyById } from "api/properties";
 import { FaBed, FaBath } from "react-icons/fa";
-import default_image from "../../assets/images/default_image.png";
-import PropertyModalLoader from "../Loaders/PropertyPageLoader";
+import default_image from "assets/images/default_image.png";
+import PropertyModalLoader from "components/Loaders/PropertyPageLoader";
 
 export default function PropertyModal({
   propertyData,
@@ -20,8 +20,6 @@ export default function PropertyModal({
     enabled: propertyData.property_id !== null,
     queryFn: () => getPropertyById(propertyData.property_id!),
   });
-
-  // if (propertyData.property_id === null) return <></>;
 
   return (
     <React.Fragment>

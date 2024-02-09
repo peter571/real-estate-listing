@@ -5,7 +5,7 @@ import { Button, Alert } from "flowbite-react";
 import { FcGoogle } from "react-icons/fc";
 import { HiInformationCircle } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "context/AuthContext";
 
 interface FormValues {
   email: string;

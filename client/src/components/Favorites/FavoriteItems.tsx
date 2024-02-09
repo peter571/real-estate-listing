@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useAuth } from "../../contexts/AuthContext";
-import { getUserFavorites } from "../../api/favorite";
-import PropertyCard from "../PropertyCard/PropertyCard";
-import { usePagination } from "../../hooks/usePagination";
-import SpinnerLoader from "../Loaders/Spinner";
+import { useAuth } from "context/AuthContext";
+import { getUserFavorites } from "api/favorite";
+import PropertyCard from "components/PropertyCard/PropertyCard";
+import { usePagination } from "hooks/usePagination";
 import { Pagination } from "flowbite-react";
-import PropertyCardLoader from "../Loaders/PropertyCardLoader";
+import PropertyCardLoader from "components/Loaders/PropertyCardLoader";
 
 export default function FavoriteItems() {
   const { currentUser } = useAuth();

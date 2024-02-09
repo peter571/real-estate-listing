@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Tooltip } from "flowbite-react";
 import { FiSearch } from "react-icons/fi";
-import SelectInput from "../Inputs/SelectInput";
-import { filterData } from "../../utils";
-import { useSearch } from "../../contexts/SearchContext";
+import SelectInput from "components/Inputs/SelectInput";
+import { filterData } from "@/utils";
+import { useSearch } from "context/SearchContext";
 import { useNavigate } from "react-router-dom";
 import { BsFilterSquare } from "react-icons/bs";
 

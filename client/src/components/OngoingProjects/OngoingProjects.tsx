@@ -4,7 +4,7 @@ import {
   HiOutlineArrowSmRight,
   HiOutlineLocationMarker,
 } from "react-icons/hi";
-import pic from "../../assets/images/home_1.jpg";
+import pic from "assets/images/home_1.jpg";
 
 export default function OngoingProjects() {
   return (

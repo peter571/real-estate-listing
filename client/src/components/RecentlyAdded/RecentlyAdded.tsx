@@ -1,12 +1,11 @@
 import React from "react";
-import PropertyCard from "../PropertyCard/PropertyCard";
-import PropertyCardLoader from "../Loaders/PropertyCardLoader";
+import PropertyCard from "components/PropertyCard/PropertyCard";
+import PropertyCardLoader from "components/Loaders/PropertyCardLoader";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
-  getAllProperties,
   recentlyAddedProperties,
-} from "../../api/properties";
+} from "api/properties";
 
 export default function RecentlyAdded() {
   const navigate = useNavigate();

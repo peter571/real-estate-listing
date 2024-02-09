@@ -1,7 +1,7 @@
 import React from "react";
-import AdminSidebar from "./AdminSidebar";
-import Main from "./Main";
-import RealtorAdminProvider from "./RealtorAdminContext";
+import AdminSidebar from "components/RealtorAdmin/AdminSidebar";
+import Main from "components/RealtorAdmin/Main";
+import RealtorAdminProvider from "components/RealtorAdmin/RealtorAdminContext";
 
 export default function RealtorAdmin() {
   return (

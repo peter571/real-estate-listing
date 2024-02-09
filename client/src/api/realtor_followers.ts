@@ -1,7 +1,7 @@
 import {
   API,
   APIWithToken,
-} from "./axiosInstance";
+} from "api/axiosInstance";
 
 const getRealtorFollowers = async (realtor_id: string) => {
   return await API()

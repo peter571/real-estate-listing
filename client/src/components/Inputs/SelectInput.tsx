@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { useSearch } from "../../contexts/SearchContext";
-import { initialState } from "../../hooks/useSearchReducer";
+import { useSearch } from "context/SearchContext";
+import { initialState } from "hooks/useSearchReducer";
 
 interface OptionProp {
   name: string;

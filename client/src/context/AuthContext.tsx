@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { auth } from "../firebase/firebase";
+import { auth } from "firebaseapp/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -10,7 +10,7 @@ import {
   User,
   UserCredential,
 } from "firebase/auth";
-import { getRealtorByUserId } from "../api/realtors";
+import { getRealtorByUserId } from "api/realtors";
 
 interface ExtendedUser extends User {
   uid: string;

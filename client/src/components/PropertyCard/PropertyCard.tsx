@@ -2,19 +2,17 @@ import React, { useState } from "react";
 import { Button, Tooltip } from "flowbite-react";
 import { FaBed, FaBath, FaHeart, FaRuler } from "react-icons/fa";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addToFavorites, checkPropertyIsFavorite } from "../../api/favorite";
-import { useAuth } from "../../contexts/AuthContext";
+import { addToFavorites, checkPropertyIsFavorite } from "api/favorite";
+import { useAuth } from "context/AuthContext";
 import EmailAgentModal from "../EmailAgentModal/EmailAgentModal";
-import default_image from "../../assets/images/default_image.png";
-import { numberFormatter } from "../../utils";
+import default_image from "assets/images/default_image.png";
+import { numberFormatter } from "@/utils";
 import { useNavigate } from "react-router-dom";
 
 export default function PropertyCard(props: PropertyDetailsCard) {
   const { currentUser, isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  // const [showPropertyModalData, setShowPropertyModalData] =
-  //   useState<PropertyModalProp>({ show: false, property_id: null });
   const [showEmailAgentModal, setShowEmailAgentModal] = useState<{
     show: boolean;
     realtor_id: string | null;
@@ -72,7 +70,6 @@ export default function PropertyCard(props: PropertyDetailsCard) {
         }
         role="button"
         onClick={() =>
-          // setShowPropertyModalData({ show: true, property_id: props.id })
           navigate('/property/'+props.id)
         }
       />

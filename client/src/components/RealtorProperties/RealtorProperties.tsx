@@ -1,16 +1,15 @@
 import React from "react";
-import PropertyCard from "../PropertyCard/PropertyCard";
-import Realtor, { Image } from "../Realtors/Realtor";
+import PropertyCard from "components/PropertyCard/PropertyCard";
+import { Image } from "components/Realtors/Realtor";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getRealtor, getRealtorProperties } from "../../api/realtors";
-import defaultImg from "../../assets/images/254.png";
-import { getRealtorFollowers } from "../../api/realtor_followers";
-import { usePagination } from "../../hooks/usePagination";
+import { getRealtor, getRealtorProperties } from "api/realtors";
+import defaultImg from "assets/images/254.png";
+import { getRealtorFollowers } from "api/realtor_followers";
+import { usePagination } from "hooks/usePagination";
 import { Pagination } from "flowbite-react";
-import SpinnerLoader from "../Loaders/Spinner";
-import RealtorLoader from "../Loaders/RealtorLoader";
-import PropertyCardLoader from "../Loaders/PropertyCardLoader";
+import RealtorLoader from "components/Loaders/RealtorLoader";
+import PropertyCardLoader from "components/Loaders/PropertyCardLoader";
 
 export default function RealtorProperties() {
   const { id } = useParams();

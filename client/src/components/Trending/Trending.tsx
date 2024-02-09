@@ -1,9 +1,8 @@
 import React from "react";
-import pic from "../../assets/images/house_1.jpg";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getAllProperties } from "../../api/properties";
-import PropertyCard from "../PropertyCard/PropertyCard";
+import { getAllProperties } from "api/properties";
+import PropertyCard from "components/PropertyCard/PropertyCard";
 
 export default function Trending() {
   const navigate = useNavigate();
