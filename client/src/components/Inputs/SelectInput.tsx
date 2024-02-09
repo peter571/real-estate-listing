@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useSearch } from "context/SearchContext";
 import { initialState } from "hooks/useSearchReducer";
 

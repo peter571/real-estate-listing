@@ -6,7 +6,7 @@ export default function Input({
   errors,
   touched,
   type,
-  placeholder
+  placeholder,
 }: {
   name: string;
   errors: FormikErrors<PropertyFormValues>;
@@ -16,7 +16,13 @@ export default function Input({
 }) {
   return (
     <div className="flex flex-col my-3">
-      <Field className="rounded-md" id={name} name={name} type={type} placeholder={placeholder} />
+      <Field
+        className="rounded-md"
+        id={name}
+        name={name}
+        type={type}
+        placeholder={placeholder}
+      />
       {errors[name as keyof PropertyFormValues] &&
         touched[name as keyof PropertyFormValues] && (
           <ErrorMessage
@@ -33,4 +39,4 @@ export default function Input({
 
 export const ErrorMessage = ({ message }: { message: any }) => {
   return <span className="text-red-500 text-sm">{message}</span>;
-}
+};

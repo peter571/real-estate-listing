@@ -29,7 +29,8 @@ export default function FavoriteItems() {
           Array(4)
             .fill(<PropertyCardLoader />)
             .map((el, idx) => <div key={idx}>{el}</div>)}
-        {!loadingFavorites && Array.isArray(favoriteProperties["properties"]) &&
+        {!loadingFavorites &&
+          Array.isArray(favoriteProperties["properties"]) &&
           favoriteProperties["properties"].map(
             (property: PropertyDetailsCard) => {
               return <PropertyCard key={property.id} {...property} />;
